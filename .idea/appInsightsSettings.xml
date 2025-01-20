@@ -6,11 +6,6 @@
         <entry key="Android Vitals">
           <value>
             <InsightsFilterSettings>
-              <option name="connection">
-                <ConnectionSetting>
-                  <option name="appId" value="com.ifeel.ifeeltherapist" />
-                </ConnectionSetting>
-              </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
               <option name="timeIntervalDays" value="SEVEN_DAYS" />
               <option name="visibilityType" value="ALL" />
@@ -22,10 +17,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.germandebustamante.ringtonemanager" />
+                  <option name="mobileSdkAppId" value="1:396385779365:android:d558cbdd3b15bc48c1d74c" />
+                  <option name="projectId" value="ringtone-manager-59ae6" />
+                  <option name="projectNumber" value="396385779365" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

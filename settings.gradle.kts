@@ -20,4 +20,10 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Ringtone Manager"
+
 include(":app")
+include(":domain")
+
+include(":data:repository")
+include(":data:remote")
+include(":bridgeDi")

@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.gms.services)
 }
 
 android {
     namespace = "com.germandebustamante.ringtonemanager"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.germandebustamante.ringtonemanager"
@@ -47,6 +48,9 @@ android {
 }
 
 dependencies {
+    //Modules
+    implementation(project(":domain"))
+    implementation(project(":bridgeDi"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -56,6 +60,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.google.firebase.firestore)
+    //Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -63,4 +69,27 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //AndroidX Media3
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
+
+    //Koin
+    implementation(platform(libs.io.insert.koin.bom))
+    implementation(libs.io.insert.koin.core)
+    implementation(libs.io.insert.koin.compose)
+    implementation(libs.io.insert.koin.android)
+
+    //Arrow
+    implementation(libs.arrow.core)
+
+    //Firebase
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.google.firebase.analytics)
+    implementation(libs.google.firebase.firestore.ktx)
+    implementation(libs.google.firebase.storage)
+
+
+
 }
