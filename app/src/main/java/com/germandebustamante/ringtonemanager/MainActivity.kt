@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.germandebustamante.ringtonemanager.ui.home.HomeScreen
-import com.germandebustamante.ringtonemanager.ui.home.HomeViewModel
+import androidx.navigation.compose.rememberNavController
+import com.germandebustamante.ringtonemanager.core.navigation.AppBottomNavigation
+import com.germandebustamante.ringtonemanager.core.navigation.NavigationWrapper
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -19,11 +19,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+
             RingtoneManagerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(bottomBar = {
+                    AppBottomNavigation(navController)
+                }, modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    NavigationWrapper(navController, modifier = Modifier.padding(innerPadding))
                 }
             }
         }
