@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.services)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -60,7 +62,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.google.firebase.firestore)
+    //Navigation Compose
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlin.serialization.json)
     //Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -87,9 +91,8 @@ dependencies {
     //Firebase
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.analytics)
+    implementation(libs.google.firebase.firestore)
     implementation(libs.google.firebase.firestore.ktx)
     implementation(libs.google.firebase.storage)
-
-
 
 }

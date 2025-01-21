@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Ringtone Manager</string>
+    <string name="bottom_bar_home">Home</string>
+    <string name="bottom_bar_my_account">My account</string>
 </resources>
