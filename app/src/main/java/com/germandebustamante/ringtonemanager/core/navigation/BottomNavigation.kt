@@ -22,7 +22,7 @@ fun AppBottomNavigation(navController: NavController) {
         BottomScreens.MyAccount,
     )
 
-    NavigationBar (contentColor = MaterialTheme.colorScheme.background) {
+    NavigationBar {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 

@@ -8,9 +8,9 @@ import androidx.navigation.compose.composable
 import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.HomeScreen
 import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.MyAccountScreen
 import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.RingtoneDetailScreen
-import com.germandebustamante.ringtonemanager.ui.home.HomeScreen
-import com.germandebustamante.ringtonemanager.ui.myaccount.MyAccountScreen
-import com.germandebustamante.ringtonemanager.ui.ringtone.RingtoneDetailScreen
+import com.germandebustamante.ringtonemanager.ui.screen.home.HomeScreen
+import com.germandebustamante.ringtonemanager.ui.screen.myaccount.MyAccountScreen
+import com.germandebustamante.ringtonemanager.ui.screen.ringtone.RingtoneDetailScreen
 
 @Composable
 fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Modifier) {
