@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Ringtone Manager</string>
-    <string name="bottom_bar_home">Home</string>
+    <string name="bottom_bar_home">Ringtone</string>
     <string name="bottom_bar_my_account">My account</string>
+    <string name="popular_ringtones">Popular ringtones</string>
 </resources>

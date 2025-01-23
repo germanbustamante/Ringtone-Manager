@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.ringtone
+package com.germandebustamante.ringtonemanager.ui.screen.ringtone
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
