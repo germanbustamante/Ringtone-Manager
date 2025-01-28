@@ -10,6 +10,7 @@ abstract class BaseViewModel: ViewModel() {
             is CustomError.Server -> message ?: "Server error"
             is CustomError.ParcelizeException -> "Parcelize error"
             is CustomError.Unknown -> message ?: "Synchronizing error"
+            CustomError.NotFound -> "Item not found"
         }
     }
 }

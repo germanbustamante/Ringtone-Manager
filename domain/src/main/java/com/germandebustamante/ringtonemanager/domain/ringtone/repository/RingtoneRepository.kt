@@ -6,4 +6,5 @@ import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 
 interface RingtoneRepository {
     suspend fun getFullRingtones(): Either<CustomError, List<RingtoneBO>>
+    suspend fun getRingtoneDetail(ringtoneId: String): Either<CustomError, RingtoneBO>
 }

@@ -13,11 +13,18 @@ class RingtoneFirestoreRemoteDataSourceImpl(private val firestore: FirebaseFires
     override suspend fun getFullRingtones(): Either<CustomError, List<RingtoneBO>> {
         return FirestoreManager.getDocuments<RingtoneDTO, RingtoneBO>(
             action = { firestore.collection(COLLECTION_NAME).get() },
-            mapperToDomainLayer = { it.toDomain() },
+            mapper = { it.toDomain() },
         )
     }
 
+    override suspend fun getRingtoneDetail(ringtoneId: String): Either<CustomError, RingtoneBO> =
+        FirestoreManager.getDocument<RingtoneDTO, RingtoneBO>(
+            action = { firestore.collection(COLLECTION_NAME).whereEqualTo(FIELD_ID, ringtoneId.toIntOrNull()).get() },
+            mapper = { it.toDomain() },
+        )
+
     companion object {
         private const val COLLECTION_NAME = "ringtones_v1"
+        private const val FIELD_ID = "id"
     }
 }

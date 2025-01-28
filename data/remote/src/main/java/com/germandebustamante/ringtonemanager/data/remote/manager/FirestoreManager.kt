@@ -13,15 +13,24 @@ object FirestoreManager {
 
     suspend inline fun <reified T, R> getDocuments(
         action: () -> Task<QuerySnapshot>,
-        mapperToDomainLayer: (T) -> R,
-    ): Either<CustomError, List<R>> {
-        try {
-            val success = action().await()
-            val list = success.toObjects(T::class.java).toList()
-            return list.map(mapperToDomainLayer).right()
-        } catch (exception: Exception) {
-            return exception.toError().left()
-        }
+        mapper: (T) -> R,
+    ): Either<CustomError, List<R>> = try {
+        val result = action().await()
+        val list = result.toObjects(T::class.java).map(mapper)
+        list.right()
+    } catch (exception: Exception) {
+        exception.toError().left()
+    }
+
+    suspend inline fun <reified T, R> getDocument(
+        action: () -> Task<QuerySnapshot>,
+        mapper: (T) -> R,
+    ): Either<CustomError, R> = try {
+        val result = action().await()
+        result.documents.firstOrNull()?.toObject(T::class.java)?.let(mapper)?.right()
+            ?: CustomError.NotFound.left()
+    } catch (exception: Exception) {
+        exception.toError().left()
     }
 
     fun Throwable.toError(): CustomError = when (this) {
