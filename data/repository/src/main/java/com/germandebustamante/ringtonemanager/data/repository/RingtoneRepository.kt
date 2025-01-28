@@ -11,4 +11,7 @@ class RingtoneRepositoryImpl(
 ) : RingtoneRepository {
     override suspend fun getFullRingtones(): Either<CustomError, List<RingtoneBO>> =
         remoteDataSource.getFullRingtones()
+
+    override suspend fun getRingtoneDetail(ringtoneId: String): Either<CustomError, RingtoneBO> =
+        remoteDataSource.getRingtoneDetail(ringtoneId)
 }
