@@ -93,8 +93,7 @@ class HomePreviewParameterProviders : PreviewParameterProvider<HomeViewModel.UIS
                         source = "Las Chicas del Cable",
                         fileUrl = "https://www.example.com/dejatekebese.mp3"
                     ),
-
-                    )
+                )
             )
         )
 }
