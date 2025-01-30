@@ -17,7 +17,6 @@ fun RandomRingtoneBackground(modifier: Modifier = Modifier) {
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = modifier
-            .size(80.dp)
     )
 }
 
