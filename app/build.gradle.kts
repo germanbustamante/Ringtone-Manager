@@ -100,5 +100,7 @@ dependencies {
     implementation(libs.google.firebase.firestore)
     implementation(libs.google.firebase.firestore.ktx)
     implementation(libs.google.firebase.storage)
+    implementation(libs.firebase.appcheck.playintegrity)
+    implementation(libs.firebase.appcheck.debug)
 
 }

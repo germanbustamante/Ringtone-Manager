@@ -10,10 +10,8 @@ fun PlayPauseRingtoneButton(
     isPlaying: Boolean,
     onPlayPauseButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
-) {
-    IconPrimaryButton(
-        onClick = onPlayPauseButtonClick,
-        resourceId = if (isPlaying) R.drawable.ic_pause_ringtone else R.drawable.ic_play_ringtone,
-        modifier = modifier,
-    )
-}
+) = IconPrimaryButton(
+    onClick = onPlayPauseButtonClick,
+    resourceId = if (isPlaying) R.drawable.ic_pause_ringtone else R.drawable.ic_play_ringtone,
+    modifier = modifier,
+)

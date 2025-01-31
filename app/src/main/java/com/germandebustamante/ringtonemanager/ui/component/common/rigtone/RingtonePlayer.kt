@@ -33,6 +33,7 @@ fun RingtonePlayer(
     isPlaying: Boolean,
     onPlaybackPositionChange: (Int) -> Unit,
     onPlayPauseButtonClick: () -> Unit,
+    onSeekButtonClick: (timeInMillis: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -53,14 +54,27 @@ fun RingtonePlayer(
         }
 
         Row(
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
         ) {
+
+            SeekButton(
+                onClick = onSeekButtonClick,
+                action = TimeNavigationAction.BACKWARD_TEN_SECONDS,
+                enabled = isPlaying
+            )
+
             PlayPauseRingtoneButton(
                 isPlaying = isPlaying,
                 onPlayPauseButtonClick = onPlayPauseButtonClick,
+            )
+
+            SeekButton(
+                onClick = onSeekButtonClick,
+                action = TimeNavigationAction.FORWARD_TEN_SECONDS,
+                enabled = isPlaying
             )
         }
     }
@@ -77,6 +91,7 @@ private fun RingtonePlayerPreview() {
         onPlaybackPositionChange = { currentPosition = it },
         duration = duration,
         onPlayPauseButtonClick = {},
+        onSeekButtonClick = {},
         isPlaying = false,
         modifier = Modifier.padding(16.dp),
     )

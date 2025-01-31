@@ -64,5 +64,7 @@ private fun getButtonColors(isPressed: Boolean): IconButtonColors {
     return IconButtonDefaults.iconButtonColors(
         containerColor = containerColor,
         contentColor = color_text_600,
+        disabledContentColor = Color.Gray,
+        disabledContainerColor = Color.White
     )
 }

@@ -96,6 +96,18 @@ class RingtoneDetailViewModel(
     private fun setErrorState(errorMessage: String) {
         uiState = uiState.copy(errorMessage = errorMessage, isLoading = false)
     }
+
+    fun onSeekButtonClick(timeInMillis: Int) {
+        playerAdapter.seekTo(timeInMillis.toLong())
+    }
+
+    fun pausePlayer() {
+        playerAdapter.pause()
+    }
+
+    fun releasePlayer() {
+        playerAdapter.release()
+    }
     //endregion
 
     data class RingtoneDetailUIState(

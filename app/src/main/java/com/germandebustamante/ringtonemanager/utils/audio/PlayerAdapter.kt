@@ -21,7 +21,5 @@ interface SinglePlayerAdapter {
     fun play(url: String)
     fun pause()
     fun release()
-    fun seekTo(position: Int)
-    fun forward(timeInMillis: Long)
-    fun rewind(timeInMillis: Long)
+    fun seekTo(position: Long)
 }
