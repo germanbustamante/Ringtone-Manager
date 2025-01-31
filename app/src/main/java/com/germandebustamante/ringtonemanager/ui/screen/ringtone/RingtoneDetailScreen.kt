@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.ui.component.common.RandomRingtoneBackground
+import com.germandebustamante.ringtonemanager.ui.component.common.effect.DisposableEffectLifecycleObserver
 import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.RingtonePlayer
 import org.koin.androidx.compose.koinViewModel
 
@@ -26,10 +27,17 @@ fun RingtoneDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: RingtoneDetailViewModel = koinViewModel(),
 ) {
+
+    DisposableEffectLifecycleObserver(
+        onStop = viewModel::pausePlayer,
+        onDispose = viewModel::releasePlayer,
+        )
+
     RingtoneDetailContent(
         uiState = viewModel.uiState,
         onPlaybackPositionChange = viewModel::updatePlaybackPosition,
         onPlayPauseButtonClick = viewModel::onPlayPauseRingtone,
+        onSeekButtonClick = viewModel::onSeekButtonClick,
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -39,6 +47,7 @@ private fun RingtoneDetailContent(
     uiState: RingtoneDetailViewModel.RingtoneDetailUIState,
     onPlaybackPositionChange: (Int) -> Unit,
     onPlayPauseButtonClick: () -> Unit,
+    onSeekButtonClick: (timeInMillis: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -62,6 +71,7 @@ private fun RingtoneDetailContent(
                         onPlaybackPositionChange = onPlaybackPositionChange,
                         isPlaying = uiState.isPlaying,
                         onPlayPauseButtonClick = onPlayPauseButtonClick,
+                        onSeekButtonClick = onSeekButtonClick,
                         duration = uiState.ringtoneDuration!!,
                     )
                 }
@@ -116,4 +126,5 @@ fun RingtoneDetailScreenPreview(
     modifier = Modifier.fillMaxSize(),
     onPlaybackPositionChange = {},
     onPlayPauseButtonClick = {},
+    onSeekButtonClick = {},
 )

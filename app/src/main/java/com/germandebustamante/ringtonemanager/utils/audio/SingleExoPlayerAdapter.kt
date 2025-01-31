@@ -95,25 +95,8 @@ class SingleExoPlayerAdapter(
         positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
     }
 
-    /**
-     * Seeks playback to a specific position in milliseconds.
-     */
-    override fun seekTo(position: Int) {
-        exoPlayer?.seekTo(position.toLong())
-    }
-
-    /**
-     * Moves playback forward by a specified duration in milliseconds.
-     */
-    override fun forward(timeInMillis: Long) {
-        exoPlayer?.seekTo(getCurrentPlaybackPosition() + timeInMillis)
-    }
-
-    /**
-     * Moves playback backward by a specified duration in milliseconds.
-     */
-    override fun rewind(timeInMillis: Long) {
-        exoPlayer?.seekTo(getCurrentPlaybackPosition() - timeInMillis)
+    override fun seekTo(position: Long) {
+        exoPlayer?.seekTo(getCurrentPlaybackPosition() + position)
     }
 
     /**
@@ -141,6 +124,7 @@ class SingleExoPlayerAdapter(
                         onPlaybackPositionChanged?.invoke(DEFAULT_DURATION)
                         onPlaybackEnded?.invoke()
                     }
+
                     Player.STATE_READY -> onPlaybackDurationChanged?.invoke(exoPlayer?.duration?.toInt() ?: 0)
                 }
             }
