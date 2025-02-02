@@ -2,6 +2,7 @@ package com.germandebustamante.ringtonemanager.core.navigation
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -16,8 +17,6 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.BottomScreens
-import com.germandebustamante.ringtonemanager.ui.theme.color_text_300
-import com.germandebustamante.ringtonemanager.ui.theme.color_text_500
 
 @Composable
 fun AppBottomNavigation(navController: NavController) {
@@ -27,7 +26,7 @@ fun AppBottomNavigation(navController: NavController) {
     )
 
     NavigationBar(
-        containerColor = color_text_500,
+        containerColor = MaterialTheme.colorScheme.surface,
         windowInsets = WindowInsets(top = 0.dp, bottom = 0.dp, left = 0.dp, right = 0.dp),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -61,4 +60,4 @@ fun AppBottomNavigation(navController: NavController) {
 }
 
 @Composable
-private fun getSelectedColor(isSelected: Boolean): Color = if (isSelected) Color.White else color_text_300
+private fun getSelectedColor(isSelected: Boolean): Color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
