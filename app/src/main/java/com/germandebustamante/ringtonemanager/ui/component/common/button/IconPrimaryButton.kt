@@ -9,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -19,8 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
-import com.germandebustamante.ringtonemanager.ui.theme.color_text_100
-import com.germandebustamante.ringtonemanager.ui.theme.color_text_600
 
 enum class IconPrimaryButtonSize(val dp: Dp) {
     SMALL(24.dp), MEDIUM(34.dp), BIG(44.dp)
@@ -59,12 +58,11 @@ private fun IconPrimaryButtonPreview() {
 
 @Composable
 private fun getButtonColors(isPressed: Boolean): IconButtonColors {
-    val containerColor = if (isPressed) color_text_100 else Color.White
+    val containerColor = if (isPressed) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.primaryContainer
 
     return IconButtonDefaults.iconButtonColors(
         containerColor = containerColor,
-        contentColor = color_text_600,
+        disabledContainerColor = Color.LightGray,
         disabledContentColor = Color.Gray,
-        disabledContainerColor = Color.White
     )
 }

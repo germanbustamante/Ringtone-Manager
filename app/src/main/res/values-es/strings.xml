@@ -3,4 +3,7 @@
     <string name="bottom_bar_home">Tonos de llamada</string>
     <string name="bottom_bar_my_account">Mi cuenta</string>
     <string name="popular_ringtones">Tonos de llamada populares</string>
+    <string name="favorite_ringtones">Mis tonos de llamada favoritos</string>
+    <string name="favorite_ringtones_empty">No hay tonos de llamada favoritos</string>
+    <string name="favorite_rigtones_need_sign_in">!Inicia sesion para poder guardar tus favoritos!</string>
 </resources>

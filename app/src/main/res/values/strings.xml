@@ -3,4 +3,7 @@
     <string name="bottom_bar_home">Ringtone</string>
     <string name="bottom_bar_my_account">My account</string>
     <string name="popular_ringtones">Popular ringtones</string>
+    <string name="favorite_ringtones">My favorites ringtones</string>
+    <string name="favorite_ringtones_empty">No favorite ringtones</string>
+    <string name="favorite_rigtones_need_sign_in">Sign in to save your favorites!</string>
 </resources>
