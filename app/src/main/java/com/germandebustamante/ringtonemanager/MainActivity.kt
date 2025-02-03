@@ -14,7 +14,7 @@ import com.germandebustamante.ringtonemanager.core.navigation.NavigationWrapper
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.appCheck
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.initialize
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
 
         Firebase.initialize(this)
         Firebase.appCheck.installAppCheckProviderFactory(
-            PlayIntegrityAppCheckProviderFactory.getInstance(),
+            DebugAppCheckProviderFactory.getInstance(),
         )
 
         enableEdgeToEdge()
@@ -32,9 +32,9 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             RingtoneManagerTheme {
-                Scaffold(bottomBar = {
-                    AppBottomNavigation(navController)
-                }, modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    bottomBar = { AppBottomNavigation(navController) }, modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
                     NavigationWrapper(navController, modifier = Modifier.padding(innerPadding))
                 }
             }

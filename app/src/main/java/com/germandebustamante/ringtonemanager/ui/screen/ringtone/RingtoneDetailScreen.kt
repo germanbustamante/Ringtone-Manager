@@ -1,43 +1,54 @@
 package com.germandebustamante.ringtonemanager.ui.screen.ringtone
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.ui.component.common.RandomRingtoneBackground
+import com.germandebustamante.ringtonemanager.ui.component.common.action.ShareButtonWithToolTip
 import com.germandebustamante.ringtonemanager.ui.component.common.effect.DisposableEffectLifecycleObserver
+import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.IconPrimaryButtonSize
 import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.RingtonePlayer
+import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.ShimmerRingtonePlayer
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RingtoneDetailScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: RingtoneDetailViewModel = koinViewModel(),
 ) {
-
     DisposableEffectLifecycleObserver(
         onStop = viewModel::pausePlayer,
         onDispose = viewModel::releasePlayer,
-        )
+    )
 
     RingtoneDetailContent(
         uiState = viewModel.uiState,
         onPlaybackPositionChange = viewModel::updatePlaybackPosition,
         onPlayPauseButtonClick = viewModel::onPlayPauseRingtone,
         onSeekButtonClick = viewModel::onSeekButtonClick,
+        onBackPressed = { navController.popBackStack() },
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -48,35 +59,58 @@ private fun RingtoneDetailContent(
     onPlaybackPositionChange: (Int) -> Unit,
     onPlayPauseButtonClick: () -> Unit,
     onSeekButtonClick: (timeInMillis: Int) -> Unit,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val innerIconsHorizontalPadding = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
     Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier,
+        modifier = modifier.padding(8.dp),
     ) {
-        if (uiState.isLoading) {
-            CircularProgressIndicator()
+        IconButton(
+            onClick = onBackPressed,
+            modifier = Modifier
+                .size(IconPrimaryButtonSize.MEDIUM.dp)
+                .align(Alignment.TopStart),
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = null,
+            )
         }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(horizontal = 32.dp),
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.align(Alignment.Center),
         ) {
             uiState.ringtone?.let { ringtone ->
-                RingtoneDetails(ringtone = ringtone)
 
-                AnimatedVisibility(uiState.ringtoneDuration != null) {
+                RingtoneDetails(ringtone = ringtone, modifier = innerIconsHorizontalPadding)
+
+                if (uiState.ringtoneDuration != null) {
                     RingtonePlayer(
                         currentPosition = uiState.currentPlaybackPosition,
                         onPlaybackPositionChange = onPlaybackPositionChange,
                         isPlaying = uiState.isPlaying,
                         onPlayPauseButtonClick = onPlayPauseButtonClick,
                         onSeekButtonClick = onSeekButtonClick,
-                        duration = uiState.ringtoneDuration!!,
+                        duration = uiState.ringtoneDuration,
+                        modifier = innerIconsHorizontalPadding,
+                    )
+                } else {
+                    ShimmerRingtonePlayer(
+                        modifier = innerIconsHorizontalPadding,
                     )
                 }
             }
         }
+
+        ShareButtonWithToolTip(
+            onClick = {},
+            descriptionText = stringResource(R.string.share_action),
+            modifier = Modifier
+                .align(Alignment.BottomCenter),
+        )
     }
 }
 
@@ -87,18 +121,19 @@ private fun RingtoneDetails(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier,
     ) {
         RandomRingtoneBackground(
             modifier = Modifier
                 .clip(MaterialTheme.shapes.small)
-                .padding(bottom = 8.dp),
         )
 
         Text(
             text = ringtone.name,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 8.dp),
         )
 
         ringtone.artist?.let { artist ->
@@ -111,7 +146,7 @@ private fun RingtoneDetails(
         ringtone.source?.let { source ->
             Text(
                 text = source,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
             )
         }
     }
@@ -127,4 +162,5 @@ fun RingtoneDetailScreenPreview(
     onPlaybackPositionChange = {},
     onPlayPauseButtonClick = {},
     onSeekButtonClick = {},
+    onBackPressed = {},
 )

@@ -4,13 +4,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,17 +49,26 @@ fun RingtonePlayer(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
+                .fillMaxWidth(),
         ) {
-            Text(text = AudioUtils.getFormattedAudioDuration(currentPosition))
-            Text(text = AudioUtils.getFormattedAudioDuration(duration))
+            Text(
+                text = AudioUtils.getFormattedAudioDuration(currentPosition),
+                style = MaterialTheme.typography.bodySmall,
+            )
+
+            Text(
+                text = AudioUtils.getFormattedAudioDuration(duration),
+                style = MaterialTheme.typography.bodySmall
+            )
         }
 
+        val buttonSize = IconPrimaryButtonSize.EXTRA_LARGE
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(min = buttonSize.dp * PLAY_PAUSE_BTN_SIZE_FACTOR + 4.dp)
                 .padding(top = 16.dp),
         ) {
 
@@ -69,6 +81,7 @@ fun RingtonePlayer(
             PlayPauseRingtoneButton(
                 isPlaying = isPlaying,
                 onPlayPauseButtonClick = onPlayPauseButtonClick,
+                size = buttonSize,
             )
 
             SeekButton(

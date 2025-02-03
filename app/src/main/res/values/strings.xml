@@ -6,4 +6,5 @@
     <string name="favorite_ringtones">My favorites ringtones</string>
     <string name="favorite_ringtones_empty">No favorite ringtones</string>
     <string name="favorite_rigtones_need_sign_in">Sign in to save your favorites!</string>
+    <string name="share_action">Share this ringtone!</string>
 </resources>

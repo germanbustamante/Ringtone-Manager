@@ -15,18 +15,18 @@ import com.germandebustamante.ringtonemanager.ui.screen.ringtone.RingtoneDetailS
 @Composable
 fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(navController = navController, startDestination = HomeScreen, modifier = modifier) {
-        composable<HomeScreen> {
+        composable<HomeScreen>(enterTransition = null, exitTransition = null) {
             HomeScreen(onRingtoneClicked = {
                 navController.navigate(RingtoneDetailScreen(it))
             })
         }
 
-        composable<MyAccountScreen> {
+        composable<MyAccountScreen>(enterTransition = null, exitTransition = null) {
             MyAccountScreen()
         }
 
-        composable<RingtoneDetailScreen> {
-            RingtoneDetailScreen()
+        composable<RingtoneDetailScreen>(enterTransition = null, exitTransition = null) {
+            RingtoneDetailScreen(navController)
         }
     }
 }

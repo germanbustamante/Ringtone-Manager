@@ -1,28 +1,35 @@
 package com.germandebustamante.ringtonemanager.ui.component.common.rigtone
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import com.germandebustamante.ringtonemanager.R
-import com.germandebustamante.ringtonemanager.ui.component.common.button.IconPrimaryButton
 
 @Composable
 fun SeekButton(
     onClick: (timeInMillis: Int) -> Unit,
     action: TimeNavigationAction,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     val iconResourceId = when (action) {
         TimeNavigationAction.FORWARD_TEN_SECONDS -> R.drawable.ic_forward_10_seconds
         TimeNavigationAction.BACKWARD_TEN_SECONDS -> R.drawable.ic_backward_10_seconds
     }
 
-    IconPrimaryButton(
+    IconButton(
         onClick = { onClick(action.timeInMillis) },
-        resourceId = iconResourceId,
         enabled = enabled,
-        modifier = modifier,
-    )
+        modifier = modifier.size(IconPrimaryButtonSize.MEDIUM.dp),
+    ) {
+        Icon(
+            painter = painterResource(iconResourceId),
+            contentDescription = null,
+        )
+    }
 }
 
 enum class TimeNavigationAction(val timeInMillis: Int) {
