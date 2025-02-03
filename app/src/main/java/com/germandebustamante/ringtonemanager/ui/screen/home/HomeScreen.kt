@@ -46,7 +46,7 @@ private fun HomeContent(
             .fillMaxSize()
             .padding(vertical = 8.dp, horizontal = 8.dp)
     ) {
-        FavoriteRingtonesContainer()
+        FavoriteRingtonesContainer(state.isLoading)
 
         PopularRingtonesContainer(
             state = state,

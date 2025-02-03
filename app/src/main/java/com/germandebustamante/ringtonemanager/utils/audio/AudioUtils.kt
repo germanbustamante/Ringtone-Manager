@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 
 object AudioUtils {
 
-    private const val MINUTES_SECONDS_FORMAT = "%02d:%02d"
+    private const val MINUTES_SECONDS_FORMAT = "%01d:%02d"
 
     @SuppressLint("DefaultLocale")
     fun getFormattedAudioDuration(progress: Int): String {
