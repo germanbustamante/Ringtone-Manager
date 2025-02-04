@@ -6,18 +6,25 @@ import com.germandebustamante.ringtonemanager.R
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class BottomScreens<T>(@StringRes val name: Int,@DrawableRes val icon: Int, val route: T) {
+sealed class BottomScreens<T>(
+    @StringRes val name: Int,
+    @DrawableRes val selectedIcon: Int,
+    @DrawableRes val unselectedIcon: Int,
+    val route: T,
+) {
     @Serializable
     data object Home : BottomScreens<HomeScreen>(
         name = R.string.bottom_bar_home,
-        icon = R.drawable.ic_home,
+        selectedIcon = R.drawable.ic_home_filled,
+        unselectedIcon = R.drawable.ic_home_outlined,
         route = HomeScreen
     )
 
     @Serializable
     data object MyAccount : BottomScreens<MyAccountScreen>(
         name = R.string.bottom_bar_my_account,
-        icon = R.drawable.ic_my_account,
+        selectedIcon = R.drawable.ic_my_account_filled,
+        unselectedIcon = R.drawable.ic_my_account_outlined,
         route = MyAccountScreen
     )
 }
