@@ -46,7 +46,6 @@ private fun BottomNavigationBar(
 
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
-        windowInsets = WindowInsets(bottom = 30.dp),
         modifier = Modifier
             .drawBehind {
                 drawLine(

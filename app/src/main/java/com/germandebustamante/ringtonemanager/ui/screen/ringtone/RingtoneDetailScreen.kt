@@ -1,17 +1,22 @@
 package com.germandebustamante.ringtonemanager.ui.screen.ringtone
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +32,6 @@ import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.ui.component.common.RandomRingtoneBackground
 import com.germandebustamante.ringtonemanager.ui.component.common.action.ShareButtonWithToolTip
 import com.germandebustamante.ringtonemanager.ui.component.common.effect.DisposableEffectLifecycleObserver
-import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.IconPrimaryButtonSize
 import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.RingtonePlayer
 import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.ShimmerRingtonePlayer
 import org.koin.androidx.compose.koinViewModel
@@ -53,6 +57,8 @@ fun RingtoneDetailScreen(
     )
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RingtoneDetailContent(
     uiState: RingtoneDetailViewModel.RingtoneDetailUIState,
@@ -62,56 +68,70 @@ private fun RingtoneDetailContent(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val innerIconsHorizontalPadding = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
-    Box(
-        modifier = modifier.padding(8.dp),
-    ) {
-        IconButton(
-            onClick = onBackPressed,
-            modifier = Modifier
-                .size(IconPrimaryButtonSize.MEDIUM.dp)
-                .align(Alignment.TopStart),
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = null,
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                windowInsets = WindowInsets(bottom = 0.dp, left = 0.dp, right = 0.dp, top = 0.dp),
+
+                title = {
+                    uiState.ringtone?.name?.let {
+                        Text(text = it, style = MaterialTheme.typography.titleMedium)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackPressed) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                )
             )
         }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.align(Alignment.Center),
+    ) { _ ->
+        Box(
+            modifier = modifier.padding(6.dp),
         ) {
-            uiState.ringtone?.let { ringtone ->
+            val innerIconsHorizontalPadding = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.align(Alignment.Center),
+            ) {
+                uiState.ringtone?.let { ringtone ->
 
-                RingtoneDetails(ringtone = ringtone, modifier = innerIconsHorizontalPadding)
+                    RingtoneDetails(ringtone = ringtone, modifier = innerIconsHorizontalPadding)
 
-                if (uiState.ringtoneDuration != null) {
-                    RingtonePlayer(
-                        currentPosition = uiState.currentPlaybackPosition,
-                        onPlaybackPositionChange = onPlaybackPositionChange,
-                        isPlaying = uiState.isPlaying,
-                        onPlayPauseButtonClick = onPlayPauseButtonClick,
-                        onSeekButtonClick = onSeekButtonClick,
-                        duration = uiState.ringtoneDuration,
-                        modifier = innerIconsHorizontalPadding,
-                    )
-                } else {
-                    ShimmerRingtonePlayer(
-                        modifier = innerIconsHorizontalPadding,
-                    )
+                    if (uiState.ringtoneDuration != null) {
+                        RingtonePlayer(
+                            currentPosition = uiState.currentPlaybackPosition,
+                            onPlaybackPositionChange = onPlaybackPositionChange,
+                            isPlaying = uiState.isPlaying,
+                            onPlayPauseButtonClick = onPlayPauseButtonClick,
+                            onSeekButtonClick = onSeekButtonClick,
+                            duration = uiState.ringtoneDuration,
+                            modifier = innerIconsHorizontalPadding,
+                        )
+                    } else {
+                        ShimmerRingtonePlayer(
+                            modifier = innerIconsHorizontalPadding,
+                        )
+                    }
                 }
             }
-        }
 
-        ShareButtonWithToolTip(
-            onClick = {},
-            descriptionText = stringResource(R.string.share_action),
-            modifier = Modifier
-                .align(Alignment.BottomCenter),
-        )
+            ShareButtonWithToolTip(
+                onClick = {},
+                descriptionText = stringResource(R.string.share_action),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter),
+            )
+        }
     }
+
 }
 
 @Composable
