@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.component.common.button.ToolTipText
@@ -62,7 +63,7 @@ fun ShareButtonWithToolTip(onClick: () -> Unit, descriptionText: String, modifie
             exit = fadeOut(animationSpec = getAnimationSpec()),
             modifier = Modifier.constrainAs(toolTipText) {
                 bottom.linkTo(shareButton.top)
-                start.linkTo(shareButton.start)
+                start.linkTo(shareButton.start, margin = (-10).dp)
             }
         ) {
             ToolTipText(descriptionText)
