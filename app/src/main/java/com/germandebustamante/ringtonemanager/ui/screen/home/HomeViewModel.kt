@@ -53,10 +53,15 @@ class HomeViewModel(
         launchCatching(onError = { notifyError(it) }) {
             notifyLoading(true)
             getPopularRingtonesUseCase().collect { ringtones ->
-                notifyLoading(false)
-
-                player.addMediaItems(ringtones.map { it.fileUrl })
-                state = state.copy(ringtones = ringtones)
+                ringtones.fold(
+                    ifLeft = {
+                        notifyError(it.toErrorString())
+                    },
+                    ifRight = { ringtones ->
+                        player.addMediaItems(ringtones.map { it.fileUrl })
+                        state = state.copy(ringtones = ringtones, isLoading = false)
+                    }
+                )
             }
         }
     }
