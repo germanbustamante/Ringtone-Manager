@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.germandebustamante.ringtonemanager.core.navigation.AppBottomNavigation
 import com.germandebustamante.ringtonemanager.core.navigation.NavigationWrapper
@@ -50,8 +49,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-
-
         }
     }
 }

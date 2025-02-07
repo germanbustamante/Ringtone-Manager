@@ -1,10 +1,13 @@
 package com.germandebustamante.ringtonemanager.bridgedi
 
-import com.germandebustamante.ringtonemanager.data.datasource.RingtoneRemoteDataSource
-import com.germandebustamante.ringtonemanager.data.remote.firestore.RingtoneFirestoreRemoteDataSourceImpl
+import com.germandebustamante.ringtonemanager.data.datasource.RingtoneItemRemoteDataSource
+import com.germandebustamante.ringtonemanager.data.datasource.RingtoneListRemoteDataSource
+import com.germandebustamante.ringtonemanager.data.remote.firestore.RingtoneItemFirestoreRemoteDataSourceImpl
+import com.germandebustamante.ringtonemanager.data.remote.firestore.RingtoneListFirestoreRemoteDataSourceImpl
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val remoteModule = module {
-    factory { RingtoneFirestoreRemoteDataSourceImpl(get()) } bind RingtoneRemoteDataSource::class
+    factory { RingtoneItemFirestoreRemoteDataSourceImpl(get()) } bind RingtoneItemRemoteDataSource::class
+    factory { RingtoneListFirestoreRemoteDataSourceImpl(get()) } bind RingtoneListRemoteDataSource::class
 }
