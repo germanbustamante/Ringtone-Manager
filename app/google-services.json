@@ -12,7 +12,20 @@
           "package_name": "com.germandebustamante.ringtonemanager"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "396385779365-8e9niveu05231n9i0pqt10fprgaqb8k5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.germandebustamante.ringtonemanager",
+            "certificate_hash": "3f30cd413c92619bda573ae1cdb0ee6bd99b2434"
+          }
+        },
+        {
+          "client_id": "396385779365-jumqhkdmqq0if0q8n6j0s5i53m2n6v5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA_gnaTNkmZ3-LrpMgwBnAm-yGmSWJP9DI"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396385779365-jumqhkdmqq0if0q8n6j0s5i53m2n6v5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

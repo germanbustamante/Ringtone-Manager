@@ -3,17 +3,14 @@ package com.germandebustamante.ringtonemanager.ui.screen.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
-import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetFullRingtonesUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopularRingtonesUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val getFullRingtonesUseCase: GetFullRingtonesUseCase,
-    private val player: MultiplePlayerAdapter
+    private val getPopularRingtonesUseCase: GetPopularRingtonesUseCase,
+    private val player: MultiplePlayerAdapter,
 ) : BaseViewModel() {
 
     var state by mutableStateOf(UIState())
@@ -53,34 +50,29 @@ class HomeViewModel(
     }
 
     private fun getFullRingtones() {
-        viewModelScope.launch {
+        launchCatching(onError = { notifyError(it) }) {
             notifyLoading(true)
-            getFullRingtonesUseCase().fold(
-                ifLeft = {
-                    notifyError(it.toErrorString())
-                },
-                ifRight = { ringtones ->
-                    notifyLoading(false)
+            getPopularRingtonesUseCase().collect { ringtones ->
+                notifyLoading(false)
 
-                    player.addMediaItems(ringtones.map { it.fileUrl })
-                    state = state.copy(ringtones = ringtones)
-                }
-            )
+                player.addMediaItems(ringtones.map { it.fileUrl })
+                state = state.copy(ringtones = ringtones)
+            }
         }
     }
 
     private fun notifyError(error: String) {
         state = state.copy(error = error, isLoading = false)
     }
-    //endregion
+//endregion
 
     data class UIState(
         val ringtones: List<RingtoneBO> = emptyList(),
-        val currentRingtonePlayingId: Int? = null,
+        val currentRingtonePlayingId: String? = null,
         val isLoading: Boolean = true,
         val error: String? = null,
     ) {
         fun updateCurrentRingtonePlayingId(ringtoneBO: RingtoneBO): UIState =
-            copy(currentRingtonePlayingId = ringtones.firstOrNull { it.id == ringtoneBO.id }?.id?.toIntOrNull())
+            copy(currentRingtonePlayingId = ringtones.firstOrNull { it.id == ringtoneBO.id }?.id)
     }
 }

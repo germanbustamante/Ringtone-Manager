@@ -40,4 +40,7 @@ dependencies {
 
     //Arrow
     implementation(libs.arrow.core)
+
+    //Kotlin coroutines
+    implementation(libs.kotlinx.coroutines.core)
 }

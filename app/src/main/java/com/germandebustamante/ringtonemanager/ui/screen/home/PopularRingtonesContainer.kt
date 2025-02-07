@@ -36,7 +36,7 @@ fun PopularRingtonesContainer(
 fun PopularRingtoneList(
     loading: Boolean,
     ringtones: List<RingtoneBO>,
-    currentRingtonePlayingId: Int?,
+    currentRingtonePlayingId: String?,
     onRingtoneClicked: (String) -> Unit,
     onPlayRingtoneClicked: (RingtoneBO, Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -55,7 +55,7 @@ fun PopularRingtoneList(
             items(items = ringtones, key = { it.id }) { ringtone ->
                 PopularRingtoneItem(
                     ringtone = ringtone,
-                    isPlaying = currentRingtonePlayingId == ringtone.id.toIntOrNull(),
+                    isPlaying = currentRingtonePlayingId == ringtone.id,
                     onRingtoneClicked = onRingtoneClicked,
                     onPlayRingtoneClicked = onPlayRingtoneClicked,
                     modifier = Modifier.fillParentMaxWidth(),

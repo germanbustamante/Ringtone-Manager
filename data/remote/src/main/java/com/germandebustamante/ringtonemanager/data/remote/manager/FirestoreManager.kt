@@ -5,6 +5,7 @@ import arrow.core.left
 import arrow.core.right
 import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.StorageException
 import kotlinx.coroutines.tasks.await
@@ -23,11 +24,11 @@ object FirestoreManager {
     }
 
     suspend inline fun <reified T, R> getDocument(
-        action: () -> Task<QuerySnapshot>,
+        action: () -> Task<DocumentSnapshot>,
         mapper: (T) -> R,
     ): Either<CustomError, R> = try {
         val result = action().await()
-        result.documents.firstOrNull()?.toObject(T::class.java)?.let(mapper)?.right()
+        result.toObject(T::class.java)?.let(mapper)?.right()
             ?: CustomError.NotFound.left()
     } catch (exception: Exception) {
         exception.toError().left()

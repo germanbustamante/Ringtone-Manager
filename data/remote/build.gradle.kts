@@ -43,4 +43,7 @@ dependencies {
     implementation(libs.google.firebase.firestore.ktx)
     implementation(libs.google.firebase.storage)
 
+    //Kotlin coroutines
+    implementation(libs.kotlinx.coroutines.core)
+
 }
