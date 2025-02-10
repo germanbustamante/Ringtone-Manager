@@ -6,4 +6,9 @@ data class RingtoneBO (
     val artist: String?,
     val source: String?,
     val fileUrl: String,
-)
+    val popularity: Int,
+) {
+    companion object {
+        val EMPTY = RingtoneBO("", "", "", "", "", 0)
+    }
+}

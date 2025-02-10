@@ -9,4 +9,5 @@ data class RingtoneDTO (
     val artist: String? = null,
     val source: String? = null,
     val file_url: String? = null,
+    val popularity: Int? = null,
 )

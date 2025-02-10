@@ -8,12 +8,12 @@ class RingtonePreviewParametersProviders : PreviewParameterProvider<RingtoneDeta
     override val values: Sequence<RingtoneDetailViewModel.RingtoneDetailUIState> =
         sequenceOf(
             RingtoneDetailViewModel.RingtoneDetailUIState(
-                ringtone = RingtoneBO(
+                ringtone = RingtoneBO.EMPTY.copy(
                     "1",
                     "Bella Ciao",
                     artist = "Maneskin",
                     source = "La Casa de Papel",
-                    fileUrl = "https://www.example.com/bellaciao.mp3"
+                    fileUrl = "https://www.example.com/bellaciao.mp3",
                 )
             )
         )

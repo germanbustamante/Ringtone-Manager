@@ -15,7 +15,9 @@ class RingtoneItemFirestoreRemoteDataSourceImpl(private val firestore: FirebaseF
         FirestoreManager.getDocument<RingtoneDTO, RingtoneBO>(
             action = { firestore.collection(COLLECTION_NAME).document(ringtoneId).get() },
             mapper = { it.toDomain() },
-        )
+        ).onRight {
+            firestore.collection(COLLECTION_NAME).document(ringtoneId).update("popularity", it.popularity + 1)
+        }
 
     companion object {
         private const val COLLECTION_NAME = "ringtones_v1"
