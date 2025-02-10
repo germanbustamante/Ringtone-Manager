@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.screen.myaccount
+package com.germandebustamante.ringtonemanager.ui.screen.settings
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
@@ -34,29 +34,29 @@ internal fun SettingsOptionCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(MyAccountScreenConstants.CardHeight),
+            .height(SettingsScreenConstants.CardHeight),
         enabled = enabled,
         shape = shape,
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = MyAccountScreenConstants.DisabledAlpha)
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = SettingsScreenConstants.DisabledAlpha)
         ),
         onClick = onClick
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MyAccountScreenConstants.PaddingSmall),
+            horizontalArrangement = Arrangement.spacedBy(SettingsScreenConstants.PaddingSmall),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    vertical = MyAccountScreenConstants.PaddingSmall,
-                    horizontal = MyAccountScreenConstants.PaddingSmall
+                    vertical = SettingsScreenConstants.PaddingSmall,
+                    horizontal = SettingsScreenConstants.PaddingSmall
                 )
         ) {
             Icon(
                 painter = painterResource(iconResId),
                 contentDescription = null,
-                modifier = Modifier.size(MyAccountScreenConstants.IconSize)
+                modifier = Modifier.size(SettingsScreenConstants.IconSize)
             )
             Text(text = title)
 

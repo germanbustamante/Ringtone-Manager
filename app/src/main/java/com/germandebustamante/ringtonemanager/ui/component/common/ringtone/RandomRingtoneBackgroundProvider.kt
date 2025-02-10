@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.component.common
+package com.germandebustamante.ringtonemanager.ui.component.common.ringtone
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable

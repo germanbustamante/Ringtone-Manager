@@ -2,7 +2,7 @@
     <string name="app_name">Ringtone Manager</string>
     <string name="app_slogan">Your style, your sound.</string>
     <string name="bottom_bar_home">Ringtone</string>
-    <string name="bottom_bar_my_account">My account</string>
+    <string name="bottom_bar_settings">Settings</string>
     <string name="popular_ringtones">Popular ringtones</string>
     <string name="favorite_ringtones">My favorites ringtones</string>
     <string name="favorite_ringtones_empty">No favorite ringtones</string>
