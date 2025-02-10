@@ -20,7 +20,6 @@ navigationCompose = "2.8.2"
 kotlinSerialization = "1.3.0"
 kotlinParcelize = "1.8.10"
 uiTextGoogleFonts = "1.7.7"
-composeMaterial3 = "1.0.0-alpha32"
 
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
@@ -50,7 +49,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version = "33.7.0" }
-google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 google-firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 google-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
 google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }

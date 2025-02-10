@@ -32,6 +32,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data:repository"))
     implementation(project(":data:remote"))
+    implementation(project(":analytics"))
 
     //Koin
     implementation(platform(libs.io.insert.koin.bom))
