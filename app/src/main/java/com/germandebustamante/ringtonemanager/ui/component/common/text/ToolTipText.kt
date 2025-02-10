@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.component.common.button
+package com.germandebustamante.ringtonemanager.ui.component.common.text
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding

@@ -6,7 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.IconPrimaryButtonSize
+import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.IconPrimaryButtonSize
 import com.germandebustamante.ringtonemanager.ui.extension.shimmerEffect
 
 @Composable

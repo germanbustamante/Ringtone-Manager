@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.component.common.rigtone
+package com.germandebustamante.ringtonemanager.ui.component.common.ringtone
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.ExperimentalMaterial3Api

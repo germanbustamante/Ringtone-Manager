@@ -1,6 +1,5 @@
 package com.germandebustamante.ringtonemanager.core.navigation
 
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -26,7 +25,7 @@ import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.Bott
 
 @Composable
 fun AppBottomNavigation(navController: NavController) {
-    val topLevelRoutes: List<BottomScreens<out Any>> = listOf(BottomScreens.Home, BottomScreens.MyAccount)
+    val topLevelRoutes: List<BottomScreens<out Any>> = listOf(BottomScreens.Home, BottomScreens.Settings)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val isTopLevelRoute = isCurrentDestinationTopLevel(currentDestination, topLevelRoutes)

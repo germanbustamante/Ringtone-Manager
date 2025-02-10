@@ -29,11 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
-import com.germandebustamante.ringtonemanager.ui.component.common.RandomRingtoneBackground
+import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.RandomRingtoneBackground
 import com.germandebustamante.ringtonemanager.ui.component.common.action.ShareButtonWithToolTip
 import com.germandebustamante.ringtonemanager.ui.component.common.effect.DisposableEffectLifecycleObserver
-import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.RingtonePlayer
-import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.ShimmerRingtonePlayer
+import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.RingtonePlayer
+import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.ShimmerRingtonePlayer
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
