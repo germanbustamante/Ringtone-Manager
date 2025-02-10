@@ -7,5 +7,6 @@ fun RingtoneDTO.toDomain(): RingtoneBO = RingtoneBO(
     name = name.orEmpty(),
     artist = artist,
     source = source,
-    fileUrl = file_url.orEmpty()
+    fileUrl = file_url.orEmpty(),
+    popularity = popularity ?: 0
 )
