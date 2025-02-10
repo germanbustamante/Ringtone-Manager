@@ -6,13 +6,16 @@ import com.germandebustamante.ringtonemanager.utils.audio.MultipleExoPlayerAdapt
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
 import com.germandebustamante.ringtonemanager.utils.audio.SingleExoPlayerAdapter
 import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appModule = module {
+    factory { FirebaseAnalytics.getInstance(get()) } bind FirebaseAnalytics::class
     factory { FirebaseFirestore.getInstance() } bind FirebaseFirestore::class
+
     factory { MultipleExoPlayerAdapter(get()) } bind MultiplePlayerAdapter::class
     factory { SingleExoPlayerAdapter(get()) } bind SinglePlayerAdapter::class
 }

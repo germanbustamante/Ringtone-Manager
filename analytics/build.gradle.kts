@@ -4,8 +4,8 @@ plugins {
 }
 
 android {
-    namespace = "com.germandebustamante.ringtonemanager.data.remote"
-    compileSdk = 35
+    namespace = "com.germandebustamante.analytics"
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -20,7 +20,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -33,15 +32,7 @@ android {
 dependencies {
     implementation(project(":domain"))
 
-    //Arrow
-    implementation(libs.arrow.core)
-
     //Firebase
     implementation(platform(libs.google.firebase.bom))
-    implementation(libs.google.firebase.firestore.ktx)
-    implementation(libs.google.firebase.storage)
-
-    //Kotlin coroutines
-    implementation(libs.kotlinx.coroutines.core)
-
+    implementation(libs.google.firebase.analytics)
 }

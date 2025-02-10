@@ -9,5 +9,5 @@ import org.koin.dsl.module
 
 val domainModule = module {
     factory { GetPopularRingtonesUseCaseImpl(get()) } bind GetPopularRingtonesUseCase::class
-    factory { GetRingtoneDetailUseCaseImpl(get()) } bind GetRingtoneDetailUseCase::class
+    factory { GetRingtoneDetailUseCaseImpl(get(), get()) } bind GetRingtoneDetailUseCase::class
 }
