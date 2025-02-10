@@ -8,4 +8,16 @@
     <string name="favorite_ringtones_empty">No hay tonos de llamada favoritos</string>
     <string name="favorite_rigtones_need_sign_in">¡Inicia sesion para poder guardar tus favoritos!</string>
     <string name="share_action">¡Comparte este tono de llamada!</string>
+    <string name="language_preference">Idioma</string>
+    <string name="change_language">Cambiar idioma</string>
+    <string name="account">Cuenta</string>
+    <string name="my_profile">Mi perfil</string>
+    <string name="change_password">Cambiar contraseña</string>
+    <string name="your_content">Tu contenido</string>
+    <string name="your_ringtones">Tus tonos de llamada</string>
+    <string name="upload_ringtone_action">Subir un tono de llamada</string>
+    <string name="your_favorites">Tus favoritos</string>
+    <string name="log_in">Iniciar sesion</string>
+    <string name="log_out">Cerrar sesion</string>
+    <string name="account_configuration">Configuracion de la cuenta</string>
 </resources>

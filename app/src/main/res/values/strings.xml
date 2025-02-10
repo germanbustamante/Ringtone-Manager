@@ -8,4 +8,16 @@
     <string name="favorite_ringtones_empty">No favorite ringtones</string>
     <string name="favorite_rigtones_need_sign_in">Sign in to save your favorites!</string>
     <string name="share_action">Share this ringtone!</string>
+    <string name="language_preference">Language</string>
+    <string name="change_language">Change language</string>
+    <string name="account">Account</string>
+    <string name="my_profile">My profile</string>
+    <string name="change_password">Change password</string>
+    <string name="your_content">Your content</string>
+    <string name="your_ringtones">Your ringtones</string>
+    <string name="upload_ringtone_action">Upload a ringtone</string>
+    <string name="your_favorites">Your favorites</string>
+    <string name="log_in">Sign in</string>
+    <string name="log_out">Sign out</string>
+    <string name="account_configuration">Account configuration</string>
 </resources>
