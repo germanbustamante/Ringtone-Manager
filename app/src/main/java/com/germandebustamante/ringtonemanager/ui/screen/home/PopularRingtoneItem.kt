@@ -18,8 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
-import com.germandebustamante.ringtonemanager.ui.component.common.RandomRingtoneBackground
-import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.PlayPauseRingtoneButton
+import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.RandomRingtoneBackground
+import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.PlayPauseRingtoneButton
 import com.germandebustamante.ringtonemanager.ui.extension.shimmerEffect
 
 @Composable

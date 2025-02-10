@@ -6,13 +6,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.HomeScreen
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.MyAccountScreen
+import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.SettingsScreen
 import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.RingtoneDetailScreen
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.SplashScreen
 import com.germandebustamante.ringtonemanager.ui.screen.home.HomeScreen
-import com.germandebustamante.ringtonemanager.ui.screen.myaccount.MyAccountScreen
+import com.germandebustamante.ringtonemanager.ui.screen.settings.SettingsScreen
 import com.germandebustamante.ringtonemanager.ui.screen.ringtone.RingtoneDetailScreen
-import com.germandebustamante.ringtonemanager.ui.screen.splash.SplashScreen
 
 @Composable
 fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -23,8 +21,8 @@ fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Mod
             })
         }
 
-        composable<MyAccountScreen>(enterTransition = null, exitTransition = null) {
-            MyAccountScreen(false)
+        composable<SettingsScreen>(enterTransition = null, exitTransition = null) {
+            SettingsScreen(false)
         }
 
         composable<RingtoneDetailScreen>(enterTransition = null, exitTransition = null) {

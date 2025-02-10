@@ -23,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.germandebustamante.ringtonemanager.R
-import com.germandebustamante.ringtonemanager.ui.component.common.button.ToolTipText
-import com.germandebustamante.ringtonemanager.ui.component.common.rigtone.IconPrimaryButtonSize
+import com.germandebustamante.ringtonemanager.ui.component.common.text.ToolTipText
+import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.IconPrimaryButtonSize
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import kotlinx.coroutines.delay
 

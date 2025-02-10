@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.screen.myaccount
+package com.germandebustamante.ringtonemanager.ui.screen.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

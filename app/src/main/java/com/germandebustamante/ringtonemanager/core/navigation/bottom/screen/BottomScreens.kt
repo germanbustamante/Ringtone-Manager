@@ -21,10 +21,10 @@ sealed class BottomScreens<T>(
     )
 
     @Serializable
-    data object MyAccount : BottomScreens<MyAccountScreen>(
-        name = R.string.bottom_bar_my_account,
-        selectedIcon = R.drawable.ic_my_account_filled,
-        unselectedIcon = R.drawable.ic_my_account_outlined,
-        route = MyAccountScreen
+    data object Settings : BottomScreens<SettingsScreen>(
+        name = R.string.bottom_bar_settings,
+        selectedIcon = R.drawable.ic_settings_filled,
+        unselectedIcon = R.drawable.ic_settings_outlined,
+        route = SettingsScreen
     )
 }

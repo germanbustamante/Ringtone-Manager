@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.component.common.rigtone
+package com.germandebustamante.ringtonemanager.ui.component.common.ringtone
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState

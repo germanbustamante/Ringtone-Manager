@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.screen.myaccount
+package com.germandebustamante.ringtonemanager.ui.screen.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import com.germandebustamante.ringtonemanager.utils.extensions.getDisplayLanguageCapitalized
 import java.util.Locale
 
-object MyAccountScreenConstants {
+object SettingsScreenConstants {
     val PaddingSmall = 8.dp
     val PaddingMedium = 12.dp
     val CardHeight = 52.dp
@@ -25,16 +25,16 @@ object MyAccountScreenConstants {
 }
 
 @Composable
-fun MyAccountScreen(userLogged: Boolean, modifier: Modifier = Modifier) {
+fun SettingsScreen(userLogged: Boolean, modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { MyAccountTopAppBar() }
     ) { innerPadding ->
         Column(
             modifier = modifier
                 .padding(innerPadding)
-                .padding(MyAccountScreenConstants.PaddingSmall)
+                .padding(SettingsScreenConstants.PaddingSmall)
                 .padding(top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(MyAccountScreenConstants.PaddingMedium)
+            verticalArrangement = Arrangement.spacedBy(SettingsScreenConstants.PaddingMedium)
         ) {
             SettingsSection(textId = R.string.language_preference) {
                 SettingsOptionCard(
@@ -95,16 +95,16 @@ fun MyAccountScreen(userLogged: Boolean, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun MyAccountScreenPreviewLoggedIn() {
+private fun SettingsScreenPreviewLoggedIn() {
     RingtoneManagerTheme {
-        MyAccountScreen(userLogged = true, Modifier.fillMaxSize())
+        SettingsScreen(userLogged = true, Modifier.fillMaxSize())
     }
 }
 
 @Preview
 @Composable
-private fun MyAccountScreenPreviewLoggedOut() {
+private fun SettingsScreenPreviewLoggedOut() {
     RingtoneManagerTheme {
-        MyAccountScreen(userLogged = false, Modifier.fillMaxSize())
+        SettingsScreen(userLogged = false, Modifier.fillMaxSize())
     }
 }
