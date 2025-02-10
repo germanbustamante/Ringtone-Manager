@@ -24,7 +24,7 @@ fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Mod
         }
 
         composable<MyAccountScreen>(enterTransition = null, exitTransition = null) {
-            MyAccountScreen()
+            MyAccountScreen(false)
         }
 
         composable<RingtoneDetailScreen>(enterTransition = null, exitTransition = null) {

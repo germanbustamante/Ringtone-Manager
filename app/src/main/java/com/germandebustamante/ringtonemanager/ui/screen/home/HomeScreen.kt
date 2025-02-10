@@ -44,7 +44,7 @@ private fun HomeContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = 8.dp, horizontal = 8.dp)
+            .padding(8.dp)
     ) {
         FavoriteRingtonesContainer(state.isLoading)
 
