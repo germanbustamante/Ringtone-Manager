@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RingtoneDetailScreen(
-    navController: NavController,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RingtoneDetailViewModel = koinViewModel(),
 ) {
@@ -52,7 +51,7 @@ fun RingtoneDetailScreen(
         onPlaybackPositionChange = viewModel::updatePlaybackPosition,
         onPlayPauseButtonClick = viewModel::onPlayPauseRingtone,
         onSeekButtonClick = viewModel::onSeekButtonClick,
-        onBackPressed = { navController.popBackStack() },
+        onBackPressed = onBackPressed,
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -81,7 +80,7 @@ private fun RingtoneDetailContent(
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,
                         )
                     }
