@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,19 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 
-enum class ButtonSize(val height: Int, val minWidth: Int, val horizontalPadding: Int, val verticalPadding: Int) {
-    LARGE(height = 44, minWidth = 180, horizontalPadding = 32, verticalPadding = 8),
-    MEDIUM(height = 40, minWidth = 120, horizontalPadding = 16, verticalPadding = 10),
-    SMALL(height = 36, minWidth = 60, horizontalPadding = 16, verticalPadding = 8)
-}
-
 @Composable
-fun PrimaryButton(
+fun SecondaryButton(
     text: String,
     modifier: Modifier = Modifier,
     buttonSize: ButtonSize = ButtonSize.MEDIUM,
     onClick: () -> Unit,
-) = Button(
+) = FilledTonalButton(
     onClick = onClick,
     modifier = modifier
         .defaultMinSize(minWidth = buttonSize.minWidth.dp)
@@ -43,13 +37,8 @@ fun PrimaryButton(
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun PrimaryButtonPreview() {
+private fun SecondaryButtonPreview() {
     RingtoneManagerTheme {
-        PrimaryButton(
-            text = "Primary Button",
-            onClick = {},
-            buttonSize = ButtonSize.MEDIUM,
-            modifier = Modifier.padding(16.dp)
-        )
+        SecondaryButton(text = "Secondary Button", onClick = {}, modifier = Modifier.padding(16.dp))
     }
 }

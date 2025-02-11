@@ -6,11 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.HomeScreen
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.SettingsScreen
+import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.LoginScreen
 import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.RingtoneDetailScreen
+import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.SettingsScreen
 import com.germandebustamante.ringtonemanager.ui.screen.home.HomeScreen
-import com.germandebustamante.ringtonemanager.ui.screen.settings.SettingsScreen
+import com.germandebustamante.ringtonemanager.ui.screen.login.LoginScreen
 import com.germandebustamante.ringtonemanager.ui.screen.ringtone.RingtoneDetailScreen
+import com.germandebustamante.ringtonemanager.ui.screen.settings.SettingsScreen
 
 @Composable
 fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -22,11 +24,19 @@ fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Mod
         }
 
         composable<SettingsScreen>(enterTransition = null, exitTransition = null) {
-            SettingsScreen(false)
+            SettingsScreen(false,
+                onSignInClicked = { navController.navigate(LoginScreen) },
+                onSignOutClicked = {})
         }
 
         composable<RingtoneDetailScreen>(enterTransition = null, exitTransition = null) {
-            RingtoneDetailScreen(navController)
+            RingtoneDetailScreen(onBackPressed = {
+                navController.popBackStack()
+            })
+        }
+
+        composable<LoginScreen> {
+            LoginScreen()
         }
     }
 }

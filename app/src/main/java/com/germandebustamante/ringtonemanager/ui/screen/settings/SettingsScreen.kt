@@ -25,7 +25,12 @@ object SettingsScreenConstants {
 }
 
 @Composable
-fun SettingsScreen(userLogged: Boolean, modifier: Modifier = Modifier) {
+fun SettingsScreen(
+    userLogged: Boolean,
+    onSignInClicked: () -> Unit,
+    onSignOutClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Scaffold(
         topBar = { MyAccountTopAppBar() }
     ) { innerPadding ->
@@ -87,7 +92,7 @@ fun SettingsScreen(userLogged: Boolean, modifier: Modifier = Modifier) {
                 iconResId = if (userLogged) R.drawable.ic_sign_out else R.drawable.ic_sign_in,
                 modifier = Modifier,
                 shape = MaterialTheme.shapes.extraSmall,
-                onClick = { /* TODO: Implement logout logic */ },
+                onClick = if (userLogged) onSignOutClicked else onSignInClicked,
             )
         }
     }
@@ -97,7 +102,12 @@ fun SettingsScreen(userLogged: Boolean, modifier: Modifier = Modifier) {
 @Composable
 private fun SettingsScreenPreviewLoggedIn() {
     RingtoneManagerTheme {
-        SettingsScreen(userLogged = true, Modifier.fillMaxSize())
+        SettingsScreen(
+            userLogged = true,
+            onSignInClicked = {},
+            onSignOutClicked = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
@@ -105,6 +115,11 @@ private fun SettingsScreenPreviewLoggedIn() {
 @Composable
 private fun SettingsScreenPreviewLoggedOut() {
     RingtoneManagerTheme {
-        SettingsScreen(userLogged = false, Modifier.fillMaxSize())
+        SettingsScreen(
+            userLogged = true,
+            onSignInClicked = {},
+            onSignOutClicked = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
