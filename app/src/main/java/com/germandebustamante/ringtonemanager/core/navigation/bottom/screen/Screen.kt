@@ -13,3 +13,6 @@ class RingtoneDetailScreen(val ringtoneId: String)
 
 @Serializable
 object LoginScreen
+
+@Serializable
+object RegisterScreen
