@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
+import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import com.germandebustamante.ringtonemanager.utils.extensions.getDisplayLanguageCapitalized
 import java.util.Locale
@@ -29,10 +29,11 @@ fun SettingsScreen(
     userLogged: Boolean,
     onSignInClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
+    onRegisterClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        topBar = { MyAccountTopAppBar() }
+    BaseScaffold(
+        topBarTitle = stringResource(R.string.account_configuration),
     ) { innerPadding ->
         Column(
             modifier = modifier
@@ -90,10 +91,16 @@ fun SettingsScreen(
             SettingsOptionCard(
                 title = stringResource(id = if (userLogged) R.string.log_out else R.string.log_in),
                 iconResId = if (userLogged) R.drawable.ic_sign_out else R.drawable.ic_sign_in,
-                modifier = Modifier,
-                shape = MaterialTheme.shapes.extraSmall,
                 onClick = if (userLogged) onSignOutClicked else onSignInClicked,
             )
+
+            if (!userLogged) {
+                SettingsOptionCard(
+                    title = stringResource(id = R.string.register),
+                    iconResId = R.drawable.ic_register,
+                    onClick = onRegisterClicked,
+                )
+            }
         }
     }
 }
@@ -106,6 +113,7 @@ private fun SettingsScreenPreviewLoggedIn() {
             userLogged = true,
             onSignInClicked = {},
             onSignOutClicked = {},
+            onRegisterClicked = {},
             modifier = Modifier.fillMaxSize(),
         )
     }
@@ -119,6 +127,7 @@ private fun SettingsScreenPreviewLoggedOut() {
             userLogged = true,
             onSignInClicked = {},
             onSignOutClicked = {},
+            onRegisterClicked = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

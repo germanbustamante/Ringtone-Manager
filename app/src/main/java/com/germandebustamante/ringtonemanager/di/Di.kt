@@ -1,6 +1,8 @@
 package com.germandebustamante.ringtonemanager.di
 
 import com.germandebustamante.ringtonemanager.ui.screen.home.HomeViewModel
+import com.germandebustamante.ringtonemanager.ui.screen.login.LoginViewModel
+import com.germandebustamante.ringtonemanager.ui.screen.register.RegisterViewModel
 import com.germandebustamante.ringtonemanager.ui.screen.ringtone.RingtoneDetailViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.MultipleExoPlayerAdapter
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
@@ -23,4 +25,6 @@ val appModule = module {
 val viewModelModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::RingtoneDetailViewModel)
+    viewModelOf(::RegisterViewModel)
+    viewModelOf(::LoginViewModel)
 }

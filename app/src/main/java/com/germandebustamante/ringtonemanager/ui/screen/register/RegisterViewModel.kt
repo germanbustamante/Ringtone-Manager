@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.screen.login
+package com.germandebustamante.ringtonemanager.ui.screen.register
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,7 +8,7 @@ import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidEmail
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidPassword
 
-class LoginViewModel : BaseViewModel() {
+class RegisterViewModel : BaseViewModel() {
 
     var state by mutableStateOf(UIState())
         private set
@@ -20,6 +20,10 @@ class LoginViewModel : BaseViewModel() {
 
     fun updatePassword(password: String) {
         state = state.copy(password = state.password.copy(value = password))
+    }
+
+    fun updateRepeatPassword(repeatPassword: String) {
+        state = state.copy(repeatPassword = state.repeatPassword.copy(value = repeatPassword))
     }
 
     fun onSignInButtonClicked() {
@@ -41,10 +45,12 @@ class LoginViewModel : BaseViewModel() {
     private fun updateInputsValidatorState() {
         val isEmailValid = state.email.value.isValidEmail()
         val isPasswordValid = state.password.value.isValidPassword()
+        val isRepeatPasswordValid = state.repeatPassword.value == state.password.value
 
         state = state.copy(
             email = state.email.copy(isValid = isEmailValid),
             password = state.password.copy(isValid = isPasswordValid),
+            repeatPassword = state.repeatPassword.copy(isValid = isRepeatPasswordValid)
         )
     }
     //endregion
@@ -53,9 +59,13 @@ class LoginViewModel : BaseViewModel() {
     data class UIState(
         val email: ValidatorInputState = ValidatorInputState(),
         val password: ValidatorInputState = ValidatorInputState(),
+        val repeatPassword: ValidatorInputState = ValidatorInputState(),
         val error: String? = null,
         val loading: Boolean = false,
     ) {
-        fun inputsAreValid(): Boolean = email.value.isValidEmail() && password.value.isValidPassword()
+        fun inputsAreValid(): Boolean =
+            email.value.isValidEmail()
+                    && password.value.isValidEmail()
+                    && repeatPassword.value == password.value
     }
 }

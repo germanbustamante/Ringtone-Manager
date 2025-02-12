@@ -33,11 +33,11 @@ private const val ANIMATION_DURATION = 800
 @Composable
 fun ShareButtonWithToolTip(onClick: () -> Unit, descriptionText: String, modifier: Modifier = Modifier) {
     var showTooltipText by rememberSaveable {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
 
     LaunchedEffect(key1 = Unit) {
-        delay(1000) // Delay before showing the tooltip
+        delay(500) // Delay before showing the tooltip
         showTooltipText = true
         delay(5000) // Tooltip visibility duration
         showTooltipText = false
