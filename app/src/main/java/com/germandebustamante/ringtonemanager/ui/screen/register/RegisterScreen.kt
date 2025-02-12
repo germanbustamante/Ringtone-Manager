@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.ui.screen.login
+package com.germandebustamante.ringtonemanager.ui.screen.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,34 +21,36 @@ import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = koinViewModel(),
+    viewModel: RegisterViewModel = koinViewModel(),
 ) {
     val state = viewModel.state
 
-    LoginContent(
+    RegisterContent(
         state = state,
         onEmailValueChanged = viewModel::updateEmail,
         onPasswordValueChanged = viewModel::updatePassword,
-        onSignInButtonClicked = viewModel::onSignInButtonClicked,
+        onCurrentPasswordValueChanged = viewModel::updateRepeatPassword,
+        onRegisterButtonClicked = viewModel::onSignInButtonClicked,
         onBackPressed = onBackPressed,
         modifier = modifier.fillMaxSize()
     )
 }
 
 @Composable
-private fun LoginContent(
-    state: LoginViewModel.UIState,
+private fun RegisterContent(
+    state: RegisterViewModel.UIState,
     onEmailValueChanged: (String) -> Unit,
     onPasswordValueChanged: (String) -> Unit,
-    onSignInButtonClicked: () -> Unit,
+    onCurrentPasswordValueChanged: (String) -> Unit,
+    onRegisterButtonClicked: () -> Unit,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BaseScaffold(
-        topBarTitle = stringResource(R.string.log_in),
+        topBarTitle = stringResource(R.string.register),
         navigationIconResource = R.drawable.ic_close,
         navigationIconClick = onBackPressed,
     ) { innerPadding ->
@@ -75,9 +77,17 @@ private fun LoginContent(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            PasswordTextField(
+                value = state.repeatPassword.value,
+                onValueChange = onCurrentPasswordValueChanged,
+                label = stringResource(R.string.input_repeat_password_title),
+                errorMessage = if (!state.repeatPassword.isValid) stringResource(R.string.input_repeat_password_error) else null,
+                modifier = Modifier.fillMaxWidth()
+            )
+
             PrimaryButton(
-                text = stringResource(R.string.log_in),
-                onClick = onSignInButtonClicked,
+                text = stringResource(R.string.register),
+                onClick = onRegisterButtonClicked,
                 buttonSize = ButtonSize.LARGE,
             )
         }
@@ -86,14 +96,15 @@ private fun LoginContent(
 
 @Preview
 @Composable
-private fun LoginContentPreview() {
+private fun RegisterContentPreview() {
     RingtoneManagerTheme {
-        LoginContent(
+        RegisterContent(
             onBackPressed = {},
-            state = LoginViewModel.UIState(),
+            state = RegisterViewModel.UIState(),
             onEmailValueChanged = {},
             onPasswordValueChanged = {},
-            onSignInButtonClicked = {},
+            onCurrentPasswordValueChanged = {},
+            onRegisterButtonClicked = {},
             modifier = Modifier.fillMaxSize()
         )
     }

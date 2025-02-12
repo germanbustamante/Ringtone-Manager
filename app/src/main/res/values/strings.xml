@@ -17,7 +17,16 @@
     <string name="your_ringtones">Your ringtones</string>
     <string name="upload_ringtone_action">Upload a ringtone</string>
     <string name="your_favorites">Your favorites</string>
+    <string name="register">Register</string>
     <string name="log_in">Sign in</string>
     <string name="log_out">Sign out</string>
     <string name="account_configuration">Account configuration</string>
+    <string name="error">Error</string>
+    <string name="accept">Accept</string>
+    <string name="input_mail_error">Invalid mail format</string>
+    <string name="input_email_title">Email</string>
+    <string name="input_password_title">Create your password</string>
+    <string name="input_password_error">Minimum 8 characters</string>
+    <string name="input_repeat_password_title">Repeat your password</string>
+    <string name="input_repeat_password_error">Passwords don\'t match</string>
 </resources>

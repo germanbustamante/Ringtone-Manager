@@ -17,7 +17,16 @@
     <string name="your_ringtones">Tus tonos de llamada</string>
     <string name="upload_ringtone_action">Subir un tono de llamada</string>
     <string name="your_favorites">Tus favoritos</string>
+    <string name="register">Registrarse</string>
     <string name="log_in">Iniciar sesion</string>
     <string name="log_out">Cerrar sesion</string>
     <string name="account_configuration">Configuracion de la cuenta</string>
+    <string name="error">Error</string>
+    <string name="accept">Aceptar</string>
+    <string name="input_mail_error">Formato de correo invalido</string>
+    <string name="input_email_title">Correo electronico</string>
+    <string name="input_password_title">Crea tu contraseña</string>
+    <string name="input_password_error">Mínimo 8 caracteres</string>
+    <string name="input_repeat_password_title">Repite tu contraseña</string>
+    <string name="input_repeat_password_error">Las contraseñas no coinciden</string>
 </resources>
