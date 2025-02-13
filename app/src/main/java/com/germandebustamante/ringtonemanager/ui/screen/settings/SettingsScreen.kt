@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,6 +13,7 @@ import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import com.germandebustamante.ringtonemanager.utils.extensions.getDisplayLanguageCapitalized
+import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
 object SettingsScreenConstants {
@@ -26,6 +26,24 @@ object SettingsScreenConstants {
 
 @Composable
 fun SettingsScreen(
+    modifier: Modifier = Modifier,
+    onSignInClicked: () -> Unit,
+    onRegisterClicked: () -> Unit,
+    viewModel: SettingsViewModel = koinViewModel(),
+) {
+    val state = viewModel.state
+
+    SettingsContent(
+        userLogged = state.userLogged,
+        onSignInClicked = onSignInClicked,
+        onSignOutClicked = viewModel::signOut,
+        onRegisterClicked = onRegisterClicked,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun SettingsContent(
     userLogged: Boolean,
     onSignInClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
@@ -109,7 +127,7 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenPreviewLoggedIn() {
     RingtoneManagerTheme {
-        SettingsScreen(
+        SettingsContent(
             userLogged = true,
             onSignInClicked = {},
             onSignOutClicked = {},
@@ -123,7 +141,7 @@ private fun SettingsScreenPreviewLoggedIn() {
 @Composable
 private fun SettingsScreenPreviewLoggedOut() {
     RingtoneManagerTheme {
-        SettingsScreen(
+        SettingsContent(
             userLogged = true,
             onSignInClicked = {},
             onSignOutClicked = {},

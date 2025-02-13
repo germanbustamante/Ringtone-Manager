@@ -40,6 +40,7 @@ dependencies {
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.google.firebase.firestore.ktx)
     implementation(libs.google.firebase.storage)
+    implementation(libs.firebase.auth)
 
     //Kotlin coroutines
     implementation(libs.kotlinx.coroutines.core)

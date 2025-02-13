@@ -105,5 +105,6 @@ dependencies {
     implementation(libs.google.firebase.storage)
     implementation(libs.firebase.appcheck.playintegrity)
     implementation(libs.firebase.appcheck.debug)
+    implementation(libs.firebase.auth)
 
 }

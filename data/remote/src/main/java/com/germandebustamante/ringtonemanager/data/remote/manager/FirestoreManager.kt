@@ -5,6 +5,8 @@ import arrow.core.left
 import arrow.core.right
 import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.dataObjects
@@ -63,6 +65,8 @@ object FirestoreManager {
     fun Throwable.toError(): CustomError = when (this) {
         is StorageException -> CustomError.Server(errorCode, message)
         is RuntimeException -> CustomError.ParcelizeException
+        is FirebaseAuthUserCollisionException -> CustomError.EmailAddressAlreadyInUse //Invoked when we call register with a email that is already in use
+        is FirebaseAuthInvalidCredentialsException -> CustomError.InvalidCredentials   //When try to login with a non existent email AND if try login with bad password but user exists
         else -> CustomError.Unknown(message)
     }
 

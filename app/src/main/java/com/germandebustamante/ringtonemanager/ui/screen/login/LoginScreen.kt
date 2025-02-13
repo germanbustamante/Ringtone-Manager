@@ -24,6 +24,7 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
+    onUserLogged: () -> Unit,
     viewModel: LoginViewModel = koinViewModel(),
 ) {
     val state = viewModel.state
@@ -36,6 +37,10 @@ fun LoginScreen(
         onBackPressed = onBackPressed,
         modifier = modifier.fillMaxSize()
     )
+
+    if (state.onUserLogged != null) {
+        onUserLogged()
+    }
 }
 
 @Composable
