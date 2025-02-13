@@ -3,6 +3,8 @@ package com.germandebustamante.ringtonemanager.ui.screen.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopularRingtonesUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
@@ -11,7 +13,8 @@ import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
 class HomeViewModel(
     private val getPopularRingtonesUseCase: GetPopularRingtonesUseCase,
     private val player: MultiplePlayerAdapter,
-) : BaseViewModel() {
+    private val navigator: Navigator
+) : BaseViewModel(navigator) {
 
     var state by mutableStateOf(UIState())
         private set
@@ -68,6 +71,10 @@ class HomeViewModel(
 
     private fun notifyError(error: String) {
         state = state.copy(error = error, isLoading = false)
+    }
+
+    fun navigateToRingtoneDetail(ringtoneId: String) {
+        navigateTo(Destination.RingtoneDetailScreen(ringtoneId))
     }
 //endregion
 

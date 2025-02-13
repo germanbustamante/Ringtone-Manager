@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignInUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val signInUserUseCase: SignInUserUseCase,
     private val currentUserFlowUseCase: GetUserFlowUseCase,
-) : BaseViewModel() {
+    navigator: Navigator,
+) : BaseViewModel(navigator) {
 
     var state by mutableStateOf(UIState())
         private set
@@ -24,7 +26,7 @@ class LoginViewModel(
         viewModelScope.launch {
             currentUserFlowUseCase().collect {
                 if (it != null) {
-                    state = state.copy(onUserLogged = {})
+                    navigator.navigateUp()
                 }
             }
         }
@@ -78,7 +80,6 @@ class LoginViewModel(
         val password: ValidatorInputState = ValidatorInputState(),
         val error: String? = null,
         val loading: Boolean = false,
-        val onUserLogged: (() -> Unit)? = null,
     ) {
         fun inputsAreValid(): Boolean = email.value.isValidEmail() && password.value.isValidPassword()
     }

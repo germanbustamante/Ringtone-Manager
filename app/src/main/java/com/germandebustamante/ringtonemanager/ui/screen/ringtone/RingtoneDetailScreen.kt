@@ -28,7 +28,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RingtoneDetailScreen(
-    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RingtoneDetailViewModel = koinViewModel(),
 ) {
@@ -42,7 +41,7 @@ fun RingtoneDetailScreen(
         onPlaybackPositionChange = viewModel::updatePlaybackPosition,
         onPlayPauseButtonClick = viewModel::onPlayPauseRingtone,
         onSeekButtonClick = viewModel::onSeekButtonClick,
-        onBackPressed = onBackPressed,
+        onBackPressed = viewModel::navigateUp,
         modifier = modifier.fillMaxSize(),
     )
 }

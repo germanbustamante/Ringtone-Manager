@@ -1,5 +1,8 @@
 package com.germandebustamante.ringtonemanager.di
 
+import com.germandebustamante.ringtonemanager.core.navigation.action.DefaultNavigator
+import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.ui.screen.home.HomeViewModel
 import com.germandebustamante.ringtonemanager.ui.screen.login.LoginViewModel
 import com.germandebustamante.ringtonemanager.ui.screen.register.RegisterViewModel
@@ -23,6 +26,8 @@ val appModule = module {
 
     factory { MultipleExoPlayerAdapter(get()) } bind MultiplePlayerAdapter::class
     factory { SingleExoPlayerAdapter(get()) } bind SinglePlayerAdapter::class
+
+    single<Navigator> { DefaultNavigator(startDestination = Destination.HomeScreen) }
 }
 
 val viewModelModule = module {

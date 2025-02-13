@@ -22,9 +22,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
-    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
-    onUserLogged: () -> Unit,
     viewModel: LoginViewModel = koinViewModel(),
 ) {
     val state = viewModel.state
@@ -34,13 +32,9 @@ fun LoginScreen(
         onEmailValueChanged = viewModel::updateEmail,
         onPasswordValueChanged = viewModel::updatePassword,
         onSignInButtonClicked = viewModel::onSignInButtonClicked,
-        onBackPressed = onBackPressed,
+        onBackPressed = viewModel::navigateUp,
         modifier = modifier.fillMaxSize()
     )
-
-    if (state.onUserLogged != null) {
-        onUserLogged()
-    }
 }
 
 @Composable

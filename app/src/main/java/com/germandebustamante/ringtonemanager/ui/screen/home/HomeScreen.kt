@@ -15,13 +15,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
-    onRingtoneClicked: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     HomeContent(
         state = viewModel.state,
-        onRingtoneClicked = onRingtoneClicked,
+        onRingtoneClicked = viewModel::navigateToRingtoneDetail,
         onPlayRingtoneClicked = viewModel::onPlayRingtoneClicked,
         modifier = modifier
     )
