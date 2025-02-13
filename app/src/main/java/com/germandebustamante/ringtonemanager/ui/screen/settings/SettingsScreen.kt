@@ -27,17 +27,15 @@ object SettingsScreenConstants {
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    onSignInClicked: () -> Unit,
-    onRegisterClicked: () -> Unit,
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
     val state = viewModel.state
 
     SettingsContent(
         userLogged = state.userLogged,
-        onSignInClicked = onSignInClicked,
+        onSignInClicked = viewModel::navigateToSignIn,
         onSignOutClicked = viewModel::signOut,
-        onRegisterClicked = onRegisterClicked,
+        onRegisterClicked = viewModel::navigateToSignUp,
         modifier = modifier,
     )
 }

@@ -2,6 +2,8 @@ package com.germandebustamante.ringtonemanager.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -10,7 +12,21 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel(
+    private val navigator: Navigator,
+) : ViewModel() {
+
+    fun navigateUp() {
+        launchCatching {
+            navigator.navigateUp()
+        }
+    }
+
+    fun navigateTo(destination: Destination) {
+        launchCatching {
+            navigator.navigate(destination)
+        }
+    }
 
     fun launchCatching(
         onError: (String) -> Unit = {},

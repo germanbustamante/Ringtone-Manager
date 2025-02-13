@@ -5,11 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.HomeScreen
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.LoginScreen
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.RegisterScreen
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.RingtoneDetailScreen
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.SettingsScreen
+import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.ui.screen.home.HomeScreen
 import com.germandebustamante.ringtonemanager.ui.screen.login.LoginScreen
 import com.germandebustamante.ringtonemanager.ui.screen.register.RegisterScreen
@@ -17,39 +14,26 @@ import com.germandebustamante.ringtonemanager.ui.screen.ringtone.RingtoneDetailS
 import com.germandebustamante.ringtonemanager.ui.screen.settings.SettingsScreen
 
 @Composable
-fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Modifier) {
-    NavHost(navController = navController, startDestination = HomeScreen, modifier = modifier) {
-        composable<HomeScreen>(enterTransition = null, exitTransition = null) {
-            HomeScreen(onRingtoneClicked = {
-                navController.navigate(RingtoneDetailScreen(it))
-            })
+fun NavigationWrapper(navController: NavHostController, navigator: Navigator, modifier: Modifier = Modifier) {
+    NavHost(navController = navController, startDestination = navigator.startDestination, modifier = modifier) {
+        composable<Destination.HomeScreen> {
+            HomeScreen()
         }
 
-        composable<SettingsScreen>(enterTransition = null, exitTransition = null) {
-            SettingsScreen(
-                onSignInClicked = { navController.navigate(LoginScreen) },
-                onRegisterClicked = { navController.navigate(RegisterScreen) },
-            )
+        composable<Destination.SettingsScreen> {
+            SettingsScreen()
         }
 
-        composable<RingtoneDetailScreen>(enterTransition = null, exitTransition = null) {
-            RingtoneDetailScreen(onBackPressed = {
-                navController.popBackStack()
-            })
+        composable<Destination.RingtoneDetailScreen>(enterTransition = null, exitTransition = null) {
+            RingtoneDetailScreen()
         }
 
-        composable<LoginScreen> {
-            LoginScreen(onUserLogged = {
-                navController.popBackStack()
-            }, onBackPressed = {
-                navController.popBackStack()
-            })
+        composable<Destination.LoginScreen> {
+            LoginScreen()
         }
 
-        composable<RegisterScreen> {
-            RegisterScreen(onBackPressed = {
-                navController.popBackStack()
-            })
+        composable<Destination.RegisterScreen> {
+            RegisterScreen()
         }
     }
 }

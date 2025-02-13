@@ -21,11 +21,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.BottomScreens
+import com.germandebustamante.ringtonemanager.core.navigation.destination.BottomScreenDestination
 
 @Composable
 fun AppBottomNavigation(navController: NavController) {
-    val topLevelRoutes: List<BottomScreens<out Any>> = listOf(BottomScreens.Home, BottomScreens.Settings)
+    val topLevelRoutes: List<BottomScreenDestination<out Any>> = listOf(BottomScreenDestination.Home, BottomScreenDestination.Settings)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val isTopLevelRoute = isCurrentDestinationTopLevel(currentDestination, topLevelRoutes)
@@ -38,7 +38,7 @@ fun AppBottomNavigation(navController: NavController) {
 @Composable
 private fun BottomNavigationBar(
     navController: NavController,
-    topLevelRoutes: List<BottomScreens<out Any>>,
+    topLevelRoutes: List<BottomScreenDestination<out Any>>,
     currentDestination: NavDestination?,
 ) {
     val lineColor = MaterialTheme.colorScheme.onBackground
@@ -68,7 +68,7 @@ private fun BottomNavigationBar(
 }
 
 @Composable
-private fun NavigationLabel(route: BottomScreens<out Any>, currentDestination: NavDestination?) {
+private fun NavigationLabel(route: BottomScreenDestination<out Any>, currentDestination: NavDestination?) {
     val isSelected = isRouteSelected(route, currentDestination)
     val labelText = stringResource(route.name)
 
@@ -76,7 +76,7 @@ private fun NavigationLabel(route: BottomScreens<out Any>, currentDestination: N
 }
 
 @Composable
-private fun NavigationIcon(route: BottomScreens<out Any>, currentDestination: NavDestination?) {
+private fun NavigationIcon(route: BottomScreenDestination<out Any>, currentDestination: NavDestination?) {
     val isSelected = isRouteSelected(route, currentDestination)
     val iconRes = if (isSelected) route.selectedIcon else route.unselectedIcon
     val contentDescription = stringResource(route.name)
@@ -120,22 +120,22 @@ private fun getSelectedColor(isSelected: Boolean): Color =
 
 private fun isCurrentDestinationTopLevel(
     currentDestination: NavDestination?,
-    topLevelRoutes: List<BottomScreens<out Any>>,
+    topLevelRoutes: List<BottomScreenDestination<out Any>>,
 ): Boolean {
     return topLevelRoutes.any { it.route::class.qualifiedName == currentDestination?.route }
 }
 
 private fun isRouteSelected(
-    route: BottomScreens<out Any>,
+    route: BottomScreenDestination<out Any>,
     currentDestination: NavDestination?,
 ): Boolean = currentDestination?.hierarchy?.any { it.route == route.route::class.qualifiedName } == true
 
-private fun navigateToRoute(navController: NavController, route: BottomScreens<out Any>) {
+private fun navigateToRoute(navController: NavController, route: BottomScreenDestination<out Any>) {
     navController.navigate(route.route) {
         popUpTo(navController.graph.findStartDestination().id) {
-            saveState = false
+            saveState = true
         }
-        launchSingleTop = false
+        launchSingleTop = true
         restoreState = true
     }
 }

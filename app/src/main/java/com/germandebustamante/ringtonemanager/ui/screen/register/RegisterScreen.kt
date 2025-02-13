@@ -22,7 +22,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RegisterScreen(
-    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel = koinViewModel(),
 ) {
@@ -34,13 +33,9 @@ fun RegisterScreen(
         onPasswordValueChanged = viewModel::updatePassword,
         onCurrentPasswordValueChanged = viewModel::updateRepeatPassword,
         onRegisterButtonClicked = viewModel::onSignInButtonClicked,
-        onBackPressed = onBackPressed,
+        onBackPressed = viewModel::navigateUp,
         modifier = modifier.fillMaxSize()
     )
-
-    if (state.onUserCreated != null) {
-        onBackPressed()
-    }
 }
 
 @Composable
