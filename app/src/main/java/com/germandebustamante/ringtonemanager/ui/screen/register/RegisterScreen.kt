@@ -37,6 +37,10 @@ fun RegisterScreen(
         onBackPressed = onBackPressed,
         modifier = modifier.fillMaxSize()
     )
+
+    if (state.onUserCreated != null) {
+        onBackPressed()
+    }
 }
 
 @Composable

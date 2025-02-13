@@ -1,4 +1,4 @@
-package com.germandebustamante.ringtonemanager.data.remote.firestore
+package com.germandebustamante.ringtonemanager.data.remote.firebase.firestore
 
 import arrow.core.Either
 import com.germandebustamante.ringtonemanager.data.datasource.RingtoneItemRemoteDataSource
