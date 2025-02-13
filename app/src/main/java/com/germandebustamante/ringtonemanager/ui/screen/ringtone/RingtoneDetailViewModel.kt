@@ -6,7 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.germandebustamante.ringtonemanager.core.navigation.bottom.screen.RingtoneDetailScreen
+import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetRingtoneDetailUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
@@ -17,7 +18,8 @@ class RingtoneDetailViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val playerAdapter: SinglePlayerAdapter,
     private val fetchRingtoneDetailUseCase: GetRingtoneDetailUseCase,
-) : BaseViewModel() {
+    navigator: Navigator,
+) : BaseViewModel(navigator) {
 
     var uiState by mutableStateOf(RingtoneDetailUIState())
         private set
@@ -76,7 +78,7 @@ class RingtoneDetailViewModel(
     private fun fetchRingtoneDetails() {
         viewModelScope.launch {
             setLoadingState(true)
-            val ringtoneId = savedStateHandle.toRoute<RingtoneDetailScreen>().ringtoneId
+            val ringtoneId = savedStateHandle.toRoute<Destination.RingtoneDetailScreen>().ringtoneId
 
             fetchRingtoneDetailUseCase(ringtoneId).fold(
                 ifLeft = { error -> setErrorState(error.toErrorString()) },
