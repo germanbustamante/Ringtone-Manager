@@ -26,10 +26,9 @@ fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Mod
         }
 
         composable<SettingsScreen>(enterTransition = null, exitTransition = null) {
-            SettingsScreen(false,
+            SettingsScreen(
                 onSignInClicked = { navController.navigate(LoginScreen) },
                 onRegisterClicked = { navController.navigate(RegisterScreen) },
-                onSignOutClicked = {}
             )
         }
 
@@ -40,7 +39,9 @@ fun NavigationWrapper(navController: NavHostController, modifier: Modifier = Mod
         }
 
         composable<LoginScreen> {
-            LoginScreen(onBackPressed = {
+            LoginScreen(onUserLogged = {
+                navController.popBackStack()
+            }, onBackPressed = {
                 navController.popBackStack()
             })
         }

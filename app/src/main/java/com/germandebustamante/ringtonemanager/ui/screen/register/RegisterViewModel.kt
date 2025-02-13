@@ -3,15 +3,32 @@ package com.germandebustamante.ringtonemanager.ui.screen.register
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
+import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
+import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignUpUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidEmail
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidPassword
+import kotlinx.coroutines.launch
 
-class RegisterViewModel : BaseViewModel() {
+class RegisterViewModel(
+    private val signUpUserUseCase: SignUpUserUseCase,
+    private val currentUserFlowUseCase: GetUserFlowUseCase,
+) : BaseViewModel() {
 
     var state by mutableStateOf(UIState())
         private set
+
+    init {
+        viewModelScope.launch {
+            currentUserFlowUseCase().collect {
+                if (it != null) {
+                    state = state.copy(onUserCreated = {})
+                }
+            }
+        }
+    }
 
     //region Public Methods
     fun updateEmail(email: String) {
@@ -29,7 +46,12 @@ class RegisterViewModel : BaseViewModel() {
     fun onSignInButtonClicked() {
         if (state.inputsAreValid()) {
             notifyLoading(true)
-            // Do something
+            launchCatching {
+                signUpUserUseCase(
+                    email = state.email.value,
+                    password = state.password.value
+                )
+            }
             notifyLoading(false)
         } else {
             updateInputsValidatorState()
@@ -55,17 +77,17 @@ class RegisterViewModel : BaseViewModel() {
     }
     //endregion
 
-
     data class UIState(
         val email: ValidatorInputState = ValidatorInputState(),
         val password: ValidatorInputState = ValidatorInputState(),
         val repeatPassword: ValidatorInputState = ValidatorInputState(),
         val error: String? = null,
         val loading: Boolean = false,
+        val onUserCreated: (() -> Unit)? = null, //TODO IMPROVE WITH NAVIGATION EVENTS
     ) {
         fun inputsAreValid(): Boolean =
             email.value.isValidEmail()
-                    && password.value.isValidEmail()
+                    && password.value.isValidPassword()
                     && repeatPassword.value == password.value
     }
 }
