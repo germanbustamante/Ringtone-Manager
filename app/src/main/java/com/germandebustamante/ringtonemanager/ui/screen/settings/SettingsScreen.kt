@@ -1,15 +1,18 @@
 package com.germandebustamante.ringtonemanager.ui.screen.settings
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
+import com.germandebustamante.ringtonemanager.ui.component.common.dialog.ErrorDialog
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import com.germandebustamante.ringtonemanager.utils.extensions.getDisplayLanguageCapitalized
@@ -32,30 +35,48 @@ fun SettingsScreen(
     val state = viewModel.state
 
     SettingsContent(
-        userLogged = state.userLogged,
+        state = state,
         onSignInClicked = viewModel::navigateToSignIn,
         onSignOutClicked = viewModel::signOut,
         onRegisterClicked = viewModel::navigateToSignUp,
+        onCleanError = viewModel::cleanError,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun SettingsContent(
-    userLogged: Boolean,
+    state: SettingsViewModel.UIState,
     onSignInClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
+    onCleanError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val errorMessage = state.error.orEmpty()
+    val userLogged = state.userLogged
+
     BaseScaffold(
         topBarTitle = stringResource(R.string.account_configuration),
     ) { innerPadding ->
+
+        AnimatedVisibility(errorMessage.isNotBlank()) {
+            ErrorDialog(
+                error = state.error,
+                onDismissRequest = onCleanError
+            )
+        }
+
+        AnimatedVisibility(state.isLoading) {
+            CircularProgressIndicator()
+        }
+
         Column(
             modifier = modifier
                 .padding(innerPadding)
                 .padding(SettingsScreenConstants.PaddingSmall)
-                .padding(top = 8.dp),
+                .padding(top = 8.dp)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(SettingsScreenConstants.PaddingMedium)
         ) {
             SettingsSection(textId = R.string.language_preference) {
@@ -126,10 +147,11 @@ private fun SettingsContent(
 private fun SettingsScreenPreviewLoggedIn() {
     RingtoneManagerTheme {
         SettingsContent(
-            userLogged = true,
+            state = SettingsViewModel.UIState(userLogged = true),
             onSignInClicked = {},
             onSignOutClicked = {},
             onRegisterClicked = {},
+            onCleanError = {},
             modifier = Modifier.fillMaxSize(),
         )
     }
@@ -140,10 +162,11 @@ private fun SettingsScreenPreviewLoggedIn() {
 private fun SettingsScreenPreviewLoggedOut() {
     RingtoneManagerTheme {
         SettingsContent(
-            userLogged = true,
+            SettingsViewModel.UIState(userLogged = false),
             onSignInClicked = {},
             onSignOutClicked = {},
             onRegisterClicked = {},
+            onCleanError = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

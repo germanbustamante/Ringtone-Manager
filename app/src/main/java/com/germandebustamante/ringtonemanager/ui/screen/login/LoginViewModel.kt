@@ -3,15 +3,14 @@ package com.germandebustamante.ringtonemanager.ui.screen.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignInUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
+import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidEmail
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidPassword
-import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val signInUserUseCase: SignInUserUseCase,
@@ -23,12 +22,11 @@ class LoginViewModel(
         private set
 
     init {
-        viewModelScope.launch {
-            currentUserFlowUseCase().collect {
-                if (it != null) {
-                    navigator.navigateUp()
-                }
-            }
+        launchCatching {
+            currentUserFlowUseCase().collectEither(
+                onLeft = { state = state.copy(loading = false, error = it.toErrorString()) },
+                onRight = { if (it != null) navigateUp() }
+            )
         }
     }
 
@@ -48,8 +46,7 @@ class LoginViewModel(
                 signInUserUseCase(
                     email = state.email.value,
                     password = state.password.value,
-                )
-                notifyLoading(false)
+                )?.let { state = state.copy(loading = false, error = it.toErrorString()) }
             } else {
                 updateInputsValidatorState()
             }
@@ -71,6 +68,10 @@ class LoginViewModel(
             email = state.email.copy(isValid = isEmailValid),
             password = state.password.copy(isValid = isPasswordValid),
         )
+    }
+
+    fun cleanError() {
+        state = state.copy(error = null)
     }
     //endregion
 

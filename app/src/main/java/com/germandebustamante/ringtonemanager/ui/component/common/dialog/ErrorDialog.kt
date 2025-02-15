@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.component.common.button.PrimaryButton
+import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 
 @Composable
 fun ErrorDialog(error: String?, onDismissRequest: () -> Unit) {
@@ -101,12 +102,12 @@ private fun ErrorDialogPreview() {
     }
 
     if (showDialog) {
-        ErrorDialog(
-            "Oops!",
-            "Server error occurred. Please try again later.",
-            "Accept",
-            onDismissRequest = { showDialog = false })
-
+        RingtoneManagerTheme {
+            ErrorDialog(
+                "Oops!",
+                "Server error occurred. Please try again later.",
+                "Accept",
+                onDismissRequest = { showDialog = false })
+        }
     }
-
 }

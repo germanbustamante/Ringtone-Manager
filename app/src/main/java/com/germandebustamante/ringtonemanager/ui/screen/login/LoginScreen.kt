@@ -1,10 +1,12 @@
 package com.germandebustamante.ringtonemanager.ui.screen.login
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.component.common.button.ButtonSize
 import com.germandebustamante.ringtonemanager.ui.component.common.button.PrimaryButton
+import com.germandebustamante.ringtonemanager.ui.component.common.dialog.ErrorDialog
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
 import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EmailTextField
 import com.germandebustamante.ringtonemanager.ui.component.common.textfield.PasswordTextField
@@ -33,6 +36,7 @@ fun LoginScreen(
         onPasswordValueChanged = viewModel::updatePassword,
         onSignInButtonClicked = viewModel::onSignInButtonClicked,
         onBackPressed = viewModel::navigateUp,
+        onCleanError = viewModel::cleanError,
         modifier = modifier.fillMaxSize()
     )
 }
@@ -44,13 +48,28 @@ private fun LoginContent(
     onPasswordValueChanged: (String) -> Unit,
     onSignInButtonClicked: () -> Unit,
     onBackPressed: () -> Unit,
+    onCleanError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val errorMessage = state.error.orEmpty()
+
     BaseScaffold(
         topBarTitle = stringResource(R.string.log_in),
         navigationIconResource = R.drawable.ic_close,
         navigationIconClick = onBackPressed,
     ) { innerPadding ->
+
+        AnimatedVisibility(errorMessage.isNotBlank()) {
+            ErrorDialog(
+                error = errorMessage,
+                onDismissRequest = onCleanError,
+            )
+        }
+
+        AnimatedVisibility(state.loading) {
+            CircularProgressIndicator()
+        }
+
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -93,6 +112,7 @@ private fun LoginContentPreview() {
             onEmailValueChanged = {},
             onPasswordValueChanged = {},
             onSignInButtonClicked = {},
+            onCleanError = {},
             modifier = Modifier.fillMaxSize()
         )
     }

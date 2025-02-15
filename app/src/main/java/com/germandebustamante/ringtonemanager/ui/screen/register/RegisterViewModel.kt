@@ -3,15 +3,14 @@ package com.germandebustamante.ringtonemanager.ui.screen.register
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignUpUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
+import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidEmail
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidPassword
-import kotlinx.coroutines.launch
 
 class RegisterViewModel(
     private val signUpUserUseCase: SignUpUserUseCase,
@@ -23,12 +22,11 @@ class RegisterViewModel(
         private set
 
     init {
-        viewModelScope.launch {
-            currentUserFlowUseCase().collect {
-                if (it != null) {
-                    navigator.navigateUp()
-                }
-            }
+        launchCatching {
+            currentUserFlowUseCase().collectEither(
+                onLeft = { state = state.copy(loading = false, error = it.toErrorString()) },
+                onRight = { if (it != null) navigateUp() }
+            )
         }
     }
 
@@ -46,17 +44,16 @@ class RegisterViewModel(
     }
 
     fun onSignInButtonClicked() {
-        if (state.inputsAreValid()) {
-            notifyLoading(true)
-            launchCatching {
+        launchCatching {
+            if (state.inputsAreValid()) {
+                notifyLoading(true)
                 signUpUserUseCase(
                     email = state.email.value,
                     password = state.password.value
-                )
+                )?.let { state = state.copy(loading = false, error = it.toErrorString()) }
+            } else {
+                updateInputsValidatorState()
             }
-            notifyLoading(false)
-        } else {
-            updateInputsValidatorState()
         }
     }
     //endregion
@@ -76,6 +73,10 @@ class RegisterViewModel(
             password = state.password.copy(isValid = isPasswordValid),
             repeatPassword = state.repeatPassword.copy(isValid = isRepeatPasswordValid)
         )
+    }
+
+    fun cleanError() {
+        state = state.copy(error = null)
     }
     //endregion
 

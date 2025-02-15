@@ -1,7 +1,11 @@
 package com.germandebustamante.ringtonemanager.data.remote.firebase.auth
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import com.germandebustamante.ringtonemanager.data.datasource.AuthenticationRemoteDataSource
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirebaseAuthManager
+import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager.toError
 import com.germandebustamante.ringtonemanager.domain.authorization.model.UserBO
 import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.firebase.auth.FirebaseAuth
@@ -13,11 +17,15 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
     private val firebaseAuth: FirebaseAuth,
 ) : AuthenticationRemoteDataSource {
 
-    override val currentUser: Flow<UserBO?> = callbackFlow {
+    override val currentUser: Flow<Either<CustomError, UserBO?>> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { auth ->
-            trySend(auth.currentUser?.let { UserBO(it.uid) })
+            trySend(auth.currentUser?.let { UserBO(it.uid).right() } ?: run { null.right() })
         }
-        firebaseAuth.addAuthStateListener(listener)
+        try {
+            firebaseAuth.addAuthStateListener(listener)
+        } catch (exception: Exception) {
+            trySend(exception.toError().left())
+        }
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
     }
 

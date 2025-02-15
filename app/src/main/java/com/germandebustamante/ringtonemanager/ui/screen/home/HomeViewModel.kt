@@ -9,6 +9,7 @@ import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopularRingtonesUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
+import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
 
 class HomeViewModel(
     private val getPopularRingtonesUseCase: GetPopularRingtonesUseCase,
@@ -55,17 +56,13 @@ class HomeViewModel(
     private fun getFullRingtones() {
         launchCatching(onError = { notifyError(it) }) {
             notifyLoading(true)
-            getPopularRingtonesUseCase().collect { ringtones ->
-                ringtones.fold(
-                    ifLeft = {
-                        notifyError(it.toErrorString())
-                    },
-                    ifRight = { ringtones ->
-                        player.addMediaItems(ringtones.map { it.fileUrl })
-                        state = state.copy(ringtones = ringtones, isLoading = false)
-                    }
-                )
-            }
+            getPopularRingtonesUseCase().collectEither(
+                onLeft = { notifyError(it.toErrorString()) },
+                onRight = { ringtones ->
+                    player.addMediaItems(ringtones.map { it.fileUrl })
+                    state = state.copy(ringtones = ringtones, isLoading = false)
+                }
+            )
         }
     }
 
