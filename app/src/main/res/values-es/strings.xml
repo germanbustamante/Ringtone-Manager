@@ -18,7 +18,9 @@
     <string name="upload_ringtone_action">Subir un tono de llamada</string>
     <string name="your_favorites">Tus favoritos</string>
     <string name="register">Registrarse</string>
+    <string name="register_login_text">Crear nueva cuenta</string>
     <string name="log_in">Iniciar sesion</string>
+    <string name="login_register_text">¿Ya tienes una cuenta?string</string>
     <string name="log_out">Cerrar sesion</string>
     <string name="account_configuration">Configuracion de la cuenta</string>
     <string name="error">Error</string>
@@ -29,4 +31,11 @@
     <string name="input_password_error">Mínimo 8 caracteres</string>
     <string name="input_repeat_password_title">Repite tu contraseña</string>
     <string name="input_repeat_password_error">Las contraseñas no coinciden</string>
+    <string name="password_forgotten">¿Olvidaste tu contraseña?</string>
+    <string name="server_error">Error del servidor</string>
+    <string name="parcelize_error">Error al parcelizar</string>
+    <string name="unknown_error">Error desconocido</string>
+    <string name="email_address_already_in_use">Correo electronico ya en uso</string>
+    <string name="item_not_found">Elemento no encontrado</string>
+    <string name="email_or_password_incorrect">Correo electronico o contraseña incorrectos</string>
 </resources>

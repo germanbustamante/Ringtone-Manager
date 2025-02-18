@@ -1,5 +1,6 @@
 package com.germandebustamante.ringtonemanager.ui.screen.home
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,8 +15,9 @@ import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
 class HomeViewModel(
     private val getPopularRingtonesUseCase: GetPopularRingtonesUseCase,
     private val player: MultiplePlayerAdapter,
-    private val navigator: Navigator
-) : BaseViewModel(navigator) {
+    navigator: Navigator,
+    context: Context,
+) : BaseViewModel(navigator, context) {
 
     var state by mutableStateOf(UIState())
         private set
