@@ -1,5 +1,6 @@
 package com.germandebustamante.ringtonemanager.ui.screen.settings
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,7 +15,8 @@ class SettingsViewModel(
     private val getUserFlowUseCase: GetUserFlowUseCase,
     private val signOutUserUseCase: SignOutUserUseCase,
     navigator: Navigator,
-) : BaseViewModel(navigator) {
+    context: Context,
+) : BaseViewModel(navigator, context) {
 
     var state: UIState by mutableStateOf(UIState())
         private set

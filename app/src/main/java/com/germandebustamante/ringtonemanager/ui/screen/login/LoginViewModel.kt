@@ -1,9 +1,11 @@
 package com.germandebustamante.ringtonemanager.ui.screen.login
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignInUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
@@ -16,7 +18,8 @@ class LoginViewModel(
     private val signInUserUseCase: SignInUserUseCase,
     private val currentUserFlowUseCase: GetUserFlowUseCase,
     navigator: Navigator,
-) : BaseViewModel(navigator) {
+    context: Context,
+) : BaseViewModel(navigator, context) {
 
     var state by mutableStateOf(UIState())
         private set
@@ -51,7 +54,10 @@ class LoginViewModel(
                 updateInputsValidatorState()
             }
         }
+    }
 
+    fun onPasswordForgottenClicked() {
+//        navigator.navigateToForgotPassword()
     }
     //endregion
 
@@ -72,6 +78,12 @@ class LoginViewModel(
 
     fun cleanError() {
         state = state.copy(error = null)
+    }
+
+    fun onCreateNewAccountClicked() {
+        navigateTo(Destination.RegisterScreen, navOptions = {
+            popUpTo(Destination.LoginScreen) { inclusive = true }
+        })
     }
     //endregion
 

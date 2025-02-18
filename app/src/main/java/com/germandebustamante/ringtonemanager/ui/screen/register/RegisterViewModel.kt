@@ -1,9 +1,11 @@
 package com.germandebustamante.ringtonemanager.ui.screen.register
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignUpUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
@@ -16,7 +18,8 @@ class RegisterViewModel(
     private val signUpUserUseCase: SignUpUserUseCase,
     private val currentUserFlowUseCase: GetUserFlowUseCase,
     navigator: Navigator,
-) : BaseViewModel(navigator) {
+    context: Context,
+) : BaseViewModel(navigator, context) {
 
     var state by mutableStateOf(UIState())
         private set
@@ -77,6 +80,12 @@ class RegisterViewModel(
 
     fun cleanError() {
         state = state.copy(error = null)
+    }
+
+    fun navigateToLogin() {
+        navigateTo(Destination.LoginScreen, navOptions = {
+            popUpTo(Destination.RegisterScreen) { inclusive = true }
+        })
     }
     //endregion
 

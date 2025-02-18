@@ -1,16 +1,25 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.germandebustamante.ringtonemanager.ui.screen.login
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
@@ -37,6 +46,8 @@ fun LoginScreen(
         onSignInButtonClicked = viewModel::onSignInButtonClicked,
         onBackPressed = viewModel::navigateUp,
         onCleanError = viewModel::cleanError,
+        onPasswordForgottenClicked = viewModel::onPasswordForgottenClicked,
+        onCreateNewAccountClicked = viewModel::onCreateNewAccountClicked,
         modifier = modifier.fillMaxSize()
     )
 }
@@ -46,6 +57,8 @@ private fun LoginContent(
     state: LoginViewModel.UIState,
     onEmailValueChanged: (String) -> Unit,
     onPasswordValueChanged: (String) -> Unit,
+    onPasswordForgottenClicked: () -> Unit,
+    onCreateNewAccountClicked: () -> Unit,
     onSignInButtonClicked: () -> Unit,
     onBackPressed: () -> Unit,
     onCleanError: () -> Unit,
@@ -58,46 +71,72 @@ private fun LoginContent(
         navigationIconResource = R.drawable.ic_close,
         navigationIconClick = onBackPressed,
     ) { innerPadding ->
-
-        AnimatedVisibility(errorMessage.isNotBlank()) {
-            ErrorDialog(
-                error = errorMessage,
-                onDismissRequest = onCleanError,
-            )
-        }
-
-        AnimatedVisibility(state.loading) {
-            CircularProgressIndicator()
-        }
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = modifier
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            EmailTextField(
-                value = state.email.value,
-                onValueChange = onEmailValueChanged,
-                label = stringResource(R.string.input_email_title),
-                errorMessage = if (!state.email.isValid) stringResource(R.string.input_mail_error) else null,
-                modifier = Modifier.fillMaxWidth()
-            )
+            AnimatedVisibility(errorMessage.isNotBlank()) {
+                ErrorDialog(
+                    error = errorMessage,
+                    onDismissRequest = onCleanError,
+                )
+            }
 
-            PasswordTextField(
-                value = state.password.value,
-                onValueChange = onPasswordValueChanged,
-                label = stringResource(R.string.input_password_title),
-                errorMessage = if (!state.password.isValid) stringResource(R.string.input_password_error) else null,
-                modifier = Modifier.fillMaxWidth()
-            )
+            AnimatedVisibility(state.loading) {
+                CircularProgressIndicator()
+            }
 
-            PrimaryButton(
-                text = stringResource(R.string.log_in),
-                onClick = onSignInButtonClicked,
-                buttonSize = ButtonSize.LARGE,
-            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                EmailTextField(
+                    value = state.email.value,
+                    onValueChange = onEmailValueChanged,
+                    label = stringResource(R.string.input_email_title),
+                    errorMessage = if (!state.email.isValid) stringResource(R.string.input_mail_error) else null,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                PasswordTextField(
+                    value = state.password.value,
+                    onValueChange = onPasswordValueChanged,
+                    label = stringResource(R.string.input_password_title),
+                    errorMessage = if (!state.password.isValid) stringResource(R.string.input_password_error) else null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp)
+                )
+
+                TextButton(
+                    onClick = onPasswordForgottenClicked,
+                    contentPadding = PaddingValues(),
+                    modifier = Modifier.align(Alignment.Start)
+                ) {
+                    Text(
+                        stringResource(R.string.password_forgotten),
+                    )
+                }
+
+                PrimaryButton(
+                    text = stringResource(R.string.log_in),
+                    onClick = onSignInButtonClicked,
+                    buttonSize = ButtonSize.LARGE,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+
+                TextButton(
+                    onClick = onCreateNewAccountClicked,
+                ) {
+                    Text(
+                        stringResource(R.string.login_register_text),
+                        textDecoration = TextDecoration.Underline,
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+                }
+            }
         }
     }
 }
@@ -113,6 +152,8 @@ private fun LoginContentPreview() {
             onPasswordValueChanged = {},
             onSignInButtonClicked = {},
             onCleanError = {},
+            onPasswordForgottenClicked = {},
+            onCreateNewAccountClicked = {},
             modifier = Modifier.fillMaxSize()
         )
     }

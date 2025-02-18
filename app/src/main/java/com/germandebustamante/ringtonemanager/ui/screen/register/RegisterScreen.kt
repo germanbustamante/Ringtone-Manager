@@ -2,15 +2,20 @@ package com.germandebustamante.ringtonemanager.ui.screen.register
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
@@ -38,6 +43,7 @@ fun RegisterScreen(
         onRegisterButtonClicked = viewModel::onSignInButtonClicked,
         onBackPressed = viewModel::navigateUp,
         onCleanError = viewModel::cleanError,
+        onGoToLoginButtonClicked = viewModel::navigateToLogin,
         modifier = modifier.fillMaxSize()
     )
 }
@@ -49,6 +55,7 @@ private fun RegisterContent(
     onPasswordValueChanged: (String) -> Unit,
     onCurrentPasswordValueChanged: (String) -> Unit,
     onRegisterButtonClicked: () -> Unit,
+    onGoToLoginButtonClicked: () -> Unit,
     onBackPressed: () -> Unit,
     onCleanError: () -> Unit,
     modifier: Modifier = Modifier,
@@ -59,54 +66,66 @@ private fun RegisterContent(
         navigationIconResource = R.drawable.ic_close,
         navigationIconClick = onBackPressed,
     ) { innerPadding ->
-
-        AnimatedVisibility(errorMessage.isNotBlank()) {
-            ErrorDialog(
-                error = errorMessage,
-                onDismissRequest = onCleanError,
-            )
-        }
-
-        AnimatedVisibility(state.loading) {
-            CircularProgressIndicator()
-        }
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = modifier
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            EmailTextField(
-                value = state.email.value,
-                onValueChange = onEmailValueChanged,
-                label = stringResource(R.string.input_email_title),
-                errorMessage = if (!state.email.isValid) stringResource(R.string.input_mail_error) else null,
-                modifier = Modifier.fillMaxWidth()
-            )
+            AnimatedVisibility(errorMessage.isNotBlank()) {
+                ErrorDialog(
+                    error = errorMessage,
+                    onDismissRequest = onCleanError,
+                )
+            }
 
-            PasswordTextField(
-                value = state.password.value,
-                onValueChange = onPasswordValueChanged,
-                label = stringResource(R.string.input_password_title),
-                errorMessage = if (!state.password.isValid) stringResource(R.string.input_password_error) else null,
-                modifier = Modifier.fillMaxWidth()
-            )
+            AnimatedVisibility(state.loading) {
+                CircularProgressIndicator()
+            }
 
-            PasswordTextField(
-                value = state.repeatPassword.value,
-                onValueChange = onCurrentPasswordValueChanged,
-                label = stringResource(R.string.input_repeat_password_title),
-                errorMessage = if (!state.repeatPassword.isValid) stringResource(R.string.input_repeat_password_error) else null,
-                modifier = Modifier.fillMaxWidth()
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                EmailTextField(
+                    value = state.email.value,
+                    onValueChange = onEmailValueChanged,
+                    label = stringResource(R.string.input_email_title),
+                    errorMessage = if (!state.email.isValid) stringResource(R.string.input_mail_error) else null,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            PrimaryButton(
-                text = stringResource(R.string.register),
-                onClick = onRegisterButtonClicked,
-                buttonSize = ButtonSize.LARGE,
-            )
+                PasswordTextField(
+                    value = state.password.value,
+                    onValueChange = onPasswordValueChanged,
+                    label = stringResource(R.string.input_password_title),
+                    errorMessage = if (!state.password.isValid) stringResource(R.string.input_password_error) else null,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                PasswordTextField(
+                    value = state.repeatPassword.value,
+                    onValueChange = onCurrentPasswordValueChanged,
+                    label = stringResource(R.string.input_repeat_password_title),
+                    errorMessage = if (!state.repeatPassword.isValid) stringResource(R.string.input_repeat_password_error) else null,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                PrimaryButton(
+                    text = stringResource(R.string.register),
+                    onClick = onRegisterButtonClicked,
+                    buttonSize = ButtonSize.LARGE,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+
+                TextButton(onClick = onGoToLoginButtonClicked) {
+                    Text(
+                        stringResource(R.string.register_login_text),
+                        textDecoration = TextDecoration.Underline,
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+                }
+            }
         }
     }
 }
@@ -123,6 +142,7 @@ private fun RegisterContentPreview() {
             onCurrentPasswordValueChanged = {},
             onRegisterButtonClicked = {},
             onCleanError = {},
+            onGoToLoginButtonClicked = {},
             modifier = Modifier.fillMaxSize()
         )
     }

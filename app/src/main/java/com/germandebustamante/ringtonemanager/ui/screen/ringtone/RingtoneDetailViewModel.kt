@@ -1,5 +1,6 @@
 package com.germandebustamante.ringtonemanager.ui.screen.ringtone
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,7 +20,8 @@ class RingtoneDetailViewModel(
     private val playerAdapter: SinglePlayerAdapter,
     private val fetchRingtoneDetailUseCase: GetRingtoneDetailUseCase,
     navigator: Navigator,
-) : BaseViewModel(navigator) {
+    context: Context,
+) : BaseViewModel(navigator, context) {
 
     var uiState by mutableStateOf(RingtoneDetailUIState())
         private set
