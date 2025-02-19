@@ -12,8 +12,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +29,7 @@ import com.germandebustamante.ringtonemanager.ui.component.common.dialog.ErrorDi
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
 import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EmailTextField
 import com.germandebustamante.ringtonemanager.ui.component.common.textfield.PasswordTextField
+import com.germandebustamante.ringtonemanager.ui.session.AccountManager
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -34,10 +38,23 @@ fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel = koinViewModel(),
 ) {
+    val context = LocalContext.current
     val state = viewModel.state
+    val accountManager = remember {
+        AccountManager(context)
+    }
+
+    LaunchedEffect(state.onUserRegistered) {
+        state.onUserRegistered?.let { onUserRegistered ->
+            accountManager.saveCredentials(
+                state.email.value, state.password.value,
+                onProcessFinished = onUserRegistered
+            )
+        }
+    }
 
     RegisterContent(
-        state = state,
+        state = viewModel.state,
         onEmailValueChanged = viewModel::updateEmail,
         onPasswordValueChanged = viewModel::updatePassword,
         onCurrentPasswordValueChanged = viewModel::updateRepeatPassword,

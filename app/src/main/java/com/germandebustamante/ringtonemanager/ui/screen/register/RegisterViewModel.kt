@@ -30,7 +30,7 @@ class RegisterViewModel(
         launchCatching {
             currentUserFlowUseCase().collectEither(
                 onLeft = { state = state.copy(loading = false, error = it.toErrorString()) },
-                onRight = { if (it != null) navigateUp() }
+                onRight = { if (it != null) state = state.copy(onUserRegistered = { navigateUp() }) }
             )
         }
     }
@@ -104,6 +104,7 @@ class RegisterViewModel(
         val repeatPassword: ValidatorInputState = ValidatorInputState(),
         val error: String? = null,
         val loading: Boolean = false,
+        val onUserRegistered: (() -> Unit)? = null
     ) {
         fun inputsAreValid(): Boolean =
             email.value.isValidEmail()
