@@ -57,9 +57,8 @@ private fun ErrorDialog(
                 .padding(horizontal = 20.dp)
         ) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
                 modifier = Modifier.align(Alignment.Center)
-
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
@@ -89,6 +88,7 @@ private fun ErrorDialog(
     }
 }
 
+@Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ErrorDialogPreview() {

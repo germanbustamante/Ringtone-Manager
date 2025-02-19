@@ -36,6 +36,13 @@ class LoginViewModel(
     }
 
     //region Public Methods
+    fun updateCredentials(email: String, password: String) {
+        state = state.copy(
+            email = state.email.copy(value = email),
+            password = state.password.copy(value = password),
+        )
+    }
+
     fun updateEmail(email: String) {
         state = state.copy(email = state.email.copy(value = email))
     }
