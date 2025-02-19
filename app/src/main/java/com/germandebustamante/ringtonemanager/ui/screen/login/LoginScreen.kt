@@ -2,6 +2,7 @@
 
 package com.germandebustamante.ringtonemanager.ui.screen.login
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.component.common.button.ButtonSize
 import com.germandebustamante.ringtonemanager.ui.component.common.button.PrimaryButton
+import com.germandebustamante.ringtonemanager.ui.component.common.button.google.ButtonGoogleSignIn
 import com.germandebustamante.ringtonemanager.ui.component.common.dialog.ErrorDialog
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
 import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EmailTextField
@@ -48,6 +50,7 @@ fun LoginScreen(
         onCleanError = viewModel::cleanError,
         onPasswordForgottenClicked = viewModel::onPasswordForgottenClicked,
         onCreateNewAccountClicked = viewModel::onCreateNewAccountClicked,
+        onGoogleIdTokenReceived = viewModel::onGoogleIdTokenReceived,
         modifier = modifier.fillMaxSize()
     )
 }
@@ -60,6 +63,7 @@ private fun LoginContent(
     onPasswordForgottenClicked: () -> Unit,
     onCreateNewAccountClicked: () -> Unit,
     onSignInButtonClicked: () -> Unit,
+    onGoogleIdTokenReceived: (String) -> Unit,
     onBackPressed: () -> Unit,
     onCleanError: () -> Unit,
     modifier: Modifier = Modifier,
@@ -103,7 +107,7 @@ private fun LoginContent(
                 PasswordTextField(
                     value = state.password.value,
                     onValueChange = onPasswordValueChanged,
-                    label = stringResource(R.string.input_password_title),
+                    label = stringResource(R.string.login_input_password_title),
                     errorMessage = if (!state.password.isValid) stringResource(R.string.input_password_error) else null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -124,6 +128,13 @@ private fun LoginContent(
                     text = stringResource(R.string.log_in),
                     onClick = onSignInButtonClicked,
                     buttonSize = ButtonSize.LARGE,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                )
+
+                ButtonGoogleSignIn(
+                    onGoogleIdTokenReceived = onGoogleIdTokenReceived,
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
@@ -141,7 +152,8 @@ private fun LoginContent(
     }
 }
 
-@Preview
+@Preview(name = "Light Theme")
+@Preview(name = "Dark Theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun LoginContentPreview() {
     RingtoneManagerTheme {
@@ -154,6 +166,7 @@ private fun LoginContentPreview() {
             onCleanError = {},
             onPasswordForgottenClicked = {},
             onCreateNewAccountClicked = {},
+            onGoogleIdTokenReceived = {},
             modifier = Modifier.fillMaxSize()
         )
     }

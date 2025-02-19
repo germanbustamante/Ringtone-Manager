@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.component.common.button.ButtonSize
 import com.germandebustamante.ringtonemanager.ui.component.common.button.PrimaryButton
+import com.germandebustamante.ringtonemanager.ui.component.common.button.google.ButtonGoogleSignIn
 import com.germandebustamante.ringtonemanager.ui.component.common.dialog.ErrorDialog
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
 import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EmailTextField
@@ -44,6 +45,7 @@ fun RegisterScreen(
         onBackPressed = viewModel::navigateUp,
         onCleanError = viewModel::cleanError,
         onGoToLoginButtonClicked = viewModel::navigateToLogin,
+        onGoogleIdTokenReceived = viewModel::onGoogleIdTokenReceived,
         modifier = modifier.fillMaxSize()
     )
 }
@@ -56,6 +58,7 @@ private fun RegisterContent(
     onCurrentPasswordValueChanged: (String) -> Unit,
     onRegisterButtonClicked: () -> Unit,
     onGoToLoginButtonClicked: () -> Unit,
+    onGoogleIdTokenReceived: (String) -> Unit,
     onBackPressed: () -> Unit,
     onCleanError: () -> Unit,
     modifier: Modifier = Modifier,
@@ -98,7 +101,7 @@ private fun RegisterContent(
                 PasswordTextField(
                     value = state.password.value,
                     onValueChange = onPasswordValueChanged,
-                    label = stringResource(R.string.input_password_title),
+                    label = stringResource(R.string.register_input_password_title),
                     errorMessage = if (!state.password.isValid) stringResource(R.string.input_password_error) else null,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -115,7 +118,14 @@ private fun RegisterContent(
                     text = stringResource(R.string.register),
                     onClick = onRegisterButtonClicked,
                     buttonSize = ButtonSize.LARGE,
-                    modifier = Modifier.padding(top = 4.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp)
+                )
+
+                ButtonGoogleSignIn(
+                    onGoogleIdTokenReceived = onGoogleIdTokenReceived,
+                    modifier = Modifier.padding(top = 8.dp)
                 )
 
                 TextButton(onClick = onGoToLoginButtonClicked) {
@@ -143,6 +153,7 @@ private fun RegisterContentPreview() {
             onRegisterButtonClicked = {},
             onCleanError = {},
             onGoToLoginButtonClicked = {},
+            onGoogleIdTokenReceived = {},
             modifier = Modifier.fillMaxSize()
         )
     }

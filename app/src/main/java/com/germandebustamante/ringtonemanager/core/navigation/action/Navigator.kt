@@ -4,7 +4,7 @@ import androidx.navigation.NavOptionsBuilder
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 interface Navigator {
     val startDestination: Destination
@@ -23,7 +23,7 @@ class DefaultNavigator(
 ) : Navigator {
 
     private val _navigationActions = Channel<NavigationAction>()
-    override val navigationActions: Flow<NavigationAction> = _navigationActions.consumeAsFlow()
+    override val navigationActions: Flow<NavigationAction> = _navigationActions.receiveAsFlow()
 
     override suspend fun navigate(destination: Destination, navOptions: NavOptionsBuilder.() -> Unit) {
         _navigationActions.send(

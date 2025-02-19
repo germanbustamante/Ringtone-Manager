@@ -1,5 +1,6 @@
 package com.germandebustamante.ringtonemanager.ui.component.common.textfield
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,15 +47,15 @@ fun EditableTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground),
             isError = errorMessage?.isNotBlank().isTrue(),
             singleLine = true,
             trailingIcon = trailingIcon,
             visualTransformation = visualTransformation,
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
+                unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                focusedContainerColor = MaterialTheme.colorScheme.background,
+                errorContainerColor = MaterialTheme.colorScheme.background,
             )
         )
 
@@ -65,6 +66,7 @@ fun EditableTextField(
 }
 
 @Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun EditableTextFieldPreview() {
     var editableInput by rememberSaveable {

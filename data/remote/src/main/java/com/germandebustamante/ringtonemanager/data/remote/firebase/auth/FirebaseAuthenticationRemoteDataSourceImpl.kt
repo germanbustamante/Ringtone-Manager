@@ -9,6 +9,7 @@ import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManag
 import com.germandebustamante.ringtonemanager.domain.authorization.model.UserBO
 import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -31,6 +32,10 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
 
     override suspend fun signIn(email: String, password: String): CustomError? = FirebaseAuthManager.execute {
         firebaseAuth.signInWithEmailAndPassword(email, password)
+    }
+
+    override suspend fun googleSignIn(googleTokenId: String): CustomError? = FirebaseAuthManager.execute {
+        firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(googleTokenId, null))
     }
 
     override suspend fun signUp(email: String, password: String): CustomError? = FirebaseAuthManager.execute {

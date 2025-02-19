@@ -9,6 +9,7 @@ interface AuthenticationRemoteDataSource {
     val currentUser: Flow<Either<CustomError, UserBO?>>
 
     suspend fun signIn(email: String, password: String): CustomError?
+    suspend fun googleSignIn(googleTokenId: String): CustomError?
     suspend fun signUp(email: String, password: String): CustomError?
     fun signOut()
 }
