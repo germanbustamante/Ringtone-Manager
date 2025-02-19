@@ -27,7 +27,8 @@
     <string name="accept">Accept</string>
     <string name="input_mail_error">Invalid mail format</string>
     <string name="input_email_title">Email</string>
-    <string name="input_password_title">Create your password</string>
+    <string name="login_input_password_title">Password</string>
+    <string name="register_input_password_title">Create your password</string>
     <string name="input_password_error">Minimum 8 characters</string>
     <string name="input_repeat_password_title">Repeat your password</string>
     <string name="input_repeat_password_error">Passwords don\'t match</string>

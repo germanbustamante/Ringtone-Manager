@@ -20,6 +20,9 @@ navigationCompose = "2.8.2"
 kotlinSerialization = "1.3.0"
 kotlinParcelize = "1.8.10"
 uiTextGoogleFonts = "1.7.7"
+credentials = "1.5.0-alpha04"
+googleid = "1.1.1"
+credentialsPlayServicesAuth = "1.5.0-alpha04"
 
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
@@ -60,6 +63,9 @@ io-insert-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compo
 io-insert-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
+androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

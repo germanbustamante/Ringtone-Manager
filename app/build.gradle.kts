@@ -107,4 +107,8 @@ dependencies {
     implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.auth)
 
+    //Google Credential Manager
+    implementation(libs.androidx.credentials)
+    implementation(libs.googleid)
+    implementation(libs.androidx.credentials.play.services.auth)
 }

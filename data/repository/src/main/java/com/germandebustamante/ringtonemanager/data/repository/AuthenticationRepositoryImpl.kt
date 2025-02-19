@@ -21,6 +21,10 @@ class AuthenticationRepositoryImpl(
         authenticationRemoteDataSource.signIn(email, password)
     }
 
+    override suspend fun googleSignIn(googleTokenId: String): CustomError? = withContext(Dispatchers.IO) {
+        authenticationRemoteDataSource.googleSignIn(googleTokenId)
+    }
+
     override suspend fun signUp(email: String, password: String): CustomError? = withContext(Dispatchers.IO) {
         authenticationRemoteDataSource.signUp(email, password)
     }

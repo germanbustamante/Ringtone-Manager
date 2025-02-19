@@ -9,6 +9,11 @@ fun interface SignInUserUseCase {
     suspend operator fun invoke(email: String, password: String): CustomError?
 }
 
+fun interface GoogleSignInUseCase {
+    suspend operator fun invoke(googleTokenId: String): CustomError?
+}
+
+
 fun interface SignOutUserUseCase : suspend () -> Unit
 
 fun interface SignUpUserUseCase {

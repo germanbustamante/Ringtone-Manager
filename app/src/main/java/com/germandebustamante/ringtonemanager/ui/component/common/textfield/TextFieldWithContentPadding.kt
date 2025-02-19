@@ -56,6 +56,7 @@ internal fun TextFieldContentPadding(
             enabled = enabled,
             readOnly = readOnly,
             textStyle = textStyle,
+            cursorBrush = SolidColor(textStyle.color),
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,

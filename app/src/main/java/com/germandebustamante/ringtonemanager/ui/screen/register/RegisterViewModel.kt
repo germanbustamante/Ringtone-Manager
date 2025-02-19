@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
+import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GoogleSignInUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignUpUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
@@ -17,6 +18,7 @@ import com.germandebustamante.ringtonemanager.utils.extensions.isValidPassword
 class RegisterViewModel(
     private val signUpUserUseCase: SignUpUserUseCase,
     private val currentUserFlowUseCase: GetUserFlowUseCase,
+    private val googleSignInUseCase: GoogleSignInUseCase,
     navigator: Navigator,
     context: Context,
 ) : BaseViewModel(navigator, context) {
@@ -86,6 +88,13 @@ class RegisterViewModel(
         navigateTo(Destination.LoginScreen, navOptions = {
             popUpTo(Destination.RegisterScreen) { inclusive = true }
         })
+    }
+
+    fun onGoogleIdTokenReceived(googleTokenId: String) {
+        launchCatching {
+            notifyLoading(true)
+            googleSignInUseCase(googleTokenId)?.let { state = state.copy(loading = false, error = it.toErrorString()) }
+        }
     }
     //endregion
 
