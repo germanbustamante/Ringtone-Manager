@@ -15,4 +15,12 @@ object FirebaseAuthManager {
         } catch (exception: Exception) {
             exception.toError()
         }
+
+    suspend fun executeVoid(action: () -> Task<Void>): CustomError? =
+        try {
+            action().await()
+            null
+        } catch (exception: Exception) {
+            exception.toError()
+        }
 }

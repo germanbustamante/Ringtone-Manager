@@ -45,4 +45,8 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
     override fun signOut() {
         firebaseAuth.signOut()
     }
+
+    override suspend fun forgotPassword(email: String): CustomError? = FirebaseAuthManager.executeVoid {
+        firebaseAuth.sendPasswordResetEmail(email)
+    }
 }

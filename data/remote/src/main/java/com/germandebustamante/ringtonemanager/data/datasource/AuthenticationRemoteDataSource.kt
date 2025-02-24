@@ -12,4 +12,5 @@ interface AuthenticationRemoteDataSource {
     suspend fun googleSignIn(googleTokenId: String): CustomError?
     suspend fun signUp(email: String, password: String): CustomError?
     fun signOut()
+    suspend fun forgotPassword(email: String): CustomError?
 }

@@ -3,6 +3,7 @@ package com.germandebustamante.ringtonemanager.di
 import com.germandebustamante.ringtonemanager.core.navigation.action.DefaultNavigator
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
+import com.germandebustamante.ringtonemanager.ui.screen.forgotpassword.ForgotPasswordViewModel
 import com.germandebustamante.ringtonemanager.ui.screen.home.HomeViewModel
 import com.germandebustamante.ringtonemanager.ui.screen.login.LoginViewModel
 import com.germandebustamante.ringtonemanager.ui.screen.register.RegisterViewModel
@@ -36,4 +37,5 @@ val viewModelModule = module {
     viewModelOf(::RegisterViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::SettingsViewModel)
+    viewModelOf(::ForgotPasswordViewModel)
 }

@@ -39,4 +39,6 @@
     <string name="email_address_already_in_use">Email address already in use</string>
     <string name="item_not_found">Item not found</string>
     <string name="email_or_password_incorrect">Email or password incorrect</string>
+    <string name="restore_password_description">Please enter your email address. We will send you a link to reset your password.</string>
+    <string name="restore_password_action">Restore password</string>
 </resources>

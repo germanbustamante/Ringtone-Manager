@@ -21,3 +21,7 @@ fun interface SignUpUserUseCase {
 }
 
 fun interface GetUserFlowUseCase: () -> Flow<Either<CustomError, UserBO?>>
+
+fun interface ForgotPasswordUseCase {
+    suspend operator fun invoke(email: String): CustomError?
+}

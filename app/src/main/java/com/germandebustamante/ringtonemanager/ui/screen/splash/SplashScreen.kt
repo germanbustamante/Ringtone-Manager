@@ -78,6 +78,7 @@ fun DesignSplashScreen(
             Text(
                 text = stringResource(R.string.app_slogan),
                 style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
     }
