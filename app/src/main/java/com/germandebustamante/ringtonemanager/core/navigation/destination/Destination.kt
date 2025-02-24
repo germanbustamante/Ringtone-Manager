@@ -17,4 +17,7 @@ sealed interface Destination {
 
     @Serializable
     data object RegisterScreen : Destination
+
+    @Serializable
+    data object ForgotPasswordScreen : Destination
 }

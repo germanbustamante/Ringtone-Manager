@@ -39,4 +39,6 @@
     <string name="email_address_already_in_use">Correo electronico ya en uso</string>
     <string name="item_not_found">Elemento no encontrado</string>
     <string name="email_or_password_incorrect">Correo electronico o contraseña incorrectos</string>
+    <string name="restore_password_description">Por favor, introduce tu correo electronico. Te enviaremos un enlace para restablecer tu contraseña.</string>
+    <string name="restore_password_action">Restablecer contraseña</string>
 </resources>

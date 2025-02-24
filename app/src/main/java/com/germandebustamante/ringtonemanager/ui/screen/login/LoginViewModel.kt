@@ -66,7 +66,7 @@ class LoginViewModel(
     }
 
     fun onPasswordForgottenClicked() {
-//        navigator.navigateToForgotPassword()
+        navigateTo(Destination.ForgotPasswordScreen)
     }
     //endregion
 

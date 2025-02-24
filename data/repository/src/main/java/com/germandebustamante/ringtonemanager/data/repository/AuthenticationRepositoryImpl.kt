@@ -34,4 +34,8 @@ class AuthenticationRepositoryImpl(
             authenticationRemoteDataSource.signOut()
         }
     }
+
+    override suspend fun forgotPassword(email: String): CustomError? = withContext(Dispatchers.IO) {
+        authenticationRemoteDataSource.forgotPassword(email)
+    }
 }

@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
+import com.germandebustamante.ringtonemanager.ui.screen.forgotpassword.ForgotPasswordScreen
 import com.germandebustamante.ringtonemanager.ui.screen.home.HomeScreen
 import com.germandebustamante.ringtonemanager.ui.screen.login.LoginScreen
 import com.germandebustamante.ringtonemanager.ui.screen.register.RegisterScreen
@@ -34,6 +35,10 @@ fun NavigationWrapper(navController: NavHostController, navigator: Navigator, mo
 
         composable<Destination.RegisterScreen> {
             RegisterScreen()
+        }
+
+        composable<Destination.ForgotPasswordScreen> {
+            ForgotPasswordScreen()
         }
     }
 }
