@@ -12,5 +12,5 @@ import org.koin.dsl.module
 val remoteModule = module {
     factory { RingtoneItemFirestoreRemoteDataSourceImpl(get()) } bind RingtoneItemRemoteDataSource::class
     factory { RingtoneListFirestoreRemoteDataSourceImpl(get()) } bind RingtoneListRemoteDataSource::class
-    factory { FirebaseAuthenticationRemoteDataSourceImpl(get()) } bind AuthenticationRemoteDataSource::class
+    factory { FirebaseAuthenticationRemoteDataSourceImpl(get(), get()) } bind AuthenticationRemoteDataSource::class
 }

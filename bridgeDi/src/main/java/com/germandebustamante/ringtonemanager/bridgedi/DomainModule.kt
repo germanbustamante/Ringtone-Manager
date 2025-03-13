@@ -2,13 +2,11 @@ package com.germandebustamante.ringtonemanager.bridgedi
 
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.ForgotPasswordUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
-import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GoogleSignInUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignInUserUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignOutUserUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignUpUserUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.impl.ForgotPasswordUseCaseImpl
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.impl.GetUserFlowUseCaseImpl
-import com.germandebustamante.ringtonemanager.domain.authorization.usecase.impl.GoogleSignInImpl
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.impl.SignInUserUseCaseImpl
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.impl.SignOutUserUseCaseImpl
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.impl.SignUpUserUseCaseImpl
@@ -25,7 +23,6 @@ val domainModule = module {
     factory { GetUserFlowUseCaseImpl(get()) } bind GetUserFlowUseCase::class
     factory { SignUpUserUseCaseImpl(get()) } bind SignUpUserUseCase::class
     factory { SignInUserUseCaseImpl(get()) } bind SignInUserUseCase::class
-    factory { GoogleSignInImpl(get()) } bind GoogleSignInUseCase::class
     factory { ForgotPasswordUseCaseImpl(get()) } bind ForgotPasswordUseCase::class
     factory { SignOutUserUseCaseImpl(get()) } bind SignOutUserUseCase::class
 }

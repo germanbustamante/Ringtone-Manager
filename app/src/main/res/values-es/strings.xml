@@ -27,6 +27,7 @@
     <string name="accept">Aceptar</string>
     <string name="input_mail_error">Formato de correo invalido</string>
     <string name="input_email_title">Correo electronico</string>
+    <string name="input_name_title">Nombre</string>
     <string name="login_input_password_title">Contraseña</string>
     <string name="register_input_password_title">Crea tu contraseña</string>
     <string name="input_password_error">Mínimo 8 caracteres</string>
@@ -41,4 +42,5 @@
     <string name="email_or_password_incorrect">Correo electronico o contraseña incorrectos</string>
     <string name="restore_password_description">Por favor, introduce tu correo electronico. Te enviaremos un enlace para restablecer tu contraseña.</string>
     <string name="restore_password_action">Restablecer contraseña</string>
+    <string name="input_empty_error">Este campo es obligatorio</string>
 </resources>

@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
+import com.germandebustamante.ringtonemanager.domain.authorization.model.LoginTypeBO
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
-import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GoogleSignInUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignInUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
@@ -17,7 +17,6 @@ import com.germandebustamante.ringtonemanager.utils.extensions.isValidPassword
 
 class LoginViewModel(
     private val signInUserUseCase: SignInUserUseCase,
-    private val googleSignInUseCase: GoogleSignInUseCase,
     private val currentUserFlowUseCase: GetUserFlowUseCase,
     navigator: Navigator,
     context: Context,
@@ -54,10 +53,12 @@ class LoginViewModel(
     fun onSignInButtonClicked() {
         launchCatching {
             if (state.inputsAreValid()) {
-                notifyLoading(true)
+                notifyLoading()
                 signInUserUseCase(
-                    email = state.email.value,
-                    password = state.password.value,
+                    LoginTypeBO.Default(
+                        email = state.email.value,
+                        password = state.password.value
+                    )
                 )?.let { state = state.copy(loading = false, error = it.toErrorString()) }
             } else {
                 updateInputsValidatorState()
@@ -71,8 +72,8 @@ class LoginViewModel(
     //endregion
 
     //region Private Methods
-    private fun notifyLoading(loading: Boolean) {
-        state = state.copy(loading = loading)
+    private fun notifyLoading() {
+        state = state.copy(loading = true)
     }
 
     private fun updateInputsValidatorState() {
@@ -97,8 +98,10 @@ class LoginViewModel(
 
     fun onGoogleIdTokenReceived(googleTokenId: String) {
         launchCatching {
-            notifyLoading(true)
-            googleSignInUseCase(googleTokenId)?.let { state = state.copy(loading = false, error = it.toErrorString()) }
+            notifyLoading()
+            signInUserUseCase(LoginTypeBO.Google(googleTokenId))?.let {
+                state = state.copy(loading = false, error = it.toErrorString())
+            }
         }
     }
     //endregion

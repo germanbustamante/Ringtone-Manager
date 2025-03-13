@@ -27,7 +27,7 @@ import com.germandebustamante.ringtonemanager.ui.component.common.button.Primary
 import com.germandebustamante.ringtonemanager.ui.component.common.button.google.ButtonGoogleSignIn
 import com.germandebustamante.ringtonemanager.ui.component.common.dialog.ErrorDialog
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
-import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EmailTextField
+import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EditableClearInput
 import com.germandebustamante.ringtonemanager.ui.component.common.textfield.PasswordTextField
 import com.germandebustamante.ringtonemanager.ui.session.AccountManager
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
@@ -47,7 +47,8 @@ fun RegisterScreen(
     LaunchedEffect(state.onUserRegistered) {
         state.onUserRegistered?.let { onUserRegistered ->
             accountManager.saveCredentials(
-                state.email.value, state.password.value,
+                email = state.email.value,
+                password = state.password.value,
                 onProcessFinished = onUserRegistered
             )
         }
@@ -56,9 +57,10 @@ fun RegisterScreen(
     RegisterContent(
         state = viewModel.state,
         onEmailValueChanged = viewModel::updateEmail,
+        onNameValueChanged = viewModel::updateName,
         onPasswordValueChanged = viewModel::updatePassword,
         onCurrentPasswordValueChanged = viewModel::updateRepeatPassword,
-        onRegisterButtonClicked = viewModel::onSignInButtonClicked,
+        onRegisterButtonClicked = viewModel::onSignUpButtonClicked,
         onBackPressed = viewModel::navigateUp,
         onCleanError = viewModel::cleanError,
         onGoToLoginButtonClicked = viewModel::navigateToLogin,
@@ -71,6 +73,7 @@ fun RegisterScreen(
 private fun RegisterContent(
     state: RegisterViewModel.UIState,
     onEmailValueChanged: (String) -> Unit,
+    onNameValueChanged: (String) -> Unit,
     onPasswordValueChanged: (String) -> Unit,
     onCurrentPasswordValueChanged: (String) -> Unit,
     onRegisterButtonClicked: () -> Unit,
@@ -99,19 +102,23 @@ private fun RegisterContent(
                 )
             }
 
-            AnimatedVisibility(state.loading) {
-                CircularProgressIndicator()
-            }
-
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                EmailTextField(
+                EditableClearInput(
                     value = state.email.value,
                     onValueChange = onEmailValueChanged,
                     label = stringResource(R.string.input_email_title),
                     errorMessage = if (!state.email.isValid) stringResource(R.string.input_mail_error) else null,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                EditableClearInput(
+                    value = state.name.value,
+                    onValueChange = onNameValueChanged,
+                    label = stringResource(R.string.input_name_title),
+                    errorMessage = if (!state.name.isValid) stringResource(R.string.input_empty_error) else null,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -153,6 +160,10 @@ private fun RegisterContent(
                     )
                 }
             }
+
+            AnimatedVisibility(state.loading) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
@@ -165,6 +176,7 @@ private fun RegisterContentPreview() {
             onBackPressed = {},
             state = RegisterViewModel.UIState(),
             onEmailValueChanged = {},
+            onNameValueChanged = {},
             onPasswordValueChanged = {},
             onCurrentPasswordValueChanged = {},
             onRegisterButtonClicked = {},
