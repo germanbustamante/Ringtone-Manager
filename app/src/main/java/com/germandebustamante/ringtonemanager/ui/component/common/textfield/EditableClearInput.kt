@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 
 @Composable
-fun EmailTextField(
+fun EditableClearInput(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -41,10 +41,10 @@ fun EmailTextField(
 
 @Composable
 @Preview(showBackground = true)
-private fun EmailTextFieldPreview() {
+private fun EditableClearInputPreview() {
     var text by rememberSaveable { mutableStateOf("") }
     RingtoneManagerTheme {
-        EmailTextField(
+        EditableClearInput(
             value = text,
             onValueChange = { text = it },
             label = "Email",

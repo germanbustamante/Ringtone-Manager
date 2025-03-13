@@ -34,6 +34,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data:remote"))
 
+    //Firebase
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.firebase.auth)
+
     //Koin
     implementation(platform(libs.io.insert.koin.bom))
     implementation(libs.io.insert.koin.core)

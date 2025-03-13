@@ -41,12 +41,12 @@ class AccountManager(
         }
     }
 
-    suspend fun saveCredentials(username: String, password: String, onProcessFinished: () -> Unit) {
+    suspend fun saveCredentials(email: String, password: String, onProcessFinished: () -> Unit) {
         try {
             credentialManager.createCredential(
                 context = context,
                 request = CreatePasswordRequest(
-                    id = username,
+                    id = email,
                     password = password,
                 )
             )

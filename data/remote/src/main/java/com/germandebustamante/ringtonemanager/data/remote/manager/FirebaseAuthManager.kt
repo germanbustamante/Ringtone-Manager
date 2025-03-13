@@ -1,5 +1,8 @@
 package com.germandebustamante.ringtonemanager.data.remote.manager
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager.toError
 import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.android.gms.tasks.Task
@@ -8,12 +11,11 @@ import kotlinx.coroutines.tasks.await
 
 object FirebaseAuthManager {
 
-    suspend fun execute(action: () -> Task<AuthResult>): CustomError? =
+    suspend fun execute(action: () -> Task<AuthResult>): Either<CustomError, AuthResult> =
         try {
-            action().await()
-            null
+            action().await().right()
         } catch (exception: Exception) {
-            exception.toError()
+            exception.toError().left()
         }
 
     suspend fun executeVoid(action: () -> Task<Void>): CustomError? =

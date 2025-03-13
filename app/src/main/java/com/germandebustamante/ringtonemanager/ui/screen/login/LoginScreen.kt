@@ -32,7 +32,7 @@ import com.germandebustamante.ringtonemanager.ui.component.common.button.Primary
 import com.germandebustamante.ringtonemanager.ui.component.common.button.google.ButtonGoogleSignIn
 import com.germandebustamante.ringtonemanager.ui.component.common.dialog.ErrorDialog
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
-import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EmailTextField
+import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EditableClearInput
 import com.germandebustamante.ringtonemanager.ui.component.common.textfield.PasswordTextField
 import com.germandebustamante.ringtonemanager.ui.session.AccountManager
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
@@ -99,15 +99,11 @@ private fun LoginContent(
                 )
             }
 
-            AnimatedVisibility(state.loading) {
-                CircularProgressIndicator()
-            }
-
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                EmailTextField(
+                EditableClearInput(
                     value = state.email.value,
                     onValueChange = onEmailValueChanged,
                     label = stringResource(R.string.input_email_title),
@@ -158,6 +154,10 @@ private fun LoginContent(
                         style = MaterialTheme.typography.titleSmall,
                     )
                 }
+            }
+
+            AnimatedVisibility(state.loading) {
+                CircularProgressIndicator()
             }
         }
     }

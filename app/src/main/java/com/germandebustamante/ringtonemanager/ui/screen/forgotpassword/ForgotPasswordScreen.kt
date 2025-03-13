@@ -26,7 +26,7 @@ import com.germandebustamante.ringtonemanager.ui.component.common.button.ButtonS
 import com.germandebustamante.ringtonemanager.ui.component.common.button.PrimaryButton
 import com.germandebustamante.ringtonemanager.ui.component.common.dialog.ErrorDialog
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
-import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EmailTextField
+import com.germandebustamante.ringtonemanager.ui.component.common.textfield.EditableClearInput
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -86,7 +86,7 @@ private fun ForgotPasswordContent(
                     modifier = Modifier.padding(bottom = 16.dp),
                 )
 
-                EmailTextField(
+                EditableClearInput(
                     value = state.email.value,
                     onValueChange = onEmailValueChanged,
                     label = stringResource(R.string.input_email_title),
