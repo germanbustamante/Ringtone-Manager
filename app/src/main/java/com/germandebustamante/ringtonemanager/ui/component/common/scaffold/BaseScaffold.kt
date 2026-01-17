@@ -61,5 +61,4 @@ fun BaseScaffold(
     ) { innerPadding ->
         content(innerPadding)
     }
-
 }

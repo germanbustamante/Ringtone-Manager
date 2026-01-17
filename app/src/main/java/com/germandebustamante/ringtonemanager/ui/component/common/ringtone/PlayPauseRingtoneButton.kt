@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 
-
 const val PLAY_PAUSE_BTN_SIZE_FACTOR = 1.2f
 
 enum class IconPrimaryButtonSize(val dp: Dp) {

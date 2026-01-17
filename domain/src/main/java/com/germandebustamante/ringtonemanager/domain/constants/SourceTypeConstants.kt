@@ -1,6 +1,6 @@
 package com.germandebustamante.ringtonemanager.domain.constants
 
-//Values used to identify the source type of a ringtone, eliminate duplicates and fill the database
+// Values used to identify the source type of a ringtone, eliminate duplicates and fill the database
 object SourceTypeConstants {
     const val SOURCE_TYPE_MOVIE = "movie"
     const val SOURCE_TYPE_TV_SERIES = "tv_series"

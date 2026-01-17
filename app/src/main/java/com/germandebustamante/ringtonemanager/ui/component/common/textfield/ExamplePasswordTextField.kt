@@ -1,20 +1,20 @@
-//package com.germandebustamante.ringtonemanager.ui.component.common.textfield
+// package com.germandebustamante.ringtonemanager.ui.component.common.textfield
 //
-//import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.getValue
-//import androidx.compose.runtime.mutableStateOf
-//import androidx.compose.runtime.saveable.rememberSaveable
-//import androidx.compose.runtime.setValue
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.graphics.vector.ImageVector
-//import androidx.compose.ui.res.vectorResource
-//import androidx.compose.ui.text.input.PasswordVisualTransformation
-//import androidx.compose.ui.text.input.VisualTransformation
-//import androidx.compose.ui.tooling.preview.Preview
-//import com.germandebustamante.ringtonemanager.R
-//import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
+// import androidx.compose.runtime.Composable
+// import androidx.compose.runtime.getValue
+// import androidx.compose.runtime.mutableStateOf
+// import androidx.compose.runtime.saveable.rememberSaveable
+// import androidx.compose.runtime.setValue
+// import androidx.compose.ui.Modifier
+// import androidx.compose.ui.graphics.vector.ImageVector
+// import androidx.compose.ui.res.vectorResource
+// import androidx.compose.ui.text.input.PasswordVisualTransformation
+// import androidx.compose.ui.text.input.VisualTransformation
+// import androidx.compose.ui.tooling.preview.Preview
+// import com.germandebustamante.ringtonemanager.R
+// import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 //
-///**
+// /**
 // * Displays an input field for entering a password with optional error state, label, error message,
 // * supporting text, and toggle visibility button for showing/hiding the password.
 // *
@@ -29,8 +29,8 @@
 // * @param supportingText Optional supporting text displayed below the input field.
 // * @param enabled Flag indicating if the input field is enabled for user interaction. Defaults to true.
 // */
-//@Composable
-//fun PasswordTextField(
+// @Composable
+// fun PasswordTextField(
 //    value: String,
 //    onValueChange: (String) -> Unit,
 //    modifier: Modifier = Modifier,
@@ -40,7 +40,7 @@
 //    errorMessage: String? = null,
 //    supportingText: String? = null,
 //    enabled: Boolean = true,
-//) {
+// ) {
 //    var showInput by rememberSaveable { mutableStateOf(false) }
 //
 //    OutlinedTextField(
@@ -65,11 +65,11 @@
 //            )
 //        }
 //    )
-//}
+// }
 //
-//@Preview(showBackground = true)
-//@Composable
-//private fun PasswordInputPreview() {
+// @Preview(showBackground = true)
+// @Composable
+// private fun PasswordInputPreview() {
 //    RingtoneManagerTheme {
 //        var inputValue by rememberSaveable { mutableStateOf("") }
 //
@@ -81,11 +81,11 @@
 //            supportingText = "Añadir aquí información para ayudar al usuario a entender este input"
 //        )
 //    }
-//}
+// }
 //
-//@Preview(showBackground = true)
-//@Composable
-//private fun PasswordInputErrorPreview() {
+// @Preview(showBackground = true)
+// @Composable
+// private fun PasswordInputErrorPreview() {
 //    RingtoneManagerTheme {
 //        PasswordTextField(
 //            value = "",
@@ -94,4 +94,4 @@
 //            errorMessage = "Formato invalido"
 //        )
 //    }
-//}
+// }

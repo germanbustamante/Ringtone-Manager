@@ -39,7 +39,9 @@ internal fun SettingsOptionCard(
         shape = shape,
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = SettingsScreenConstants.DisabledAlpha)
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
+                alpha = SettingsScreenConstants.DisabledAlpha
+            )
         ),
         onClick = onClick
     ) {

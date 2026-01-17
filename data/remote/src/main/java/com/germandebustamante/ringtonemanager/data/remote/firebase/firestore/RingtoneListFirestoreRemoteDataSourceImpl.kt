@@ -15,7 +15,6 @@ class RingtoneListFirestoreRemoteDataSourceImpl(
     private val firestore: FirebaseFirestore,
 ) : RingtoneListRemoteDataSource {
 
-
     /**
      * Implementacion antigua (se mantiene por si se necesita revisar)
      * ```

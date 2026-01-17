@@ -57,7 +57,6 @@ fun PasswordTextField(
             TextFieldSupportingText(text = stringResource(R.string.input_password_error))
         }
     }
-
 }
 
 @Preview(showBackground = true)

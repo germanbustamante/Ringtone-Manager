@@ -42,14 +42,12 @@ class ForgotPasswordViewModel(
     }
     //endregion
 
-
     //region Private Methods
     private fun updateInputsValidatorState() {
         val isEmailValid = state.email.value.isValidEmail()
         state = state.copy(email = state.email.copy(isValid = isEmailValid))
     }
     //endregion
-
 
     data class UIState(
         val email: ValidatorInputState = ValidatorInputState(),

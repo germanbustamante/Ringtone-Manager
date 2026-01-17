@@ -46,18 +46,16 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
             firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(googleTokenId, null))
         }
 
-    override suspend fun signUp(email: String, password: String, name: String): Either<CustomError, AuthResult> {
-        return try {
-            val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(name)
-                .build()
+    override suspend fun signUp(email: String, password: String, name: String): Either<CustomError, AuthResult> = try {
+        val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(name)
+            .build()
 
-            authResult.user?.updateProfile(profileUpdates)?.await()
-            authResult.right()
-        } catch (exception: Exception) {
-            exception.toError().left()
-        }
+        authResult.user?.updateProfile(profileUpdates)?.await()
+        authResult.right()
+    } catch (exception: Exception) {
+        exception.toError().left()
     }
 
     override fun signOut() {
@@ -68,8 +66,8 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         firebaseAuth.sendPasswordResetEmail(email)
     }
 
-    override suspend fun saveUserData(uuid: String, email: String, name: String?, loginType: String): CustomError? {
-        return try {
+    override suspend fun saveUserData(uuid: String, email: String, name: String?, loginType: String): CustomError? =
+        try {
             val userInfoMap = hashMapOf(
                 USERS_COLLECTION_EMAIL_FIELD to email,
                 USERS_COLLECTION_NAME_FIELD to name,
@@ -84,7 +82,6 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         } catch (e: Exception) {
             e.toError()
         }
-    }
 
     companion object {
         private const val USERS_COLLECTION_NAME = "users_v1"

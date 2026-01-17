@@ -7,7 +7,7 @@ import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUs
 import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import kotlinx.coroutines.flow.Flow
 
-class GetUserFlowUseCaseImpl (
+class GetUserFlowUseCaseImpl(
     private val authenticationRepository: AuthenticationRepository
 ) : GetUserFlowUseCase {
     override fun invoke(): Flow<Either<CustomError, UserBO?>> = authenticationRepository.currentUser

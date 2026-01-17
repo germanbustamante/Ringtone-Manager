@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel(
     private val navigator: Navigator,
-    private val context: Context //TODO GBC MEJORAR ESTO
+    private val context: Context, // GBC IMPROVE
 ) : ViewModel() {
 
     fun navigateUp() {
@@ -45,22 +45,22 @@ abstract class BaseViewModel(
             block = block
         )
 
-    fun CustomError.toErrorString(): String {
-        return when (this) {
-            is CustomError.Server -> message ?: context.getString(R.string.server_error)
-            is CustomError.ParcelizeException -> context.getString(R.string.parcelize_error)
-            is CustomError.Unknown -> message ?: context.getString(R.string.unknown_error)
-            is CustomError.EmailAddressAlreadyInUse -> context.getString(R.string.email_address_already_in_use)
-            CustomError.NotFound -> context.getString(R.string.item_not_found)
-            CustomError.InvalidCredentials -> context.getString(R.string.email_or_password_incorrect)
-        }
+    fun CustomError.toErrorString(): String = when (this) {
+        is CustomError.Server -> message ?: context.getString(R.string.server_error)
+        is CustomError.ParcelizeException -> context.getString(R.string.parcelize_error)
+        is CustomError.Unknown -> message ?: context.getString(R.string.unknown_error)
+        is CustomError.EmailAddressAlreadyInUse -> context.getString(R.string.email_address_already_in_use)
+        CustomError.NotFound -> context.getString(R.string.item_not_found)
+        CustomError.InvalidCredentials -> context.getString(R.string.email_or_password_incorrect)
     }
 
     private fun Throwable.toError(): CustomError = when (this) {
         is StorageException -> CustomError.Server(errorCode, message)
         is RuntimeException -> CustomError.ParcelizeException
-        is FirebaseAuthUserCollisionException -> CustomError.EmailAddressAlreadyInUse  //Invoked when we try to call register with a email that is already in use
-        is FirebaseAuthInvalidCredentialsException -> CustomError.InvalidCredentials  //When try to login with a non existent email AND if try login with bad password but user exists
+        // Invoked when we try to call register with a email that is already in use
+        is FirebaseAuthUserCollisionException -> CustomError.EmailAddressAlreadyInUse
+        // When try to login with a non existent email AND if try login with bad password but user exists
+        is FirebaseAuthInvalidCredentialsException -> CustomError.InvalidCredentials
         else -> CustomError.Unknown(message)
     }
 }

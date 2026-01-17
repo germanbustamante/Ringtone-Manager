@@ -79,12 +79,11 @@ class AccountManager(
         }
     }
 
-
     private fun getHashedNonce(): String {
         val rawNonce = UUID.randomUUID().toString().toByteArray()
         val messageDigest = MessageDigest.getInstance(SHA_256)
         val nonceHash = messageDigest.digest(rawNonce)
-        return nonceHash.fold("") { str, it -> str + HASHED_NONCE_FORMAT.format(it) }
+        return nonceHash.fold("") { hash, byte -> hash + HASHED_NONCE_FORMAT.format(byte) }
     }
 
     private fun logError(message: String, exception: Throwable) {

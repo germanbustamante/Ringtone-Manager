@@ -134,7 +134,13 @@ private fun RegisterContent(
                     value = state.repeatPassword.value,
                     onValueChange = onCurrentPasswordValueChanged,
                     label = stringResource(R.string.input_repeat_password_title),
-                    errorMessage = if (!state.repeatPassword.isValid) stringResource(R.string.input_repeat_password_error) else null,
+                    errorMessage = if (!state.repeatPassword.isValid) {
+                        stringResource(
+                            R.string.input_repeat_password_error
+                        )
+                    } else {
+                        null
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
 

@@ -25,7 +25,10 @@ import com.germandebustamante.ringtonemanager.core.navigation.destination.Bottom
 
 @Composable
 fun AppBottomNavigation(navController: NavController) {
-    val topLevelRoutes: List<BottomScreenDestination<out Any>> = listOf(BottomScreenDestination.Home, BottomScreenDestination.Settings)
+    val topLevelRoutes: List<BottomScreenDestination<out Any>> = listOf(
+        BottomScreenDestination.Home,
+        BottomScreenDestination.Settings
+    )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val isTopLevelRoute = isCurrentDestinationTopLevel(currentDestination, topLevelRoutes)
@@ -121,9 +124,7 @@ private fun getSelectedColor(isSelected: Boolean): Color =
 private fun isCurrentDestinationTopLevel(
     currentDestination: NavDestination?,
     topLevelRoutes: List<BottomScreenDestination<out Any>>,
-): Boolean {
-    return topLevelRoutes.any { it.route::class.qualifiedName == currentDestination?.route }
-}
+): Boolean = topLevelRoutes.any { it.route::class.qualifiedName == currentDestination?.route }
 
 private fun isRouteSelected(
     route: BottomScreenDestination<out Any>,

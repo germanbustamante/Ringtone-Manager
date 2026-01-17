@@ -37,7 +37,7 @@ fun Modifier.crop(
     }
 }
 
-//Used to set shape, background and border to a composable, its the same as Surface.kt method surface()
+// Used to set shape, background and border to a composable, its the same as Surface.kt method surface()
 fun Modifier.surface(
     shape: Shape,
     backgroundColor: Color,
@@ -84,5 +84,4 @@ fun Modifier.shimmerEffect(
     )
 
     background(brush)
-
 }
