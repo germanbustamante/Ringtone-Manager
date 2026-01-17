@@ -1,7 +1,5 @@
 package com.germandebustamante.ringtonemanager.ui.component.common.textfield
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -10,7 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 
 @Composable
@@ -32,7 +32,7 @@ fun EditableClearInput(
                 IconButton(
                     onClick = { onValueChange("") }
                 ) {
-                    Icon(Icons.Filled.Close, contentDescription = "Clear input")
+                    Icon(painterResource(R.drawable.ic_close), contentDescription = "Clear input")
                 }
             }
         }

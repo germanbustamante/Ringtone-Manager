@@ -1,29 +1,34 @@
 [versions]
-agp = "8.6.1"
-appcompat = "1.7.0"
-arrowCore = "1.1.5"
-constraintlayoutCompose = "1.1.0"
-kotlin = "1.9.0"
-coreKtx = "1.15.0"
+agp = "8.13.2"
+appcompat = "1.7.1"
+arrowCore = "2.2.1.1"
+constraintlayoutCompose = "1.1.1"
+kotlin = "2.3.0"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-kotlinxCoroutinesCore = "1.8.1"
-lifecycle = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2024.04.01"
-googleServices = "4.4.2"
-jetbrainsKotlinJvm = "1.9.0"
-koin = "4.0.1"
-media3Exoplayer = "1.5.0"
-firebaseFirestore = "25.1.1"
-navigationCompose = "2.8.2"
-kotlinSerialization = "1.3.0"
-kotlinParcelize = "1.8.10"
-uiTextGoogleFonts = "1.7.7"
-credentials = "1.5.0-alpha04"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+kotlinxCoroutinesCore = "1.10.2"
+lifecycle = "2.10.0"
+activityCompose = "1.12.2"
+composeBom = "2026.01.00"
+googleServices = "4.4.4"
+jetbrainsKotlinJvm = "2.3.0"
+koin = "4.1.1"
+media3Exoplayer = "1.9.0"
+firebaseFirestore = "26.1.0"
+navigationCompose = "2.9.6"
+kotlinSerialization = "1.9.0"
+kotlinParcelize = "2.3.0"
+uiTextGoogleFonts = "1.10.1"
+credentials = "1.5.0"
 googleid = "1.1.1"
-credentialsPlayServicesAuth = "1.5.0-alpha04"
+credentialsPlayServicesAuth = "1.5.0"
+
+nav3Core = "1.0.0"
+lifecycleViewmodelNav3 = "2.10.0"
+kotlinxSerializationCore = "1.9.0"
+material3AdaptiveNav3 = "1.3.0-alpha06"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -62,12 +67,22 @@ google-firebase-storage = { group = "com.google.firebase", name = "firebase-stor
 io-insert-koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 io-insert-koin-core = { group = "io.insert-koin", name = "koin-core" }
 io-insert-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+io-insert-koin-compose-navigation3 = { group = "io.insert-koin", name = "koin-androidx-compose-navigation3", version.ref = "koin" }
 io-insert-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+
+# Core Navigation 3 libraries
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
+
+# Optional add-on libraries
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
+androidx-material3-adaptive-navigation3 = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "material3AdaptiveNav3" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -77,3 +92,4 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinParcelize" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
