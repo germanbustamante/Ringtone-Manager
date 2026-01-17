@@ -121,9 +121,9 @@ class RegisterViewModel(
         val loading: Boolean = false,
         val onUserRegistered: (() -> Unit)? = null,
     ) {
-        fun inputsAreValid(): Boolean = email.value.isValidEmail()
-                && name.value.isNotBlank()
-                && password.value.isValidPassword()
-                && repeatPassword.value == password.value
+        fun inputsAreValid(): Boolean = email.value.isValidEmail() &&
+            name.value.isNotBlank() &&
+            password.value.isValidPassword() &&
+            repeatPassword.value == password.value
     }
 }

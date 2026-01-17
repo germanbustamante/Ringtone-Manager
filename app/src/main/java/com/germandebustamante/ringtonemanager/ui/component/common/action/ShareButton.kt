@@ -77,7 +77,7 @@ private fun ShareButton(
     modifier: Modifier = Modifier,
     size: IconPrimaryButtonSize = IconPrimaryButtonSize.MEDIUM,
 ) {
-    FilledTonalIconButton (
+    FilledTonalIconButton(
         onClick = onClick,
         modifier = modifier.size(size.dp),
         colors = IconButtonDefaults.filledTonalIconButtonColors(

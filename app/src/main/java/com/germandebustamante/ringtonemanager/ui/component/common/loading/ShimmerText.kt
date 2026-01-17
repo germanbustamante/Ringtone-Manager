@@ -18,9 +18,11 @@ fun ShimmerText(
 ) {
     Box(
         modifier = modifier
-            .size(with(LocalDensity.current) {
-                size.toDp()
-            })
+            .size(
+                with(LocalDensity.current) {
+                    size.toDp()
+                }
+            )
             .widthIn(min = 40.dp)
             .shimmerEffect()
     )

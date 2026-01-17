@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 suspend fun <T> Flow<Either<CustomError, T>>.collectEither(
     onLeft: suspend (CustomError) -> Unit,
     onRight: suspend (T) -> Unit,
-)= this
+) = this
     .collect { eitherResult ->
         eitherResult.fold(
             ifLeft = { error -> onLeft(error) },

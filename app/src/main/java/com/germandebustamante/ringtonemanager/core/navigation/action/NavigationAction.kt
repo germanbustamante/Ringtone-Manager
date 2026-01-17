@@ -8,7 +8,7 @@ sealed interface NavigationAction {
     data class Navigate(
         val destination: Destination,
         val navOptions: NavOptionsBuilder.() -> Unit = {},
-    ): NavigationAction
+    ) : NavigationAction
 
-    data object NavigateUp: NavigationAction
+    data object NavigateUp : NavigationAction
 }

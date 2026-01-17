@@ -1,6 +1,5 @@
 package com.germandebustamante.ringtonemanager.utils.extensions
 
-
 private const val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
 private const val PASSWORD_MIN_LENGTH = 8
 

@@ -2,7 +2,8 @@ package com.germandebustamante.ringtonemanager.data.remote.model.ringtone
 
 import com.google.firebase.firestore.DocumentId
 
-data class RingtoneDTO (
+@Suppress("ConstructorParameterNaming")
+data class RingtoneDTO(
     @DocumentId
     val id: String? = null,
     val name: String? = null,

@@ -46,7 +46,10 @@ fun EditableTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onBackground
+            ),
             isError = errorMessage?.isNotBlank().isTrue(),
             singleLine = true,
             trailingIcon = trailingIcon,
@@ -74,7 +77,8 @@ private fun EditableTextFieldPreview() {
 
     RingtoneManagerTheme {
         EditableTextField(
-            value = editableInput, onValueChange = { editableInput = it },
+            value = editableInput,
+            onValueChange = { editableInput = it },
             modifier = Modifier.padding(8.dp),
             label = "Label",
         )

@@ -106,7 +106,6 @@ class LoginViewModel(
     }
     //endregion
 
-
     data class UIState(
         val email: ValidatorInputState = ValidatorInputState(),
         val password: ValidatorInputState = ValidatorInputState(),

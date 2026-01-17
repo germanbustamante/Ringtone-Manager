@@ -3,7 +3,6 @@ package com.germandebustamante.ringtonemanager.data.remote.manager
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.germandebustamante.ringtonemanager.domain.authorization.model.UserBO
 import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
 object FirestoreManager {
-
 
     /**
      * Obtiene un flujo de documentos desde una fuente de datos utilizando un mapeador para transformar los datos.
@@ -63,20 +61,20 @@ object FirestoreManager {
         exception.toError().left()
     }
 
-    suspend inline fun createDocument(action: Task<Void>): CustomError? =  try {
+    suspend inline fun createDocument(action: Task<Void>): CustomError? = try {
         action.await()
         null
     } catch (exception: Exception) {
         exception.toError()
     }
 
-
     fun Throwable.toError(): CustomError = when (this) {
         is StorageException -> CustomError.Server(errorCode, message)
         is RuntimeException -> CustomError.ParcelizeException
-        is FirebaseAuthUserCollisionException -> CustomError.EmailAddressAlreadyInUse //Invoked when we call register with a email that is already in use
-        is FirebaseAuthInvalidCredentialsException -> CustomError.InvalidCredentials   //When try to login with a non existent email AND if try login with bad password but user exists
+        // Invoked when we call register with a email that is already in use
+        is FirebaseAuthUserCollisionException -> CustomError.EmailAddressAlreadyInUse
+        // When try to login with a non existent email AND if try login with bad password but user exists
+        is FirebaseAuthInvalidCredentialsException -> CustomError.InvalidCredentials
         else -> CustomError.Unknown(message)
     }
-
 }

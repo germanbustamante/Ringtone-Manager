@@ -37,6 +37,10 @@ class MainActivity : ComponentActivity() {
         )
 
         enableEdgeToEdge()
+        setContent()
+    }
+
+    private fun setContent() {
         setContent {
             var showSplashScreen by rememberSaveable { mutableStateOf(true) }
             val navController = rememberNavController()

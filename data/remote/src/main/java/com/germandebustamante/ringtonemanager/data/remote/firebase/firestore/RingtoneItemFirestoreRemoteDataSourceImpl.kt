@@ -9,14 +9,16 @@ import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.google.firebase.firestore.FirebaseFirestore
 
-class RingtoneItemFirestoreRemoteDataSourceImpl(private val firestore: FirebaseFirestore) : RingtoneItemRemoteDataSource {
+class RingtoneItemFirestoreRemoteDataSourceImpl(private val firestore: FirebaseFirestore) :
+    RingtoneItemRemoteDataSource {
 
     override suspend fun getRingtoneDetail(ringtoneId: String): Either<CustomError, RingtoneBO> =
         FirestoreManager.getDocument<RingtoneDTO, RingtoneBO>(
             action = { firestore.collection(COLLECTION_NAME).document(ringtoneId).get() },
             mapper = { it.toDomain() },
         ).onRight {
-            firestore.collection(COLLECTION_NAME).document(ringtoneId).update("popularity", it.popularity + 1)
+            firestore.collection(COLLECTION_NAME)
+                .document(ringtoneId).update("popularity", it.popularity + 1)
         }
 
     companion object {

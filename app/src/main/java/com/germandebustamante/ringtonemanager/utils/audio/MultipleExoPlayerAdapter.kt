@@ -63,7 +63,6 @@ class MultipleExoPlayerAdapter(
             initializeExoPlayer()
             player?.addMediaItems(mediaItems)
             player?.prepare()
-
         }
     }
 
@@ -79,27 +78,31 @@ class MultipleExoPlayerAdapter(
         WeakReference(context).get()?.let {
             player = ExoPlayer.Builder(it).build()
             player?.pauseAtEndOfMediaItems = true
-            player?.addListener((object : Player.Listener {
-                override fun onPlayerError(error: PlaybackException) {
-                    logError("ExoPlayer error: $error")
-                }
-
-                @SuppressLint("SwitchIntDef")
-                override fun onPlaybackStateChanged(playbackState: Int) {
-                    super.onPlaybackStateChanged(playbackState)
-
-                    when (playbackState) {
-                        Player.STATE_ENDED -> {
-                            player?.pause()
-                            positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
+            player?.addListener(
+                (
+                    object : Player.Listener {
+                        override fun onPlayerError(error: PlaybackException) {
+                            logError("ExoPlayer error: $error")
                         }
 
-                        Player.STATE_READY -> {
-                            player?.seekTo(playerIndex, C.TIME_UNSET)
+                        @SuppressLint("SwitchIntDef")
+                        override fun onPlaybackStateChanged(playbackState: Int) {
+                            super.onPlaybackStateChanged(playbackState)
+
+                            when (playbackState) {
+                                Player.STATE_ENDED -> {
+                                    player?.pause()
+                                    positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
+                                }
+
+                                Player.STATE_READY -> {
+                                    player?.seekTo(playerIndex, C.TIME_UNSET)
+                                }
+                            }
                         }
                     }
-                }
-            }))
+                    )
+            )
         }
     }
 

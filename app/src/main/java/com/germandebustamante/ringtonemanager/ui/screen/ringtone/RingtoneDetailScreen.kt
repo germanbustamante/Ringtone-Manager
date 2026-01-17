@@ -60,7 +60,7 @@ private fun RingtoneDetailContent(
         navigationIconResource = R.drawable.ic_back,
         navigationIconClick = onBackPressed,
 
-        ) { _ ->
+    ) { _ ->
         Box(
             modifier = modifier.padding(6.dp),
         ) {
@@ -100,7 +100,6 @@ private fun RingtoneDetailContent(
             )
         }
     }
-
 }
 
 @Composable
