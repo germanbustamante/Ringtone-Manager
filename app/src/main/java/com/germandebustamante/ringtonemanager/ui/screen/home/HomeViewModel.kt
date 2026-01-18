@@ -1,8 +1,5 @@
 package com.germandebustamante.ringtonemanager.ui.screen.home
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
@@ -11,6 +8,9 @@ import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopular
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
 import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class HomeViewModel(
     private val getPopularRingtonesUseCase: GetPopularRingtonesUseCase,
@@ -18,8 +18,8 @@ class HomeViewModel(
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    var state by mutableStateOf(UIState())
-        private set
+    private val _state: MutableStateFlow<UIState> = MutableStateFlow(UIState())
+    val state: StateFlow<UIState> = _state
 
     init {
         getFullRingtones()
@@ -31,7 +31,7 @@ class HomeViewModel(
             pausePlayer()
         } else {
             player.play(ringtone.fileUrl)
-            state = state.updateCurrentRingtonePlayingId(ringtone)
+            _state.update { it.updateCurrentRingtonePlayingId(ringtone) }
         }
     }
 
@@ -45,13 +45,13 @@ class HomeViewModel(
 
     fun pausePlayer() {
         player.pause()
-        state = state.copy(currentRingtonePlayingId = null)
+        _state.update { it.copy(currentRingtonePlayingId = null) }
     }
     //endregion
 
     //region Private methods
     private fun notifyLoading(loading: Boolean) {
-        state = state.copy(isLoading = loading)
+        _state.update { it.copy(isLoading = loading) }
     }
 
     private fun getFullRingtones() {
@@ -61,20 +61,20 @@ class HomeViewModel(
                 onLeft = { notifyError(it) },
                 onRight = { ringtones ->
                     player.addMediaItems(ringtones.map { it.fileUrl })
-                    state = state.copy(ringtones = ringtones, isLoading = false)
+                    _state.value = _state.value.copy(ringtones = ringtones, isLoading = false)
                 }
             )
         }
     }
 
     private fun notifyError(error: ErrorBO) {
-        state = state.copy(error = error, isLoading = false)
+        _state.value = _state.value.copy(error = error, isLoading = false)
     }
 
     fun navigateToRingtoneDetail(ringtoneId: String) {
         navigateTo(Destination.RingtoneDetailScreen(ringtoneId))
     }
-//endregion
+    //endregion
 
     data class UIState(
         val ringtones: List<RingtoneBO> = emptyList(),

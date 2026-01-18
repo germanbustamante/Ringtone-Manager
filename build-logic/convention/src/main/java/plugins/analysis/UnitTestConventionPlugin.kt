@@ -1,6 +1,8 @@
 package plugins.analysis
 
+import Modules
 import extensions.testImplementation
+import extensions.testImplementationFixtures
 import extensions.testImplementationPlatform
 import extensions.testRuntimeOnly
 import org.gradle.api.Plugin
@@ -19,10 +21,12 @@ class UnitTestConventionPlugin : Plugin<Project> {
             dependencies {
                 testImplementation(project, "junit-jupiter")
                 testImplementationPlatform(project, "junit-bom")
+                testImplementation(project, "kotlinx-coroutines-core")
                 testImplementation(project, "kotlinx-coroutines-test")
                 testImplementation(project, "mockk")
                 testRuntimeOnly(project, "junit-platform-launcher")
                 testImplementation(project, "turbine")
+                testImplementationFixtures(Modules.CORE_MODEL)
             }
         }
     }

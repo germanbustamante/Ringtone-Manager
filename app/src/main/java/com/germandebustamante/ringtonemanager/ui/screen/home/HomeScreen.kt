@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.ui.component.common.effect.DisposableEffectLifecycleObserver
 import org.koin.androidx.compose.koinViewModel
@@ -19,7 +20,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     HomeContent(
-        state = viewModel.state,
+        state = viewModel.state.collectAsStateWithLifecycle().value,
         onRingtoneClicked = viewModel::navigateToRingtoneDetail,
         onPlayRingtoneClicked = viewModel::onPlayRingtoneClicked,
         modifier = modifier

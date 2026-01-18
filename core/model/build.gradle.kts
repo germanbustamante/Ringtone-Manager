@@ -1,4 +1,5 @@
 plugins {
+    `java-test-fixtures`
     id("java-library")
     alias(libs.plugins.jetbrains.kotlin.jvm)
 }
