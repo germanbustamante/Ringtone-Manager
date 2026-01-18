@@ -21,6 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Ringtone Manager"
 
+includeBuild("build-logic")
 include(":app")
 include(":domain")
 

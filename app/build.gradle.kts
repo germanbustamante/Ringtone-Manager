@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.compose)
+    id("detekt.convention.plugin")
+    id("unit.test.convention.plugin")
 }
 
 android {
