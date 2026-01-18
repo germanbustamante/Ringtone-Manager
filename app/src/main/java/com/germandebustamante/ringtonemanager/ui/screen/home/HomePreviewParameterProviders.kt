@@ -1,7 +1,7 @@
 package com.germandebustamante.ringtonemanager.ui.screen.home
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
+import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 
 class HomePreviewParameterProviders : PreviewParameterProvider<HomeViewModel.UIState> {
 

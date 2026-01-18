@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
+import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
-import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.ui.component.common.action.ShareButtonWithToolTip
 import com.germandebustamante.ringtonemanager.ui.component.common.effect.DisposableEffectLifecycleObserver
 import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.RandomRingtoneBackground

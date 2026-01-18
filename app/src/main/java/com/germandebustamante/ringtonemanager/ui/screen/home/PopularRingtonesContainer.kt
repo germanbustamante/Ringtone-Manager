@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
-import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
+import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 
 @Composable
 fun PopularRingtonesContainer(

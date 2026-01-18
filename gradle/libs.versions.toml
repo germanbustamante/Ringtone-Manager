@@ -6,14 +6,15 @@ constraintlayoutCompose = "1.1.1"
 detekt = "1.23.7"
 kotlin = "2.3.0"
 coreKtx = "1.17.0"
-junit = "4.13.2"
-junitVersion = "1.3.0"
-junitJupiter = "5.11.4"
-junitBom = "5.11.4"
-junitPlatformLauncher = "1.11.4"
-espressoCore = "3.7.0"
-kotlinxCoroutinesCore = "1.10.2"
-mockk = "1.13.14"
+
+# Testing
+junit_bom = "6.0.2"
+mockk = "1.14.7"
+turbine = "1.2.1"
+
+# Kotlin & Coroutines
+kotlinx_coroutines = "1.10.2"
+
 lifecycle = "2.10.0"
 activityCompose = "1.12.2"
 composeBom = "2026.01.00"
@@ -50,9 +51,6 @@ arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrowCore" }
 firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
@@ -62,7 +60,6 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version = "33.7.0" }
 google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
@@ -72,13 +69,15 @@ google-firebase-storage = { group = "com.google.firebase", name = "firebase-stor
 io-insert-koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 io-insert-koin-core = { group = "io.insert-koin", name = "koin-core" }
 io-insert-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
-io-insert-koin-compose-navigation3 = { group = "io.insert-koin", name = "koin-androidx-compose-navigation3", version.ref = "koin" }
 io-insert-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+
+# Kotlin & Coroutines
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx_coroutines" }
 
 # Core Navigation 3 libraries
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
@@ -91,11 +90,11 @@ androidx-material3-adaptive-navigation3 = { group = "androidx.compose.material3.
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 # Testing libraries
-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
-junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junitBom" }
-junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junitPlatformLauncher" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesCore" }
-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit_bom" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 # Gradle plugins for build-logic
 gradlePlugin-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }

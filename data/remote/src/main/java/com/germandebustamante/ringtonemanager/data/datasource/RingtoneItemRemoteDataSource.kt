@@ -1,9 +1,9 @@
 package com.germandebustamante.ringtonemanager.data.datasource
 
 import arrow.core.Either
-import com.germandebustamante.ringtonemanager.domain.error.CustomError
-import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
+import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 
 interface RingtoneItemRemoteDataSource {
-    suspend fun getRingtoneDetail(ringtoneId: String): Either<CustomError, RingtoneBO>
+    suspend fun getRingtoneDetail(ringtoneId: String): Either<ErrorBO, RingtoneBO>
 }

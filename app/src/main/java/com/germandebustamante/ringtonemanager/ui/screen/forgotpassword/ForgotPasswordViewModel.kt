@@ -1,9 +1,9 @@
 package com.germandebustamante.ringtonemanager.ui.screen.forgotpassword
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.ForgotPasswordUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
@@ -11,10 +11,9 @@ import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidEmail
 
 class ForgotPasswordViewModel(
-    context: Context,
     navigator: Navigator,
     private val forgotPasswordUseCase: ForgotPasswordUseCase,
-) : BaseViewModel(navigator, context) {
+) : BaseViewModel(navigator) {
 
     var state by mutableStateOf(UIState())
         private set
@@ -33,7 +32,7 @@ class ForgotPasswordViewModel(
             if (state.email.value.isValidEmail()) {
                 state = state.copy(loading = true)
                 forgotPasswordUseCase(email = state.email.value)?.let {
-                    state = state.copy(loading = false, error = it.toErrorString())
+                    state = state.copy(loading = false, error = it)
                 } ?: run { state = state.copy(loading = false, isEmailSent = true) }
             } else {
                 updateInputsValidatorState()
@@ -53,6 +52,6 @@ class ForgotPasswordViewModel(
         val email: ValidatorInputState = ValidatorInputState(),
         val isEmailSent: Boolean = false,
         val loading: Boolean = false,
-        val error: String? = null,
+        val error: ErrorBO? = null,
     )
 }

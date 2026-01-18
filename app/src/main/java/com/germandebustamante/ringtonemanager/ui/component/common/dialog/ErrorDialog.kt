@@ -1,6 +1,7 @@
 package com.germandebustamante.ringtonemanager.ui.component.common.dialog
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -15,14 +16,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
+import com.germandebustamante.ringtonemanager.utils.extensions.errorString
 
 @Composable
-fun ErrorDialog(error: String?, onDismissRequest: () -> Unit) {
-    if (error?.isNotBlank() == true) {
+fun ErrorDialog(error: ErrorBO?, onDismissRequest: () -> Unit) {
+    AnimatedVisibility(error != null) {
         BaseDialog(
             title = stringResource(id = R.string.error),
-            description = error,
+            description = error?.errorString().orEmpty(),
             acceptBtnText = stringResource(id = R.string.accept),
             onDismissRequest = onDismissRequest
         )
@@ -45,7 +48,7 @@ private fun ErrorDialogPreview() {
     if (showDialog) {
         RingtoneManagerTheme {
             ErrorDialog(
-                error = "Server error occurred. Please try again later.",
+                error = ErrorBO.NotFound,
                 onDismissRequest = { showDialog = false }
             )
         }

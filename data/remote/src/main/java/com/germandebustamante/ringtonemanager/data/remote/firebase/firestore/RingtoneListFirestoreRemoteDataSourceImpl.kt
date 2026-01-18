@@ -1,12 +1,12 @@
 package com.germandebustamante.ringtonemanager.data.remote.firebase.firestore
 
 import arrow.core.Either
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
+import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.data.datasource.RingtoneListRemoteDataSource
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager
 import com.germandebustamante.ringtonemanager.data.remote.model.ringtone.RingtoneDTO
 import com.germandebustamante.ringtonemanager.data.remote.model.ringtone.toDomain
-import com.germandebustamante.ringtonemanager.domain.error.CustomError
-import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.flow.Flow
@@ -34,7 +34,7 @@ class RingtoneListFirestoreRemoteDataSourceImpl(
      *         }
      * ```
      */
-    override fun getPopularRingtones(): Flow<Either<CustomError, List<RingtoneBO>>> =
+    override fun getPopularRingtones(): Flow<Either<ErrorBO, List<RingtoneBO>>> =
         FirestoreManager.getDocumentsFlow<RingtoneDTO, RingtoneBO>(
             action = { firestore.collection(COLLECTION_NAME).orderBy(POPULARITY_FIELD, Query.Direction.DESCENDING) },
             mapper = RingtoneDTO::toDomain,

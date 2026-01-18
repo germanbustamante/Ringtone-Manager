@@ -1,11 +1,11 @@
 package com.germandebustamante.ringtonemanager.data.repository
 
 import arrow.core.Either
+import com.germandebustamante.ringtonemanager.core.model.authorization.LoginTypeBO
+import com.germandebustamante.ringtonemanager.core.model.authorization.UserBO
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.data.datasource.AuthenticationRemoteDataSource
-import com.germandebustamante.ringtonemanager.domain.authorization.model.LoginTypeBO
-import com.germandebustamante.ringtonemanager.domain.authorization.model.UserBO
 import com.germandebustamante.ringtonemanager.domain.authorization.repository.AuthenticationRepository
-import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,21 +16,19 @@ class AuthenticationRepositoryImpl(
     private val authenticationRemoteDataSource: AuthenticationRemoteDataSource,
 ) : AuthenticationRepository {
 
-    override val currentUser: Flow<Either<CustomError, UserBO?>> = authenticationRemoteDataSource.currentUser.flowOn(
+    override val currentUser: Flow<Either<ErrorBO, UserBO?>> = authenticationRemoteDataSource.currentUser.flowOn(
         Dispatchers.IO
     )
 
-    override suspend fun signIn(loginType: LoginTypeBO): CustomError? = withContext(Dispatchers.IO) {
+    override suspend fun signIn(loginType: LoginTypeBO): ErrorBO? = withContext(Dispatchers.IO) {
         when (loginType) {
             is LoginTypeBO.Default -> authenticationRemoteDataSource.signIn(loginType.email, loginType.password)
             is LoginTypeBO.Google -> authenticationRemoteDataSource.googleSignIn(loginType.googleAccessToken)
                 .saveUserData(GOOGLE_LOGIN_TYPE)
-
-            else -> CustomError.InvalidCredentials
         }
     }
 
-    override suspend fun signUp(email: String, password: String, name: String): CustomError? =
+    override suspend fun signUp(email: String, password: String, name: String): ErrorBO? =
         withContext(Dispatchers.IO) {
             authenticationRemoteDataSource.signUp(email, password, name).saveUserData(DEFAULT_LOGIN_TYPE)
         }
@@ -39,11 +37,11 @@ class AuthenticationRepositoryImpl(
         authenticationRemoteDataSource.signOut()
     }
 
-    override suspend fun forgotPassword(email: String): CustomError? = withContext(Dispatchers.IO) {
+    override suspend fun forgotPassword(email: String): ErrorBO? = withContext(Dispatchers.IO) {
         authenticationRemoteDataSource.forgotPassword(email)
     }
 
-    private suspend fun Either<CustomError, AuthResult>.saveUserData(loginType: String): CustomError? = fold(
+    private suspend fun Either<ErrorBO, AuthResult>.saveUserData(loginType: String): ErrorBO? = fold(
         ifLeft = { it },
         ifRight = { authResult ->
             authenticationRemoteDataSource.saveUserData(

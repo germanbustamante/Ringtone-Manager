@@ -23,9 +23,9 @@ rootProject.name = "Ringtone Manager"
 
 includeBuild("build-logic")
 include(":app")
-include(":domain")
-
+include(":core:model")
+include(":core:domain")
 include(":data:repository")
 include(":data:remote")
-include(":bridgeDi")
 include(":analytics")
+include(":bridgeDi")

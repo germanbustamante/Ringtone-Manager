@@ -22,6 +22,7 @@ class UnitTestConventionPlugin : Plugin<Project> {
                 testImplementation(project, "kotlinx-coroutines-test")
                 testImplementation(project, "mockk")
                 testRuntimeOnly(project, "junit-platform-launcher")
+                testImplementation(project, "turbine")
             }
         }
     }

@@ -1,9 +1,9 @@
 package com.germandebustamante.ringtonemanager.ui.screen.settings
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
@@ -15,8 +15,7 @@ class SettingsViewModel(
     private val getUserFlowUseCase: GetUserFlowUseCase,
     private val signOutUserUseCase: SignOutUserUseCase,
     navigator: Navigator,
-    context: Context,
-) : BaseViewModel(navigator, context) {
+) : BaseViewModel(navigator) {
 
     var state: UIState by mutableStateOf(UIState())
         private set
@@ -24,7 +23,7 @@ class SettingsViewModel(
     init {
         launchCatching {
             getUserFlowUseCase().collectEither(
-                onLeft = { state = state.copy(isLoading = false, error = it.toErrorString()) },
+                onLeft = { state = state.copy(isLoading = false, error = it) },
                 onRight = { state = state.copy(userLogged = it != null, isLoading = false) }
             )
         }
@@ -50,7 +49,7 @@ class SettingsViewModel(
 
     data class UIState(
         val userLogged: Boolean = false,
-        val error: String? = null,
+        val error: ErrorBO? = null,
         val isLoading: Boolean = true,
     )
 }

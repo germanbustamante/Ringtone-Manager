@@ -83,7 +83,6 @@ private fun RegisterContent(
     onCleanError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val errorMessage = state.error.orEmpty()
     BaseScaffold(
         topBarTitle = stringResource(R.string.register),
         navigationIconResource = R.drawable.ic_close,
@@ -95,12 +94,10 @@ private fun RegisterContent(
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            AnimatedVisibility(errorMessage.isNotBlank()) {
-                ErrorDialog(
-                    error = errorMessage,
-                    onDismissRequest = onCleanError,
-                )
-            }
+            ErrorDialog(
+                error = state.error,
+                onDismissRequest = onCleanError,
+            )
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),

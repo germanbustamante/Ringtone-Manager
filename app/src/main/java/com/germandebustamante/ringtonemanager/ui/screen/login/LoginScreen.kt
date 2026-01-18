@@ -79,8 +79,6 @@ private fun LoginContent(
     onCleanError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val errorMessage = state.error.orEmpty()
-
     BaseScaffold(
         topBarTitle = stringResource(R.string.log_in),
         navigationIconResource = R.drawable.ic_close,
@@ -92,12 +90,10 @@ private fun LoginContent(
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            AnimatedVisibility(errorMessage.isNotBlank()) {
-                ErrorDialog(
-                    error = errorMessage,
-                    onDismissRequest = onCleanError,
-                )
-            }
+            ErrorDialog(
+                error = state.error,
+                onDismissRequest = onCleanError,
+            )
 
             Column(
                 verticalArrangement = Arrangement.Center,
