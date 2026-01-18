@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.germandebustamante.ringtonemanager.R
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.ui.component.common.action.ShareButtonWithToolTip
 import com.germandebustamante.ringtonemanager.ui.component.common.effect.DisposableEffectLifecycleObserver
@@ -25,11 +26,13 @@ import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.Ringt
 import com.germandebustamante.ringtonemanager.ui.component.common.ringtone.ShimmerRingtonePlayer
 import com.germandebustamante.ringtonemanager.ui.component.common.scaffold.BaseScaffold
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun RingtoneDetailScreen(
+    route: Destination.RingtoneDetailScreen,
     modifier: Modifier = Modifier,
-    viewModel: RingtoneDetailViewModel = koinViewModel(),
+    viewModel: RingtoneDetailViewModel = koinViewModel(parameters = { parametersOf(route) }),
 ) {
     DisposableEffectLifecycleObserver(
         onStop = viewModel::pausePlayer,
