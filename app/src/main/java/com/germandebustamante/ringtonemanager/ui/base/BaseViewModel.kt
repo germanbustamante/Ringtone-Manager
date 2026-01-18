@@ -3,7 +3,6 @@ package com.germandebustamante.ringtonemanager.ui.base
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavOptionsBuilder
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
@@ -27,9 +26,9 @@ abstract class BaseViewModel(
         }
     }
 
-    fun navigateTo(destination: Destination, navOptions: NavOptionsBuilder.() -> Unit = {}) {
+    fun navigateTo(destination: Destination) {
         viewModelScope.launch(Dispatchers.IO) {
-            navigator.navigate(destination, navOptions)
+            navigator.navigate(destination)
         }
     }
 

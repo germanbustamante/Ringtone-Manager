@@ -4,21 +4,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
-import com.germandebustamante.ringtonemanager.core.navigation.AppBottomNavigation
-import com.germandebustamante.ringtonemanager.core.navigation.NavigationWrapper
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.entryProvider
+import com.germandebustamante.ringtonemanager.core.navigation.NavigationHost
 import com.germandebustamante.ringtonemanager.core.navigation.ObserveAsEvent
+import com.germandebustamante.ringtonemanager.core.navigation.TabBar
 import com.germandebustamante.ringtonemanager.core.navigation.action.NavigationAction
+import com.germandebustamante.ringtonemanager.core.navigation.action.rememberNavigationState
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
-import com.germandebustamante.ringtonemanager.ui.screen.splash.SplashScreen
+import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
+import com.germandebustamante.ringtonemanager.ui.screen.forgotpassword.ForgotPasswordScreen
+import com.germandebustamante.ringtonemanager.ui.screen.home.HomeScreen
+import com.germandebustamante.ringtonemanager.ui.screen.login.LoginScreen
+import com.germandebustamante.ringtonemanager.ui.screen.register.RegisterScreen
+import com.germandebustamante.ringtonemanager.ui.screen.ringtone.RingtoneDetailScreen
+import com.germandebustamante.ringtonemanager.ui.screen.settings.SettingsScreen
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.appCheck
@@ -32,9 +36,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         Firebase.initialize(this)
-        Firebase.appCheck.installAppCheckProviderFactory(
-            DebugAppCheckProviderFactory.getInstance(),
-        )
+        Firebase.appCheck.installAppCheckProviderFactory(DebugAppCheckProviderFactory.getInstance())
 
         enableEdgeToEdge()
         setContent()
@@ -42,33 +44,59 @@ class MainActivity : ComponentActivity() {
 
     private fun setContent() {
         setContent {
-            var showSplashScreen by rememberSaveable { mutableStateOf(true) }
-            val navController = rememberNavController()
+            val navigationState = rememberNavigationState()
             val navigator = koinInject<Navigator>()
 
+            // Observe navigation actions from ViewModels (via Navigator interface)
+            // and update the navigation state accordingly
             ObserveAsEvent(flow = navigator.navigationActions) { action ->
                 when (action) {
-                    is NavigationAction.Navigate -> navController.navigate(action.destination, action.navOptions)
-                    is NavigationAction.NavigateUp -> navController.navigateUp()
+                    is NavigationAction.Navigate -> navigationState.navigate(action.destination)
+                    is NavigationAction.Back -> navigationState.navigateBack()
                 }
             }
 
             RingtoneManagerTheme {
-                if (showSplashScreen) {
-                    SplashScreen(onSplashFinished = { showSplashScreen = false })
-                } else {
-                    Scaffold(
-                        bottomBar = { AppBottomNavigation(navController) },
-                        modifier = Modifier.fillMaxSize()
-                    ) { innerPadding ->
-                        NavigationWrapper(
-                            navController,
-                            navigator = navigator,
-                            modifier = Modifier.padding(innerPadding)
+                Scaffold(
+                    bottomBar = {
+                        TabBar(
+                            selectedTab = navigationState.currentTab,
+                            onTabSelected = navigationState::onTabSelected
                         )
                     }
+                ) { padding ->
+                    // Convert navigation state to decorated entries and display
+                    val decoratedEntries = navigationState.toDecoratedEntries(navigationEntries())
+
+                    NavigationHost(
+                        entries = decoratedEntries,
+                        onBack = { navigationState.navigateBack() },
+                        modifier = Modifier.padding(padding)
+                    )
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun navigationEntries(): (Destination) -> NavEntry<Destination> = entryProvider {
+        entry<Destination.HomeScreen> {
+            HomeScreen()
+        }
+        entry<Destination.SettingsScreen> {
+            SettingsScreen()
+        }
+        entry<Destination.RingtoneDetailScreen> { ringtoneDetail ->
+            RingtoneDetailScreen(ringtoneDetail)
+        }
+        entry<Destination.LoginScreen> {
+            LoginScreen()
+        }
+        entry<Destination.RegisterScreen> {
+            RegisterScreen()
+        }
+        entry<Destination.ForgotPasswordScreen> {
+            ForgotPasswordScreen()
         }
     }
 }

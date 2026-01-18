@@ -16,6 +16,7 @@ import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -28,12 +29,20 @@ val appModule = module {
     factory { MultipleExoPlayerAdapter(get()) } bind MultiplePlayerAdapter::class
     factory { SingleExoPlayerAdapter(get()) } bind SinglePlayerAdapter::class
 
-    single<Navigator> { DefaultNavigator(startDestination = Destination.HomeScreen) }
+    single<Navigator> { DefaultNavigator() }
 }
 
 val viewModelModule = module {
     viewModelOf(::HomeViewModel)
-    viewModelOf(::RingtoneDetailViewModel)
+    viewModel { (route: Destination.RingtoneDetailScreen) ->
+        RingtoneDetailViewModel(
+            route = route,
+            playerAdapter = get(),
+            fetchRingtoneDetailUseCase = get(),
+            navigator = get(),
+            context = get(),
+        )
+    }
     viewModelOf(::RegisterViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::SettingsViewModel)
