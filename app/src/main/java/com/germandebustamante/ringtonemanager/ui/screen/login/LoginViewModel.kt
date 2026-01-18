@@ -1,12 +1,12 @@
 package com.germandebustamante.ringtonemanager.ui.screen.login
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.germandebustamante.ringtonemanager.core.model.authorization.LoginTypeBO
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
-import com.germandebustamante.ringtonemanager.domain.authorization.model.LoginTypeBO
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignInUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
@@ -19,8 +19,7 @@ class LoginViewModel(
     private val signInUserUseCase: SignInUserUseCase,
     private val currentUserFlowUseCase: GetUserFlowUseCase,
     navigator: Navigator,
-    context: Context,
-) : BaseViewModel(navigator, context) {
+) : BaseViewModel(navigator) {
 
     var state by mutableStateOf(UIState())
         private set
@@ -28,7 +27,7 @@ class LoginViewModel(
     init {
         launchCatching {
             currentUserFlowUseCase().collectEither(
-                onLeft = { state = state.copy(loading = false, error = it.toErrorString()) },
+                onLeft = { state = state.copy(loading = false, error = it) },
                 onRight = { if (it != null) navigateUp() }
             )
         }
@@ -59,7 +58,7 @@ class LoginViewModel(
                         email = state.email.value,
                         password = state.password.value
                     )
-                )?.let { state = state.copy(loading = false, error = it.toErrorString()) }
+                )?.let { state = state.copy(loading = false, error = it) }
             } else {
                 updateInputsValidatorState()
             }
@@ -91,16 +90,14 @@ class LoginViewModel(
     }
 
     fun onCreateNewAccountClicked() {
-        navigateTo(Destination.RegisterScreen, navOptions = {
-            popUpTo(Destination.LoginScreen) { inclusive = true }
-        })
+        navigateTo(Destination.RegisterScreen)
     }
 
     fun onGoogleIdTokenReceived(googleTokenId: String) {
         launchCatching {
             notifyLoading()
             signInUserUseCase(LoginTypeBO.Google(googleTokenId))?.let {
-                state = state.copy(loading = false, error = it.toErrorString())
+                state = state.copy(loading = false, error = it)
             }
         }
     }
@@ -109,7 +106,7 @@ class LoginViewModel(
     data class UIState(
         val email: ValidatorInputState = ValidatorInputState(),
         val password: ValidatorInputState = ValidatorInputState(),
-        val error: String? = null,
+        val error: ErrorBO? = null,
         val loading: Boolean = false,
     ) {
         fun inputsAreValid(): Boolean = email.value.isValidEmail() && password.value.isValidPassword()

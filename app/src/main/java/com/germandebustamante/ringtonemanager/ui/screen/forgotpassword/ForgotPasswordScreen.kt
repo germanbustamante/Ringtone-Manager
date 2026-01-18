@@ -52,8 +52,6 @@ private fun ForgotPasswordContent(
     onRestorePasswordBtnClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val errorMessage = state.error.orEmpty()
-
     BaseScaffold(
         topBarTitle = stringResource(R.string.password_forgotten),
         navigationIconResource = R.drawable.ic_back,
@@ -65,12 +63,10 @@ private fun ForgotPasswordContent(
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            AnimatedVisibility(errorMessage.isNotBlank()) {
-                ErrorDialog(
-                    error = errorMessage,
-                    onDismissRequest = onCleanError,
-                )
-            }
+            ErrorDialog(
+                error = state.error,
+                onDismissRequest = onCleanError,
+            )
 
             AnimatedVisibility(state.loading) {
                 CircularProgressIndicator()

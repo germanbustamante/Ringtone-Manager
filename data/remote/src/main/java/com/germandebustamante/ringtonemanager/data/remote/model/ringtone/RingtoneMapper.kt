@@ -1,6 +1,6 @@
 package com.germandebustamante.ringtonemanager.data.remote.model.ringtone
 
-import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
+import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 
 fun RingtoneDTO.toDomain(): RingtoneBO = RingtoneBO(
     id = id.toString(),

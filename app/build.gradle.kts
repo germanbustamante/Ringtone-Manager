@@ -60,8 +60,9 @@ android {
 
 dependencies {
     //Modules
-    implementation(project(":domain"))
-    implementation(project(":bridgeDi"))
+    implementation(project(Modules.CORE_DOMAIN))
+    implementation(project(Modules.CORE_MODEL))
+    implementation(project(Modules.BRIDGE_DI))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
@@ -84,12 +85,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlin.serialization.json)
 
-    //Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    //Compose
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    //Testing
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

@@ -40,7 +40,6 @@ val viewModelModule = module {
             playerAdapter = get(),
             fetchRingtoneDetailUseCase = get(),
             navigator = get(),
-            context = get(),
         )
     }
     viewModelOf(::RegisterViewModel)

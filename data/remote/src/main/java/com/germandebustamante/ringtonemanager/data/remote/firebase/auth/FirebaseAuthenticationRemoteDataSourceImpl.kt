@@ -3,12 +3,12 @@ package com.germandebustamante.ringtonemanager.data.remote.firebase.auth
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.germandebustamante.ringtonemanager.core.model.authorization.UserBO
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.data.datasource.AuthenticationRemoteDataSource
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirebaseAuthManager
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager.toError
-import com.germandebustamante.ringtonemanager.domain.authorization.model.UserBO
-import com.germandebustamante.ringtonemanager.domain.error.CustomError
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -25,7 +25,7 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
     private val firestore: FirebaseFirestore,
 ) : AuthenticationRemoteDataSource {
 
-    override val currentUser: Flow<Either<CustomError, UserBO?>> = callbackFlow {
+    override val currentUser: Flow<Either<ErrorBO, UserBO?>> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { auth ->
             trySend(auth.currentUser?.let { UserBO(it.uid, it.email.orEmpty()).right() } ?: run { null.right() })
         }
@@ -37,16 +37,16 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
     }
 
-    override suspend fun signIn(email: String, password: String): CustomError? = FirebaseAuthManager.execute {
+    override suspend fun signIn(email: String, password: String): ErrorBO? = FirebaseAuthManager.execute {
         firebaseAuth.signInWithEmailAndPassword(email, password)
     }.swap().getOrNull()
 
-    override suspend fun googleSignIn(googleTokenId: String): Either<CustomError, AuthResult> =
+    override suspend fun googleSignIn(googleTokenId: String): Either<ErrorBO, AuthResult> =
         FirebaseAuthManager.execute {
             firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(googleTokenId, null))
         }
 
-    override suspend fun signUp(email: String, password: String, name: String): Either<CustomError, AuthResult> = try {
+    override suspend fun signUp(email: String, password: String, name: String): Either<ErrorBO, AuthResult> = try {
         val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
         val profileUpdates = UserProfileChangeRequest.Builder()
             .setDisplayName(name)
@@ -62,11 +62,11 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         firebaseAuth.signOut()
     }
 
-    override suspend fun forgotPassword(email: String): CustomError? = FirebaseAuthManager.executeVoid {
+    override suspend fun forgotPassword(email: String): ErrorBO? = FirebaseAuthManager.executeVoid {
         firebaseAuth.sendPasswordResetEmail(email)
     }
 
-    override suspend fun saveUserData(uuid: String, email: String, name: String?, loginType: String): CustomError? =
+    override suspend fun saveUserData(uuid: String, email: String, name: String?, loginType: String): ErrorBO? =
         try {
             val userInfoMap = hashMapOf(
                 USERS_COLLECTION_EMAIL_FIELD to email,

@@ -37,7 +37,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(project(Modules.CORE_DOMAIN))
+    implementation(project(Modules.CORE_MODEL))
 
     //Arrow
     implementation(libs.arrow.core)

@@ -36,7 +36,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(project(Modules.CORE_MODEL))
+    implementation(project(Modules.CORE_DOMAIN))
 
     //Firebase
     implementation(platform(libs.google.firebase.bom))

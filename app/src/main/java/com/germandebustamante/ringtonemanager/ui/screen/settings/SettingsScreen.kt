@@ -53,19 +53,16 @@ private fun SettingsContent(
     onCleanError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val errorMessage = state.error.orEmpty()
     val userLogged = state.userLogged
 
     BaseScaffold(
         topBarTitle = stringResource(R.string.account_configuration),
     ) { innerPadding ->
 
-        AnimatedVisibility(errorMessage.isNotBlank()) {
-            ErrorDialog(
-                error = state.error,
-                onDismissRequest = onCleanError
-            )
-        }
+        ErrorDialog(
+            error = state.error,
+            onDismissRequest = onCleanError
+        )
 
         AnimatedVisibility(state.isLoading) {
             CircularProgressIndicator()

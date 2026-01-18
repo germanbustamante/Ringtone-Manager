@@ -1,13 +1,13 @@
 package com.germandebustamante.ringtonemanager.ui.screen.ringtone
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
+import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
-import com.germandebustamante.ringtonemanager.domain.ringtone.model.RingtoneBO
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetRingtoneDetailUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
@@ -18,8 +18,7 @@ class RingtoneDetailViewModel(
     private val playerAdapter: SinglePlayerAdapter,
     private val fetchRingtoneDetailUseCase: GetRingtoneDetailUseCase,
     navigator: Navigator,
-    context: Context,
-) : BaseViewModel(navigator, context) {
+) : BaseViewModel(navigator) {
 
     var uiState by mutableStateOf(RingtoneDetailUIState())
         private set
@@ -80,7 +79,7 @@ class RingtoneDetailViewModel(
             setLoadingState(true)
             val ringtoneId = route.ringtoneId
             fetchRingtoneDetailUseCase(ringtoneId).fold(
-                ifLeft = { error -> setErrorState(error.toErrorString()) },
+                ifLeft = { error -> setErrorState(error) },
                 ifRight = { ringtoneDetails ->
                     playerAdapter.addMediaItem(ringtoneDetails.fileUrl)
                     uiState = uiState.copy(ringtone = ringtoneDetails)
@@ -94,8 +93,8 @@ class RingtoneDetailViewModel(
         uiState = uiState.copy(isLoading = isLoading)
     }
 
-    private fun setErrorState(errorMessage: String) {
-        uiState = uiState.copy(errorMessage = errorMessage, isLoading = false)
+    private fun setErrorState(error: ErrorBO) {
+        uiState = uiState.copy(error = error, isLoading = false)
     }
 
     fun onSeekButtonClick(timeInMillis: Int) {
@@ -113,7 +112,7 @@ class RingtoneDetailViewModel(
 
     data class RingtoneDetailUIState(
         val isLoading: Boolean = false,
-        val errorMessage: String? = null,
+        val error: ErrorBO? = null,
         val ringtone: RingtoneBO? = null,
         val ringtoneDuration: Int? = null,
         val currentPlaybackPosition: Int = DEFAULT_DURATION,

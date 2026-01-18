@@ -3,7 +3,7 @@ package com.germandebustamante.ringtonemanager.data.remote.manager
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import com.germandebustamante.ringtonemanager.domain.error.CustomError
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -44,7 +44,7 @@ object FirestoreManager {
     inline fun <reified T : Any, R> getDocumentsFlow(
         action: () -> Query,
         crossinline mapper: (T) -> R,
-    ): Flow<Either<CustomError, List<R>>> = action().dataObjects<T>().map {
+    ): Flow<Either<ErrorBO, List<R>>> = action().dataObjects<T>().map {
         it.map(mapper).right()
     }.catch {
         it.toError().left()
@@ -53,28 +53,28 @@ object FirestoreManager {
     suspend inline fun <reified T, R> getDocument(
         action: () -> Task<DocumentSnapshot>,
         mapper: (T) -> R,
-    ): Either<CustomError, R> = try {
+    ): Either<ErrorBO, R> = try {
         val result = action().await()
         result.toObject(T::class.java)?.let(mapper)?.right()
-            ?: CustomError.NotFound.left()
+            ?: ErrorBO.NotFound.left()
     } catch (exception: Exception) {
         exception.toError().left()
     }
 
-    suspend inline fun createDocument(action: Task<Void>): CustomError? = try {
+    suspend inline fun createDocument(action: Task<Void>): ErrorBO? = try {
         action.await()
         null
     } catch (exception: Exception) {
         exception.toError()
     }
 
-    fun Throwable.toError(): CustomError = when (this) {
-        is StorageException -> CustomError.Server(errorCode, message)
-        is RuntimeException -> CustomError.ParcelizeException
+    fun Throwable.toError(): ErrorBO = when (this) {
+        is StorageException -> ErrorBO.Server(errorCode, message)
+        is RuntimeException -> ErrorBO.ParcelizeException
         // Invoked when we call register with a email that is already in use
-        is FirebaseAuthUserCollisionException -> CustomError.EmailAddressAlreadyInUse
+        is FirebaseAuthUserCollisionException -> ErrorBO.EmailAddressAlreadyInUse
         // When try to login with a non existent email AND if try login with bad password but user exists
-        is FirebaseAuthInvalidCredentialsException -> CustomError.InvalidCredentials
-        else -> CustomError.Unknown(message)
+        is FirebaseAuthInvalidCredentialsException -> ErrorBO.InvalidCredentials
+        else -> ErrorBO.Unknown(message)
     }
 }

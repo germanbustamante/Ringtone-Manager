@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.germandebustamante.ringtonemanager.bridgedi"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(project(":core:domain"))
     implementation(project(":data:repository"))
     implementation(project(":data:remote"))
     implementation(project(":analytics"))
