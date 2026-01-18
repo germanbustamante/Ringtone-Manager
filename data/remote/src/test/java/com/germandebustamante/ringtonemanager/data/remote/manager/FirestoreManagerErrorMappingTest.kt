@@ -6,29 +6,14 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.storage.StorageException
 import io.mockk.every
-import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-/**
- * Tests for FirestoreManager error mapping functionality.
- *
- * Note: FirestoreManager uses inline functions and is an object singleton,
- * making it difficult to mock for unit tests. The main functionality
- * (getDocumentsFlow, getDocument, createDocument) should be tested via:
- * - Integration tests with Firebase Emulator
- * - Indirect testing through Repository tests
- *
- * These tests focus on the error mapping logic which is more easily testable.
- */
 @ExtendWith(MockKExtension::class)
 class FirestoreManagerErrorMappingTest {
-
-    @RelaxedMockK
-    private lateinit var throwable: Throwable
 
     @Test
     fun `GIVEN StorageException WHEN mapping to error THEN returns Server error`() {
