@@ -63,7 +63,9 @@ class RingtoneDetailViewModel(
                 updatePlaybackPosition(position.toInt())
             },
             onPlaybackEnded = {
-                _uiState.update { it.copy(isPlaying = false, currentPlaybackPosition = RingtoneDetailUIState.DEFAULT_DURATION) }
+                _uiState.update {
+                    it.copy(isPlaying = false, currentPlaybackPosition = RingtoneDetailUIState.DEFAULT_DURATION)
+                }
             }
         )
     }

@@ -25,10 +25,13 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.api.extension.ExtendWith
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,8 +76,8 @@ class HomeViewModelTest {
             // Then
             sut.state.test {
                 val state = awaitItem()
-                assert(state.ringtones.isNotEmpty())
-                assert(!state.isLoading)
+                assertTrue(state.ringtones.isNotEmpty())
+                assertFalse(state.isLoading)
             }
         }
 
@@ -117,7 +120,7 @@ class HomeViewModelTest {
             // Then
             sut.state.test {
                 val state = awaitItem()
-                assert(state.ringtones == expectedRingtones)
+                assertEquals(expectedRingtones, state.ringtones)
             }
         }
 
@@ -132,8 +135,8 @@ class HomeViewModelTest {
             // Then
             sut.state.test {
                 val errorState = awaitItem() // State after error
-                assert(errorState.error is ErrorBO.NotFound)
-                assert(!errorState.isLoading)
+                assertTrue(errorState.error is ErrorBO.NotFound)
+                assertFalse(errorState.isLoading)
             }
         }
 
@@ -200,7 +203,7 @@ class HomeViewModelTest {
             // Then
             sut.state.test {
                 val state = awaitItem()
-                assert(state.currentRingtonePlayingId == ringtone.id)
+                assertEquals(ringtone.id, state.currentRingtonePlayingId)
             }
         }
 
