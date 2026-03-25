@@ -1,33 +1,17 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    id("android.library.convention.plugin")
+    id("detekt.convention.plugin")
 }
 
 android {
     namespace = "com.germandebustamante.ringtonemanager.bridgedi"
-    compileSdk = 36
-
     defaultConfig {
-        minSdk = 24
-
         consumerProguardFiles("consumer-rules.pro")
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.fromTarget("1.8")
         }
     }
 }
