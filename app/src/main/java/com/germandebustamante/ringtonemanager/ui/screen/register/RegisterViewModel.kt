@@ -27,14 +27,10 @@ class RegisterViewModel(
         private set
 
     init {
-        launchCatching {
+        launchCatching(onError = { notifyError(it) }) {
             currentUserFlowUseCase().collectEither(
-                onLeft = { state = state.copy(loading = false, error = it) },
-                onRight = {
-                    if (it != null) {
-                        state = state.copy(onUserRegistered = { navigateUp() })
-                    }
-                }
+                onLeft = { notifyError(it) },
+                onRight = { if (it != null) navigateUp() }
             )
         }
     }
@@ -57,14 +53,17 @@ class RegisterViewModel(
     }
 
     fun onSignUpButtonClicked() {
-        launchCatching {
+        launchCatching(onError = { notifyError(it) }) {
             if (state.inputsAreValid()) {
                 notifyLoading()
                 signUpUserUseCase(
                     email = state.email.value,
                     password = state.password.value,
                     name = state.name.value
-                )?.let { state = state.copy(loading = false, error = it) }
+                ).fold(
+                    ifLeft = { state = state.copy(loading = false, error = it) },
+                    ifRight = { state = state.copy(loading = false) }
+                )
             } else {
                 updateInputsValidatorState()
             }
@@ -75,6 +74,10 @@ class RegisterViewModel(
     //region Private Methods
     private fun notifyLoading() {
         state = state.copy(loading = true)
+    }
+
+    private fun notifyError(error: ErrorBO) {
+        state = state.copy(loading = false, error = error)
     }
 
     private fun updateInputsValidatorState() {
@@ -100,11 +103,12 @@ class RegisterViewModel(
     }
 
     fun onGoogleIdTokenReceived(googleTokenId: String) {
-        launchCatching {
+        launchCatching(onError = { notifyError(it) }) {
             notifyLoading()
-            signInUserUseCase(LoginTypeBO.Google(googleTokenId))?.let {
-                state = state.copy(loading = false, error = it)
-            }
+            signInUserUseCase(LoginTypeBO.Google(googleTokenId)).fold(
+                ifLeft = { state = state.copy(loading = false, error = it) },
+                ifRight = { state = state.copy(loading = false) }
+            )
         }
     }
     //endregion
@@ -116,7 +120,6 @@ class RegisterViewModel(
         val repeatPassword: ValidatorInputState = ValidatorInputState(),
         val error: ErrorBO? = null,
         val loading: Boolean = false,
-        val onUserRegistered: (() -> Unit)? = null,
     ) {
         fun inputsAreValid(): Boolean = email.value.isValidEmail() &&
             name.value.isNotBlank() &&

@@ -1,6 +1,7 @@
 package com.germandebustamante.ringtonemanager.data.remote.firebase.auth
 
 import arrow.core.Either
+import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
 import com.germandebustamante.ringtonemanager.core.model.authorization.UserBO
@@ -39,23 +40,22 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
     }
 
-    override suspend fun signIn(email: String, password: String): ErrorBO? = authManager.execute {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-    }.swap().getOrNull()
+    override suspend fun signIn(email: String, password: String): Either<ErrorBO, Unit> =
+        authManager.execute { firebaseAuth.signInWithEmailAndPassword(email, password) }
+            .map { Unit }
 
-    override suspend fun googleSignIn(googleTokenId: String): Either<ErrorBO, AuthResult> =
+    override suspend fun googleSignIn(googleTokenId: String): Either<ErrorBO, Unit> =
         authManager.execute {
             firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(googleTokenId, null))
+        }.flatMap { authResult ->
+            saveUserData(authResult, GOOGLE_LOGIN_TYPE)
         }
 
-    override suspend fun signUp(email: String, password: String, name: String): Either<ErrorBO, AuthResult> = try {
+    override suspend fun signUp(email: String, password: String, name: String): Either<ErrorBO, Unit> = try {
         val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(name)
-            .build()
-
+        val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(name).build()
         authResult.user?.updateProfile(profileUpdates)?.await()
-        authResult.right()
+        saveUserData(authResult, DEFAULT_LOGIN_TYPE)
     } catch (exception: Exception) {
         exception.toErrorBO().left()
     }
@@ -64,31 +64,31 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         firebaseAuth.signOut()
     }
 
-    override suspend fun forgotPassword(email: String): ErrorBO? = authManager.executeVoid {
-        firebaseAuth.sendPasswordResetEmail(email)
+    override suspend fun forgotPassword(email: String): Either<ErrorBO, Unit> {
+        val error = authManager.executeVoid { firebaseAuth.sendPasswordResetEmail(email) }
+        return if (error != null) error.left() else Unit.right()
     }
 
-    override suspend fun saveUserData(uuid: String, email: String, name: String?, loginType: String): ErrorBO? =
-        try {
-            val userInfoMap = hashMapOf(
-                USERS_COLLECTION_EMAIL_FIELD to email,
-                USERS_COLLECTION_NAME_FIELD to name,
-                USERS_COLLECTION_LOGIN_TYPE_FIELD to loginType
-            )
-
-            firestoreManager.createDocument(
-                firestore.collection(USERS_COLLECTION_NAME)
-                    .document(uuid)
-                    .set(userInfoMap, SetOptions.merge())
-            )
-        } catch (e: Exception) {
-            e.toErrorBO()
-        }
+    private suspend fun saveUserData(authResult: AuthResult, loginType: String): Either<ErrorBO, Unit> {
+        val userInfoMap = hashMapOf(
+            USERS_COLLECTION_EMAIL_FIELD to authResult.user?.email.orEmpty(),
+            USERS_COLLECTION_NAME_FIELD to authResult.user?.displayName.orEmpty(),
+            USERS_COLLECTION_LOGIN_TYPE_FIELD to loginType
+        )
+        val error = firestoreManager.createDocument(
+            firestore.collection(USERS_COLLECTION_NAME)
+                .document(authResult.user?.uid.orEmpty())
+                .set(userInfoMap, SetOptions.merge())
+        )
+        return if (error != null) error.left() else Unit.right()
+    }
 
     companion object {
         private const val USERS_COLLECTION_NAME = "users_v1"
         private const val USERS_COLLECTION_EMAIL_FIELD = "email"
         private const val USERS_COLLECTION_NAME_FIELD = "name"
         private const val USERS_COLLECTION_LOGIN_TYPE_FIELD = "loginType"
+        private const val DEFAULT_LOGIN_TYPE = "default"
+        private const val GOOGLE_LOGIN_TYPE = "google"
     }
 }
