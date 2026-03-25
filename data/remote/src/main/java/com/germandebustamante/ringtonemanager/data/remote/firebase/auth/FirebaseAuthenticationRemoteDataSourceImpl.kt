@@ -8,7 +8,7 @@ import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.data.datasource.AuthenticationRemoteDataSource
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirebaseAuthManager
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager
-import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager.toError
+import com.germandebustamante.ringtonemanager.data.remote.manager.toErrorBO
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -23,6 +23,8 @@ import kotlinx.coroutines.tasks.await
 class FirebaseAuthenticationRemoteDataSourceImpl(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
+    private val authManager: FirebaseAuthManager,
+    private val firestoreManager: FirestoreManager,
 ) : AuthenticationRemoteDataSource {
 
     override val currentUser: Flow<Either<ErrorBO, UserBO?>> = callbackFlow {
@@ -32,17 +34,17 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         try {
             firebaseAuth.addAuthStateListener(listener)
         } catch (exception: Exception) {
-            trySend(exception.toError().left())
+            trySend(exception.toErrorBO().left())
         }
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
     }
 
-    override suspend fun signIn(email: String, password: String): ErrorBO? = FirebaseAuthManager.execute {
+    override suspend fun signIn(email: String, password: String): ErrorBO? = authManager.execute {
         firebaseAuth.signInWithEmailAndPassword(email, password)
     }.swap().getOrNull()
 
     override suspend fun googleSignIn(googleTokenId: String): Either<ErrorBO, AuthResult> =
-        FirebaseAuthManager.execute {
+        authManager.execute {
             firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(googleTokenId, null))
         }
 
@@ -55,14 +57,14 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         authResult.user?.updateProfile(profileUpdates)?.await()
         authResult.right()
     } catch (exception: Exception) {
-        exception.toError().left()
+        exception.toErrorBO().left()
     }
 
     override fun signOut() {
         firebaseAuth.signOut()
     }
 
-    override suspend fun forgotPassword(email: String): ErrorBO? = FirebaseAuthManager.executeVoid {
+    override suspend fun forgotPassword(email: String): ErrorBO? = authManager.executeVoid {
         firebaseAuth.sendPasswordResetEmail(email)
     }
 
@@ -74,13 +76,13 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
                 USERS_COLLECTION_LOGIN_TYPE_FIELD to loginType
             )
 
-            FirestoreManager.createDocument(
+            firestoreManager.createDocument(
                 firestore.collection(USERS_COLLECTION_NAME)
                     .document(uuid)
                     .set(userInfoMap, SetOptions.merge())
             )
         } catch (e: Exception) {
-            e.toError()
+            e.toErrorBO()
         }
 
     companion object {

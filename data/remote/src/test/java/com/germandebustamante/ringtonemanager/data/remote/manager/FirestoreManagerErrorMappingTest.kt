@@ -1,7 +1,6 @@
 package com.germandebustamante.ringtonemanager.data.remote.manager
 
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
-import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager.toError
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.storage.StorageException
@@ -24,7 +23,7 @@ class FirestoreManagerErrorMappingTest {
         }
 
         // When
-        val result = storageException.toError()
+        val result = storageException.toErrorBO()
 
         // Then
         assertTrue(result is ErrorBO.Server)
@@ -32,15 +31,16 @@ class FirestoreManagerErrorMappingTest {
     }
 
     @Test
-    fun `GIVEN RuntimeException WHEN mapping to error THEN returns ParcelizeException`() {
+    fun `GIVEN RuntimeException WHEN mapping to error THEN returns Unknown error`() {
         // Given
         val runtimeException = RuntimeException("Runtime error")
 
         // When
-        val result = runtimeException.toError()
+        val result = runtimeException.toErrorBO()
 
         // Then
-        assertTrue(result is ErrorBO.ParcelizeException)
+        assertTrue(result is ErrorBO.Unknown)
+        assertEquals("Runtime error", (result as ErrorBO.Unknown).message)
     }
 
     @Test
@@ -49,7 +49,7 @@ class FirestoreManagerErrorMappingTest {
         val exception: FirebaseAuthUserCollisionException = io.mockk.mockk(relaxed = true)
 
         // When
-        val result = exception.toError()
+        val result = exception.toErrorBO()
 
         // Then
         assertTrue(result is ErrorBO.EmailAddressAlreadyInUse)
@@ -61,7 +61,7 @@ class FirestoreManagerErrorMappingTest {
         val exception: FirebaseAuthInvalidCredentialsException = io.mockk.mockk(relaxed = true)
 
         // When
-        val result = exception.toError()
+        val result = exception.toErrorBO()
 
         // Then
         assertTrue(result is ErrorBO.InvalidCredentials)
@@ -73,7 +73,7 @@ class FirestoreManagerErrorMappingTest {
         val exception = Exception("Generic error")
 
         // When
-        val result = exception.toError()
+        val result = exception.toErrorBO()
 
         // Then
         assertTrue(result is ErrorBO.Unknown)
@@ -86,7 +86,7 @@ class FirestoreManagerErrorMappingTest {
         val exception = Exception(null as String?)
 
         // When
-        val result = exception.toError()
+        val result = exception.toErrorBO()
 
         // Then
         assertTrue(result is ErrorBO.Unknown)
@@ -94,27 +94,29 @@ class FirestoreManagerErrorMappingTest {
     }
 
     @Test
-    fun `GIVEN IllegalArgumentException WHEN mapping to error THEN returns ParcelizeException`() {
-        // Given (IllegalArgumentException is a RuntimeException subclass)
+    fun `GIVEN IllegalArgumentException WHEN mapping to error THEN returns Unknown error`() {
+        // Given
         val exception = IllegalArgumentException("Invalid argument")
 
         // When
-        val result = exception.toError()
+        val result = exception.toErrorBO()
 
         // Then
-        assertTrue(result is ErrorBO.ParcelizeException)
+        assertTrue(result is ErrorBO.Unknown)
+        assertEquals("Invalid argument", (result as ErrorBO.Unknown).message)
     }
 
     @Test
-    fun `GIVEN NullPointerException WHEN mapping to error THEN returns ParcelizeException`() {
-        // Given (NullPointerException is a RuntimeException subclass)
+    fun `GIVEN NullPointerException WHEN mapping to error THEN returns Unknown error`() {
+        // Given
         val exception = NullPointerException("Null pointer")
 
         // When
-        val result = exception.toError()
+        val result = exception.toErrorBO()
 
         // Then
-        assertTrue(result is ErrorBO.ParcelizeException)
+        assertTrue(result is ErrorBO.Unknown)
+        assertEquals("Null pointer", (result as ErrorBO.Unknown).message)
     }
 
     @Test
@@ -125,7 +127,7 @@ class FirestoreManagerErrorMappingTest {
         }
 
         // When
-        val result = storageException.toError()
+        val result = storageException.toErrorBO()
 
         // Then
         assertTrue(result is ErrorBO.Server)
@@ -141,7 +143,7 @@ class FirestoreManagerErrorMappingTest {
         }
 
         // When
-        val result = storageException.toError()
+        val result = storageException.toErrorBO()
 
         // Then
         assertTrue(result is ErrorBO.Server)

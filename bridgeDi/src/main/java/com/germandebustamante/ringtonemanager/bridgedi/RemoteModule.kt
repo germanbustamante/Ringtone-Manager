@@ -6,11 +6,16 @@ import com.germandebustamante.ringtonemanager.data.datasource.RingtoneListRemote
 import com.germandebustamante.ringtonemanager.data.remote.firebase.auth.FirebaseAuthenticationRemoteDataSourceImpl
 import com.germandebustamante.ringtonemanager.data.remote.firebase.firestore.RingtoneItemFirestoreRemoteDataSourceImpl
 import com.germandebustamante.ringtonemanager.data.remote.firebase.firestore.RingtoneListFirestoreRemoteDataSourceImpl
+import com.germandebustamante.ringtonemanager.data.remote.manager.FirebaseAuthManager
+import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val remoteModule = module {
-    factory { RingtoneItemFirestoreRemoteDataSourceImpl(get()) } bind RingtoneItemRemoteDataSource::class
-    factory { RingtoneListFirestoreRemoteDataSourceImpl(get()) } bind RingtoneListRemoteDataSource::class
-    factory { FirebaseAuthenticationRemoteDataSourceImpl(get(), get()) } bind AuthenticationRemoteDataSource::class
+    single { FirestoreManager() }
+    single { FirebaseAuthManager() }
+
+    single { RingtoneItemFirestoreRemoteDataSourceImpl(get(), get()) } bind RingtoneItemRemoteDataSource::class
+    single { RingtoneListFirestoreRemoteDataSourceImpl(get(), get()) } bind RingtoneListRemoteDataSource::class
+    single { FirebaseAuthenticationRemoteDataSourceImpl(get(), get(), get(), get()) } bind AuthenticationRemoteDataSource::class
 }
