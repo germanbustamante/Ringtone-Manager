@@ -5,18 +5,15 @@ import arrow.core.left
 import arrow.core.right
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.dataObjects
-import com.google.firebase.storage.StorageException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
-object FirestoreManager {
+class FirestoreManager {
 
     /**
      * Obtiene un flujo de documentos desde una fuente de datos utilizando un mapeador para transformar los datos.
@@ -29,25 +26,16 @@ object FirestoreManager {
      * @param R El tipo de dato al que se transforman los documentos después de aplicar el mapeador.
      * @param action Una función que devuelve una consulta (`Query`) para obtener los documentos.
      * @param mapper Una función que transforma un documento de tipo `T` a `R`.
-     * @return Un flujo (`Flow`) que emite un `Either` con un `CustomError` en caso de error, o una lista con los
+     * @return Un flujo (`Flow`) que emite un `Either` con un `ErrorBO` en caso de error, o una lista con los
      *         documentos transformados de tipo `R`.
-     *
-     * Ejemplo de uso:
-     * ```
-     * override fun getPopularRingtones(): Flow<Either<CustomError, List<RingtoneBO>>> =
-     *     FirestoreManager.getDocumentsFlow<RingtoneDTO, RingtoneBO>(
-     *         action = { firestore.collection(COLLECTION_NAME) },
-     *         mapper = RingtoneDTO::toDomain,
-     *     )
-     * ```
      */
     inline fun <reified T : Any, R> getDocumentsFlow(
         action: () -> Query,
         crossinline mapper: (T) -> R,
-    ): Flow<Either<ErrorBO, List<R>>> = action().dataObjects<T>().map {
-        it.map(mapper).right()
-    }.catch {
-        it.toError().left()
+    ): Flow<Either<ErrorBO, List<R>>> = action().dataObjects<T>().map { list ->
+        list.map(mapper).right<List<R>>() as Either<ErrorBO, List<R>>
+    }.catch { throwable ->
+        emit(Either.Left(throwable.toErrorBO()))
     }
 
     suspend inline fun <reified T, R> getDocument(
@@ -58,23 +46,13 @@ object FirestoreManager {
         result.toObject(T::class.java)?.let(mapper)?.right()
             ?: ErrorBO.NotFound.left()
     } catch (exception: Exception) {
-        exception.toError().left()
+        exception.toErrorBO().left()
     }
 
-    suspend inline fun createDocument(action: Task<Void>): ErrorBO? = try {
+    suspend fun createDocument(action: Task<Void>): ErrorBO? = try {
         action.await()
         null
     } catch (exception: Exception) {
-        exception.toError()
-    }
-
-    fun Throwable.toError(): ErrorBO = when (this) {
-        is StorageException -> ErrorBO.Server(errorCode, message)
-        is RuntimeException -> ErrorBO.ParcelizeException
-        // Invoked when we call register with a email that is already in use
-        is FirebaseAuthUserCollisionException -> ErrorBO.EmailAddressAlreadyInUse
-        // When try to login with a non existent email AND if try login with bad password but user exists
-        is FirebaseAuthInvalidCredentialsException -> ErrorBO.InvalidCredentials
-        else -> ErrorBO.Unknown(message)
+        exception.toErrorBO()
     }
 }

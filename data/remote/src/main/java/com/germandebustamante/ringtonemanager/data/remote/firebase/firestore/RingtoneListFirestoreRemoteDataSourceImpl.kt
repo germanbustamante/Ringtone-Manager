@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 class RingtoneListFirestoreRemoteDataSourceImpl(
     private val firestore: FirebaseFirestore,
+    private val firestoreManager: FirestoreManager,
 ) : RingtoneListRemoteDataSource {
 
     /**
@@ -35,7 +36,7 @@ class RingtoneListFirestoreRemoteDataSourceImpl(
      * ```
      */
     override fun getPopularRingtones(): Flow<Either<ErrorBO, List<RingtoneBO>>> =
-        FirestoreManager.getDocumentsFlow<RingtoneDTO, RingtoneBO>(
+        firestoreManager.getDocumentsFlow<RingtoneDTO, RingtoneBO>(
             action = { firestore.collection(COLLECTION_NAME).orderBy(POPULARITY_FIELD, Query.Direction.DESCENDING) },
             mapper = RingtoneDTO::toDomain,
         )

@@ -9,11 +9,13 @@ import com.germandebustamante.ringtonemanager.data.remote.model.ringtone.Rington
 import com.germandebustamante.ringtonemanager.data.remote.model.ringtone.toDomain
 import com.google.firebase.firestore.FirebaseFirestore
 
-class RingtoneItemFirestoreRemoteDataSourceImpl(private val firestore: FirebaseFirestore) :
-    RingtoneItemRemoteDataSource {
+class RingtoneItemFirestoreRemoteDataSourceImpl(
+    private val firestore: FirebaseFirestore,
+    private val firestoreManager: FirestoreManager,
+) : RingtoneItemRemoteDataSource {
 
     override suspend fun getRingtoneDetail(ringtoneId: String): Either<ErrorBO, RingtoneBO> =
-        FirestoreManager.getDocument<RingtoneDTO, RingtoneBO>(
+        firestoreManager.getDocument<RingtoneDTO, RingtoneBO>(
             action = { firestore.collection(COLLECTION_NAME).document(ringtoneId).get() },
             mapper = { it.toDomain() },
         ).onRight {
