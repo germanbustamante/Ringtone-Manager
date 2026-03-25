@@ -41,10 +41,6 @@ dependencies {
     implementation(project(Modules.CORE_MODEL))
     implementation(project(Modules.DATA_REMOTE))
 
-    //Firebase
-    implementation(platform(libs.google.firebase.bom))
-    implementation(libs.firebase.auth)
-
     //Koin
     implementation(platform(libs.io.insert.koin.bom))
     implementation(libs.io.insert.koin.core)

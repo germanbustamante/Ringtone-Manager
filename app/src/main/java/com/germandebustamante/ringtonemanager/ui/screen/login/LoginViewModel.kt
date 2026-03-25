@@ -25,9 +25,9 @@ class LoginViewModel(
         private set
 
     init {
-        launchCatching {
+        launchCatching(onError = { notifyError(it) }) {
             currentUserFlowUseCase().collectEither(
-                onLeft = { state = state.copy(loading = false, error = it) },
+                onLeft = { notifyError(it) },
                 onRight = { if (it != null) navigateUp() }
             )
         }
@@ -50,7 +50,7 @@ class LoginViewModel(
     }
 
     fun onSignInButtonClicked() {
-        launchCatching {
+        launchCatching(onError = { notifyError(it) }) {
             if (state.inputsAreValid()) {
                 notifyLoading()
                 signInUserUseCase(
@@ -58,7 +58,10 @@ class LoginViewModel(
                         email = state.email.value,
                         password = state.password.value
                     )
-                )?.let { state = state.copy(loading = false, error = it) }
+                ).fold(
+                    ifLeft = { state = state.copy(loading = false, error = it) },
+                    ifRight = { state = state.copy(loading = false) }
+                )
             } else {
                 updateInputsValidatorState()
             }
@@ -73,6 +76,10 @@ class LoginViewModel(
     //region Private Methods
     private fun notifyLoading() {
         state = state.copy(loading = true)
+    }
+
+    private fun notifyError(error: ErrorBO) {
+        state = state.copy(loading = false, error = error)
     }
 
     private fun updateInputsValidatorState() {
@@ -94,11 +101,12 @@ class LoginViewModel(
     }
 
     fun onGoogleIdTokenReceived(googleTokenId: String) {
-        launchCatching {
+        launchCatching(onError = { notifyError(it) }) {
             notifyLoading()
-            signInUserUseCase(LoginTypeBO.Google(googleTokenId))?.let {
-                state = state.copy(loading = false, error = it)
-            }
+            signInUserUseCase(LoginTypeBO.Google(googleTokenId)).fold(
+                ifLeft = { state = state.copy(loading = false, error = it) },
+                ifRight = { state = state.copy(loading = false) }
+            )
         }
     }
     //endregion

@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 interface AuthenticationRepository {
     val currentUser: Flow<Either<ErrorBO, UserBO?>>
 
-    suspend fun signIn(loginType: LoginTypeBO): ErrorBO?
-    suspend fun signUp(email: String, password: String, name: String): ErrorBO?
+    suspend fun signIn(loginType: LoginTypeBO): Either<ErrorBO, Unit>
+    suspend fun signUp(email: String, password: String, name: String): Either<ErrorBO, Unit>
     suspend fun signOut()
-    suspend fun forgotPassword(email: String): ErrorBO?
+    suspend fun forgotPassword(email: String): Either<ErrorBO, Unit>
 }

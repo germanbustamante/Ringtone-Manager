@@ -28,12 +28,13 @@ class ForgotPasswordViewModel(
     }
 
     fun onRestorePasswordClicked() {
-        launchCatching {
+        launchCatching(onError = { notifyError(it) }) {
             if (state.email.value.isValidEmail()) {
                 state = state.copy(loading = true)
-                forgotPasswordUseCase(email = state.email.value)?.let {
-                    state = state.copy(loading = false, error = it)
-                } ?: run { state = state.copy(loading = false, isEmailSent = true) }
+                forgotPasswordUseCase(email = state.email.value).fold(
+                    ifLeft = { state = state.copy(loading = false, error = it) },
+                    ifRight = { state = state.copy(loading = false, isEmailSent = true) }
+                )
             } else {
                 updateInputsValidatorState()
             }
@@ -42,6 +43,10 @@ class ForgotPasswordViewModel(
     //endregion
 
     //region Private Methods
+    private fun notifyError(error: ErrorBO) {
+        state = state.copy(loading = false, error = error)
+    }
+
     private fun updateInputsValidatorState() {
         val isEmailValid = state.email.value.isValidEmail()
         state = state.copy(email = state.email.copy(isValid = isEmailValid))
