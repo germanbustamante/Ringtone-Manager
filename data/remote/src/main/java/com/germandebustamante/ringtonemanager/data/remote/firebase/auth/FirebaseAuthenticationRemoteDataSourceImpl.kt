@@ -41,8 +41,7 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
     }
 
     override suspend fun signIn(email: String, password: String): Either<ErrorBO, Unit> =
-        authManager.execute { firebaseAuth.signInWithEmailAndPassword(email, password) }
-            .map { Unit }
+        authManager.execute { firebaseAuth.signInWithEmailAndPassword(email, password) }.map {}
 
     override suspend fun googleSignIn(googleTokenId: String): Either<ErrorBO, Unit> =
         authManager.execute {
