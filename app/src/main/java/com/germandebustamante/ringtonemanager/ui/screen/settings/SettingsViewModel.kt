@@ -21,7 +21,7 @@ class SettingsViewModel(
         private set
 
     init {
-        launchCatching {
+        launchCatching(onError = { state = state.copy(isLoading = false, error = it) }) {
             getUserFlowUseCase().collectEither(
                 onLeft = { state = state.copy(isLoading = false, error = it) },
                 onRight = { state = state.copy(userLogged = it != null, isLoading = false) }
@@ -30,7 +30,7 @@ class SettingsViewModel(
     }
 
     fun signOut() {
-        launchCatching {
+        launchCatching(onError = {}) {
             signOutUserUseCase()
         }
     }

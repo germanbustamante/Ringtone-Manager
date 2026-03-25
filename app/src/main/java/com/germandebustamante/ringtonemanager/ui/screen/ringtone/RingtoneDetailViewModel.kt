@@ -3,7 +3,6 @@ package com.germandebustamante.ringtonemanager.ui.screen.ringtone
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
@@ -11,7 +10,6 @@ import com.germandebustamante.ringtonemanager.core.navigation.destination.Destin
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetRingtoneDetailUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
-import kotlinx.coroutines.launch
 
 class RingtoneDetailViewModel(
     private val route: Destination.RingtoneDetailScreen,
@@ -75,7 +73,7 @@ class RingtoneDetailViewModel(
      * Fetches ringtone details using the ringtone ID from the saved state handle.
      */
     private fun fetchRingtoneDetails() {
-        viewModelScope.launch {
+        launchCatching(onError = { setErrorState(it) }) {
             setLoadingState(true)
             val ringtoneId = route.ringtoneId
             fetchRingtoneDetailUseCase(ringtoneId).fold(

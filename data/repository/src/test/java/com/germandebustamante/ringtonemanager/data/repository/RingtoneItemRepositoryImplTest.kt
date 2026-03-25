@@ -2,6 +2,7 @@ package com.germandebustamante.ringtonemanager.data.repository
 
 import arrow.core.left
 import arrow.core.right
+import com.germandebustamante.ringtonemanager.core.model.di.TestDispatcherProvider
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBOMother
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBOMother
@@ -10,19 +11,13 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockKExtension::class)
 class RingtoneItemRepositoryImplTest {
 
@@ -31,17 +26,9 @@ class RingtoneItemRepositoryImplTest {
     @MockK
     private lateinit var remoteDataSource: RingtoneItemRemoteDataSource
 
-    private val testDispatcher = UnconfinedTestDispatcher()
-
     @BeforeEach
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-        sut = RingtoneItemRepositoryImpl(remoteDataSource)
-    }
-
-    @AfterEach
-    fun tearDown() {
-        Dispatchers.resetMain()
+        sut = RingtoneItemRepositoryImpl(remoteDataSource, TestDispatcherProvider())
     }
 
     @Test
@@ -54,7 +41,7 @@ class RingtoneItemRepositoryImplTest {
         val result = sut.getRingtoneDetail(expectedRingtone.id)
 
         // Then
-        assert(result.isRight())
+        assertTrue(result.isRight())
         assertEquals(expectedRingtone, result.getOrNull())
         coVerify(exactly = 1) { remoteDataSource.getRingtoneDetail(expectedRingtone.id) }
     }
@@ -68,13 +55,13 @@ class RingtoneItemRepositoryImplTest {
         val result = sut.getRingtoneDetail(RINGTONE_ID)
 
         // Then
-        assert(result.isLeft())
+        assertTrue(result.isLeft())
         assertEquals(ErrorBOMother.serverError(), result.leftOrNull())
         coVerify(exactly = 1) { remoteDataSource.getRingtoneDetail(RINGTONE_ID) }
     }
 
     @Test
-    fun `GIVEN ringtone detail success WHEN getting ringtone detail THEN executes on IO dispatcher`() = runTest {
+    fun `GIVEN ringtone detail success WHEN getting ringtone detail THEN delegates to remote data source`() = runTest {
         // Given
         val ringtone = RingtoneBOMother.random()
         givenGetRingtoneDetailSuccess(ringtone)
