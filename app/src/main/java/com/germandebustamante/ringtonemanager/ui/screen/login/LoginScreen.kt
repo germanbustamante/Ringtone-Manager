@@ -18,7 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -44,16 +46,15 @@ fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
-    val accountManager = remember {
-        AccountManager(context)
-    }
+    val accountManager = remember { AccountManager(context) }
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         accountManager.getCredentials(onCredentialSignInSuccess = viewModel::updateCredentials)
     }
 
     LoginContent(
-        state = viewModel.state,
+        state = state,
         onEmailValueChanged = viewModel::updateEmail,
         onPasswordValueChanged = viewModel::updatePassword,
         onSignInButtonClicked = viewModel::onSignInButtonClicked,

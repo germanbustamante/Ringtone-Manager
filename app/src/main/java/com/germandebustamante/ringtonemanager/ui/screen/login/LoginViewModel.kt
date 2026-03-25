@@ -1,8 +1,5 @@
 package com.germandebustamante.ringtonemanager.ui.screen.login
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.model.authorization.LoginTypeBO
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
@@ -14,6 +11,9 @@ import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
 import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidEmail
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidPassword
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class LoginViewModel(
     private val signInUserUseCase: SignInUserUseCase,
@@ -21,8 +21,8 @@ class LoginViewModel(
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    var state by mutableStateOf(UIState())
-        private set
+    private val _state = MutableStateFlow(UIState())
+    val state: StateFlow<UIState> = _state
 
     init {
         launchCatching(onError = { notifyError(it) }) {
@@ -35,32 +35,34 @@ class LoginViewModel(
 
     //region Public Methods
     fun updateCredentials(email: String, password: String) {
-        state = state.copy(
-            email = state.email.copy(value = email),
-            password = state.password.copy(value = password),
-        )
+        _state.update {
+            it.copy(
+                email = it.email.copy(value = email),
+                password = it.password.copy(value = password),
+            )
+        }
     }
 
     fun updateEmail(email: String) {
-        state = state.copy(email = state.email.copy(value = email))
+        _state.update { it.copy(email = it.email.copy(value = email)) }
     }
 
     fun updatePassword(password: String) {
-        state = state.copy(password = state.password.copy(value = password))
+        _state.update { it.copy(password = it.password.copy(value = password)) }
     }
 
     fun onSignInButtonClicked() {
         launchCatching(onError = { notifyError(it) }) {
-            if (state.inputsAreValid()) {
+            if (_state.value.inputsAreValid()) {
                 notifyLoading()
                 signInUserUseCase(
                     LoginTypeBO.Default(
-                        email = state.email.value,
-                        password = state.password.value
+                        email = _state.value.email.value,
+                        password = _state.value.password.value
                     )
                 ).fold(
-                    ifLeft = { state = state.copy(loading = false, error = it) },
-                    ifRight = { state = state.copy(loading = false) }
+                    ifLeft = { _state.update { s -> s.copy(loading = false, error = it) } },
+                    ifRight = { _state.update { s -> s.copy(loading = false) } }
                 )
             } else {
                 updateInputsValidatorState()
@@ -75,25 +77,24 @@ class LoginViewModel(
 
     //region Private Methods
     private fun notifyLoading() {
-        state = state.copy(loading = true)
+        _state.update { it.copy(loading = true) }
     }
 
     private fun notifyError(error: ErrorBO) {
-        state = state.copy(loading = false, error = error)
+        _state.update { it.copy(loading = false, error = error) }
     }
 
     private fun updateInputsValidatorState() {
-        val isEmailValid = state.email.value.isValidEmail()
-        val isPasswordValid = state.password.value.isValidPassword()
-
-        state = state.copy(
-            email = state.email.copy(isValid = isEmailValid),
-            password = state.password.copy(isValid = isPasswordValid),
-        )
+        _state.update {
+            it.copy(
+                email = it.email.copy(isValid = it.email.value.isValidEmail()),
+                password = it.password.copy(isValid = it.password.value.isValidPassword()),
+            )
+        }
     }
 
     fun cleanError() {
-        state = state.copy(error = null)
+        _state.update { it.copy(error = null) }
     }
 
     fun onCreateNewAccountClicked() {
@@ -104,8 +105,8 @@ class LoginViewModel(
         launchCatching(onError = { notifyError(it) }) {
             notifyLoading()
             signInUserUseCase(LoginTypeBO.Google(googleTokenId)).fold(
-                ifLeft = { state = state.copy(loading = false, error = it) },
-                ifRight = { state = state.copy(loading = false) }
+                ifLeft = { _state.update { s -> s.copy(loading = false, error = it) } },
+                ifRight = { _state.update { s -> s.copy(loading = false) } }
             )
         }
     }
