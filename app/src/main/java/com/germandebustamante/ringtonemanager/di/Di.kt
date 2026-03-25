@@ -1,5 +1,7 @@
 package com.germandebustamante.ringtonemanager.di
 
+import com.germandebustamante.ringtonemanager.core.model.di.DefaultDispatcherProvider
+import com.germandebustamante.ringtonemanager.core.model.di.DispatcherProvider
 import com.germandebustamante.ringtonemanager.core.navigation.action.DefaultNavigator
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
@@ -22,9 +24,11 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appModule = module {
-    factory { FirebaseAnalytics.getInstance(get()) } bind FirebaseAnalytics::class
-    factory { FirebaseFirestore.getInstance() } bind FirebaseFirestore::class
-    factory { FirebaseAuth.getInstance() } bind FirebaseAuth::class
+    single { FirebaseAnalytics.getInstance(get()) } bind FirebaseAnalytics::class
+    single { FirebaseFirestore.getInstance() } bind FirebaseFirestore::class
+    single { FirebaseAuth.getInstance() } bind FirebaseAuth::class
+
+    single<DispatcherProvider> { DefaultDispatcherProvider() }
 
     factory { MultipleExoPlayerAdapter(get()) } bind MultiplePlayerAdapter::class
     factory { SingleExoPlayerAdapter(get()) } bind SinglePlayerAdapter::class

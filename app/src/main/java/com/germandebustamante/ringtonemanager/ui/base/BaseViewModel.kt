@@ -26,7 +26,7 @@ abstract class BaseViewModel(
     }
 
     fun launchCatching(
-        onError: (ErrorBO) -> Unit = {},
+        onError: (ErrorBO) -> Unit,
         block: suspend CoroutineScope.() -> Unit,
     ) =
         viewModelScope.launch(

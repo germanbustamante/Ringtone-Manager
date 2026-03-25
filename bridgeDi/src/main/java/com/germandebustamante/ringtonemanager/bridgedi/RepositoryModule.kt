@@ -10,7 +10,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    factory { RingtoneItemRepositoryImpl(get()) } bind RingtoneItemRepository::class
-    factory { RingtoneListRepositoryImpl(get()) } bind RingtoneListRepository::class
-    factory { AuthenticationRepositoryImpl(get()) } bind AuthenticationRepository::class
+    single { RingtoneItemRepositoryImpl(get(), get()) } bind RingtoneItemRepository::class
+    single { RingtoneListRepositoryImpl(get(), get()) } bind RingtoneListRepository::class
+    single { AuthenticationRepositoryImpl(get(), get()) } bind AuthenticationRepository::class
 }
