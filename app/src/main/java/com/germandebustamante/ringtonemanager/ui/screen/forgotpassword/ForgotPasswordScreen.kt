@@ -20,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.germandebustamante.ringtonemanager.R
+import com.germandebustamante.ringtonemanager.core.navigation.ObserveAsEvent
 import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
 import com.germandebustamante.ringtonemanager.ui.component.common.button.ButtonSize
 import com.germandebustamante.ringtonemanager.ui.component.common.button.PrimaryButton
@@ -34,8 +36,14 @@ import org.koin.androidx.compose.koinViewModel
 fun ForgotPasswordScreen(
     viewModel: ForgotPasswordViewModel = koinViewModel(),
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ObserveAsEvent(viewModel.emailSentEvent) {
+        viewModel.navigateUp()
+    }
+
     ForgotPasswordContent(
-        state = viewModel.state,
+        state = state,
         onBackPressed = viewModel::navigateUp,
         onCleanError = viewModel::cleanError,
         onEmailValueChanged = viewModel::updateEmail,

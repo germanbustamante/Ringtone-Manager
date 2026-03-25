@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,13 +36,15 @@ fun RingtoneDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: RingtoneDetailViewModel = koinViewModel(parameters = { parametersOf(route) }),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     DisposableEffectLifecycleObserver(
         onStop = viewModel::pausePlayer,
         onDispose = viewModel::releasePlayer,
     )
 
     RingtoneDetailContent(
-        uiState = viewModel.uiState,
+        uiState = uiState,
         onPlaybackPositionChange = viewModel::updatePlaybackPosition,
         onPlayPauseButtonClick = viewModel::onPlayPauseRingtone,
         onSeekButtonClick = viewModel::onSeekButtonClick,

@@ -1,8 +1,5 @@
 package com.germandebustamante.ringtonemanager.ui.screen.register
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.model.authorization.LoginTypeBO
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
@@ -15,6 +12,9 @@ import com.germandebustamante.ringtonemanager.ui.base.ValidatorInputState
 import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidEmail
 import com.germandebustamante.ringtonemanager.utils.extensions.isValidPassword
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class RegisterViewModel(
     private val signUpUserUseCase: SignUpUserUseCase,
@@ -23,8 +23,8 @@ class RegisterViewModel(
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    var state by mutableStateOf(UIState())
-        private set
+    private val _state = MutableStateFlow(UIState())
+    val state: StateFlow<UIState> = _state
 
     init {
         launchCatching(onError = { notifyError(it) }) {
@@ -37,32 +37,32 @@ class RegisterViewModel(
 
     //region Public Methods
     fun updateEmail(email: String) {
-        state = state.copy(email = state.email.copy(value = email))
+        _state.update { it.copy(email = it.email.copy(value = email)) }
     }
 
     fun updateName(name: String) {
-        state = state.copy(name = state.name.copy(value = name))
+        _state.update { it.copy(name = it.name.copy(value = name)) }
     }
 
     fun updatePassword(password: String) {
-        state = state.copy(password = state.password.copy(value = password))
+        _state.update { it.copy(password = it.password.copy(value = password)) }
     }
 
     fun updateRepeatPassword(repeatPassword: String) {
-        state = state.copy(repeatPassword = state.repeatPassword.copy(value = repeatPassword))
+        _state.update { it.copy(repeatPassword = it.repeatPassword.copy(value = repeatPassword)) }
     }
 
     fun onSignUpButtonClicked() {
         launchCatching(onError = { notifyError(it) }) {
-            if (state.inputsAreValid()) {
+            if (_state.value.inputsAreValid()) {
                 notifyLoading()
                 signUpUserUseCase(
-                    email = state.email.value,
-                    password = state.password.value,
-                    name = state.name.value
+                    email = _state.value.email.value,
+                    password = _state.value.password.value,
+                    name = _state.value.name.value
                 ).fold(
-                    ifLeft = { state = state.copy(loading = false, error = it) },
-                    ifRight = { state = state.copy(loading = false) }
+                    ifLeft = { _state.update { s -> s.copy(loading = false, error = it) } },
+                    ifRight = { _state.update { s -> s.copy(loading = false) } }
                 )
             } else {
                 updateInputsValidatorState()
@@ -73,29 +73,26 @@ class RegisterViewModel(
 
     //region Private Methods
     private fun notifyLoading() {
-        state = state.copy(loading = true)
+        _state.update { it.copy(loading = true) }
     }
 
     private fun notifyError(error: ErrorBO) {
-        state = state.copy(loading = false, error = error)
+        _state.update { it.copy(loading = false, error = error) }
     }
 
     private fun updateInputsValidatorState() {
-        val isEmailValid = state.email.value.isValidEmail()
-        val isNameValid = state.name.value.isNotBlank()
-        val isPasswordValid = state.password.value.isValidPassword()
-        val isRepeatPasswordValid = state.repeatPassword.value == state.password.value
-
-        state = state.copy(
-            email = state.email.copy(isValid = isEmailValid),
-            name = state.name.copy(isValid = isNameValid),
-            password = state.password.copy(isValid = isPasswordValid),
-            repeatPassword = state.repeatPassword.copy(isValid = isRepeatPasswordValid)
-        )
+        _state.update {
+            it.copy(
+                email = it.email.copy(isValid = it.email.value.isValidEmail()),
+                name = it.name.copy(isValid = it.name.value.isNotBlank()),
+                password = it.password.copy(isValid = it.password.value.isValidPassword()),
+                repeatPassword = it.repeatPassword.copy(isValid = it.repeatPassword.value == it.password.value),
+            )
+        }
     }
 
     fun cleanError() {
-        state = state.copy(error = null)
+        _state.update { it.copy(error = null) }
     }
 
     fun navigateToLogin() {
@@ -106,8 +103,8 @@ class RegisterViewModel(
         launchCatching(onError = { notifyError(it) }) {
             notifyLoading()
             signInUserUseCase(LoginTypeBO.Google(googleTokenId)).fold(
-                ifLeft = { state = state.copy(loading = false, error = it) },
-                ifRight = { state = state.copy(loading = false) }
+                ifLeft = { _state.update { s -> s.copy(loading = false, error = it) } },
+                ifRight = { _state.update { s -> s.copy(loading = false) } }
             )
         }
     }

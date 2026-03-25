@@ -1,8 +1,5 @@
 package com.germandebustamante.ringtonemanager.ui.screen.settings
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
@@ -10,6 +7,9 @@ import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUs
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignOutUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class SettingsViewModel(
     private val getUserFlowUseCase: GetUserFlowUseCase,
@@ -17,14 +17,14 @@ class SettingsViewModel(
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    var state: UIState by mutableStateOf(UIState())
-        private set
+    private val _state = MutableStateFlow(UIState())
+    val state: StateFlow<UIState> = _state
 
     init {
-        launchCatching(onError = { state = state.copy(isLoading = false, error = it) }) {
+        launchCatching(onError = { _state.update { s -> s.copy(isLoading = false, error = it) } }) {
             getUserFlowUseCase().collectEither(
-                onLeft = { state = state.copy(isLoading = false, error = it) },
-                onRight = { state = state.copy(userLogged = it != null, isLoading = false) }
+                onLeft = { _state.update { s -> s.copy(isLoading = false, error = it) } },
+                onRight = { _state.update { s -> s.copy(userLogged = it != null, isLoading = false) } }
             )
         }
     }
@@ -44,7 +44,7 @@ class SettingsViewModel(
     }
 
     fun cleanError() {
-        state = state.copy(error = null)
+        _state.update { it.copy(error = null) }
     }
 
     data class UIState(

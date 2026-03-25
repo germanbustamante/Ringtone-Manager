@@ -1,8 +1,5 @@
 package com.germandebustamante.ringtonemanager.ui.screen.ringtone
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
@@ -10,6 +7,9 @@ import com.germandebustamante.ringtonemanager.core.navigation.destination.Destin
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetRingtoneDetailUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class RingtoneDetailViewModel(
     private val route: Destination.RingtoneDetailScreen,
@@ -18,8 +18,8 @@ class RingtoneDetailViewModel(
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    var uiState by mutableStateOf(RingtoneDetailUIState())
-        private set
+    private val _uiState = MutableStateFlow(RingtoneDetailUIState())
+    val uiState: StateFlow<RingtoneDetailUIState> = _uiState
 
     init {
         setupPlayerListeners()
@@ -31,13 +31,13 @@ class RingtoneDetailViewModel(
      * Handles the play/pause action for the ringtone.
      */
     fun onPlayPauseRingtone() {
-        uiState.ringtone?.let { ringtone ->
-            if (uiState.isPlaying) {
+        _uiState.value.ringtone?.let { ringtone ->
+            if (_uiState.value.isPlaying) {
                 playerAdapter.pause()
             } else {
                 playerAdapter.play(ringtone.fileUrl)
             }
-            uiState = uiState.copy(isPlaying = !uiState.isPlaying)
+            _uiState.update { it.copy(isPlaying = !it.isPlaying) }
         }
     }
 
@@ -45,7 +45,7 @@ class RingtoneDetailViewModel(
      * Updates the current playback position in the state.
      */
     fun updatePlaybackPosition(position: Int) {
-        uiState = uiState.copy(currentPlaybackPosition = position)
+        _uiState.update { it.copy(currentPlaybackPosition = position) }
     }
 
     //endregion
@@ -57,14 +57,13 @@ class RingtoneDetailViewModel(
     private fun setupPlayerListeners() {
         playerAdapter.setListeners(
             onDurationReceived = { duration ->
-                uiState = uiState.copy(ringtoneDuration = duration)
+                _uiState.update { it.copy(ringtoneDuration = duration) }
             },
             onPositionChanged = { position ->
                 updatePlaybackPosition(position.toInt())
             },
             onPlaybackEnded = {
-                uiState =
-                    uiState.copy(isPlaying = false, currentPlaybackPosition = RingtoneDetailUIState.DEFAULT_DURATION)
+                _uiState.update { it.copy(isPlaying = false, currentPlaybackPosition = RingtoneDetailUIState.DEFAULT_DURATION) }
             }
         )
     }
@@ -75,12 +74,11 @@ class RingtoneDetailViewModel(
     private fun fetchRingtoneDetails() {
         launchCatching(onError = { setErrorState(it) }) {
             setLoadingState(true)
-            val ringtoneId = route.ringtoneId
-            fetchRingtoneDetailUseCase(ringtoneId).fold(
+            fetchRingtoneDetailUseCase(route.ringtoneId).fold(
                 ifLeft = { error -> setErrorState(error) },
                 ifRight = { ringtoneDetails ->
                     playerAdapter.addMediaItem(ringtoneDetails.fileUrl)
-                    uiState = uiState.copy(ringtone = ringtoneDetails)
+                    _uiState.update { it.copy(ringtone = ringtoneDetails) }
                     setLoadingState(false)
                 }
             )
@@ -88,11 +86,11 @@ class RingtoneDetailViewModel(
     }
 
     private fun setLoadingState(isLoading: Boolean) {
-        uiState = uiState.copy(isLoading = isLoading)
+        _uiState.update { it.copy(isLoading = isLoading) }
     }
 
     private fun setErrorState(error: ErrorBO) {
-        uiState = uiState.copy(error = error, isLoading = false)
+        _uiState.update { it.copy(error = error, isLoading = false) }
     }
 
     fun onSeekButtonClick(timeInMillis: Int) {
