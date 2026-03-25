@@ -27,5 +27,13 @@ gradlePlugin {
             id = "unit.test.convention.plugin"
             implementationClass = "plugins.analysis.UnitTestConventionPlugin"
         }
+        register("androidLibraryConventionPlugin") {
+            id = "android.library.convention.plugin"
+            implementationClass = "plugins.AndroidLibraryConventionPlugin"
+        }
+        register("kotlinLibraryConventionPlugin") {
+            id = "kotlin.library.convention.plugin"
+            implementationClass = "plugins.KotlinLibraryConventionPlugin"
+        }
     }
 }
