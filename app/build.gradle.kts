@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("detekt.convention.plugin")
     id("unit.test.convention.plugin")
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -49,8 +50,19 @@ android {
         compose = true
     }
 
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+
     testOptions {
-        unitTests.isReturnDefaultValues = true
+        unitTests {
+            isReturnDefaultValues = true
+            all { test ->
+                test.filter {
+                    excludeTestsMatching("*.screenshot.*")
+                }
+            }
+        }
     }
 
     composeOptions {
@@ -98,6 +110,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(platform(libs.io.insert.koin.bom))
     testImplementation(libs.io.insert.koin.test)
+    testRuntimeOnly(libs.junit.vintage.engine)
 
     //AndroidX Media3
     implementation(libs.androidx.media3.exoplayer)
@@ -134,3 +147,4 @@ dependencies {
     implementation(libs.androidx.material3.adaptive.navigation3)
     implementation(libs.kotlinx.serialization.core)
 }
+

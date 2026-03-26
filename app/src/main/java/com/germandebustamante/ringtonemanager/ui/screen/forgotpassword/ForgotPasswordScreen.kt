@@ -52,7 +52,7 @@ fun ForgotPasswordScreen(
 }
 
 @Composable
-private fun ForgotPasswordContent(
+internal fun ForgotPasswordContent(
     state: ForgotPasswordViewModel.UIState,
     onBackPressed: () -> Unit,
     onCleanError: () -> Unit,

@@ -34,7 +34,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeContent(
+internal fun HomeContent(
     state: HomeViewModel.UIState,
     onRingtoneClicked: (String) -> Unit,
     onPlayRingtoneClicked: (RingtoneBO, Boolean) -> Unit,

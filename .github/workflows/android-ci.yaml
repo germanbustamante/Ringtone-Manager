@@ -34,6 +34,23 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
 
+      - name: Record Screenshot Tests
+        run: ./gradlew recordPaparazziDebug
+
+      - name: Upload Paparazzi Snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paparazzi-snapshots
+          path: '**/src/test/snapshots/'
+
+      - name: Upload Paparazzi Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paparazzi-report
+          path: '**/build/reports/paparazzi/'
+
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v4

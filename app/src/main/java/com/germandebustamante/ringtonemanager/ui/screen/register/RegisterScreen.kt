@@ -54,7 +54,7 @@ fun RegisterScreen(
 }
 
 @Composable
-private fun RegisterContent(
+internal fun RegisterContent(
     state: RegisterViewModel.UIState,
     onEmailValueChanged: (String) -> Unit,
     onNameValueChanged: (String) -> Unit,
