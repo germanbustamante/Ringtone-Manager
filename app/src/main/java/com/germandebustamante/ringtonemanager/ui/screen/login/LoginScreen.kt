@@ -68,7 +68,7 @@ fun LoginScreen(
 }
 
 @Composable
-private fun LoginContent(
+internal fun LoginContent(
     state: LoginViewModel.UIState,
     onEmailValueChanged: (String) -> Unit,
     onPasswordValueChanged: (String) -> Unit,

@@ -54,7 +54,7 @@ fun RingtoneDetailScreen(
 }
 
 @Composable
-private fun RingtoneDetailContent(
+internal fun RingtoneDetailContent(
     uiState: RingtoneDetailViewModel.RingtoneDetailUIState,
     onPlaybackPositionChange: (Int) -> Unit,
     onPlayPauseButtonClick: () -> Unit,
