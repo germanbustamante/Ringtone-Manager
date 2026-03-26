@@ -96,6 +96,8 @@ dependencies {
     //Testing
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(platform(libs.io.insert.koin.bom))
+    testImplementation(libs.io.insert.koin.test)
 
     //AndroidX Media3
     implementation(libs.androidx.media3.exoplayer)
