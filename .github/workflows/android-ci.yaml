@@ -29,7 +29,7 @@ jobs:
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v3
         with:
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          cache-read-only: ${{ github.ref != 'refs/heads/development' }}
 
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
@@ -45,8 +45,21 @@ jobs:
         run: ./gradlew detekt
 
       - name: Upload Detekt Report
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: detekt-report
           path: '**/build/reports/detekt/'
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Run Lint
+        run: ./gradlew lintDebug
+
+      - name: Upload Lint Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: '**/build/reports/lint-results-debug.html'
