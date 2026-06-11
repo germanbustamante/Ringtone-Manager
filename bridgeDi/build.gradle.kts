@@ -21,11 +21,13 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":data:repository"))
     implementation(project(":data:remote"))
+    implementation(project(":data:local"))
     implementation(project(":analytics"))
 
     //Koin
     implementation(platform(libs.io.insert.koin.bom))
     implementation(libs.io.insert.koin.core)
+    implementation(libs.io.insert.koin.android)
 
     //Firebase
     implementation(platform(libs.google.firebase.bom))
