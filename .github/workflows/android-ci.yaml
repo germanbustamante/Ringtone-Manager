@@ -80,3 +80,28 @@ jobs:
         with:
           name: lint-report
           path: '**/build/reports/lint-results-debug.html'
+
+      - name: Build Release APK (R8 minified)
+        env:
+          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease
+
+      - name: Run Lint (release)
+        run: ./gradlew lintRelease
+
+      - name: Upload Release Lint Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report-release
+          path: '**/build/reports/lint-results-release.html'
+
+      - name: Upload Release APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: '**/build/outputs/apk/release/*.apk'

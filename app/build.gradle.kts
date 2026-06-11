@@ -10,7 +10,7 @@ val keystoreProperties = Properties().apply {
 }
 
 fun signingValue(propertyKey: String, envKey: String): String? =
-    keystoreProperties.getProperty(propertyKey) ?: System.getenv(envKey)
+    (keystoreProperties.getProperty(propertyKey) ?: System.getenv(envKey))?.takeIf { it.isNotBlank() }
 
 val hasReleaseKeystore: Boolean = signingValue("storeFile", "KEYSTORE_FILE") != null
 
