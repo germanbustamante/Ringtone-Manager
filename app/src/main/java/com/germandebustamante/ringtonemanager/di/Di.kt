@@ -50,6 +50,9 @@ val viewModelModule = module {
             fetchRingtoneDetailUseCase = get(),
             incrementRingtonePopularityUseCase = get(),
             ringtoneInstaller = get(),
+            getUserFlowUseCase = get(),
+            observeFavoriteIdsUseCase = get(),
+            toggleFavoriteUseCase = get(),
             navigator = get(),
         )
     }

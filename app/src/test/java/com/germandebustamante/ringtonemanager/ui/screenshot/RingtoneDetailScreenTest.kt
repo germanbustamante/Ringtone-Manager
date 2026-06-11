@@ -29,6 +29,7 @@ class RingtoneDetailScreenTest {
                     onPlayPauseButtonClick = {},
                     onSeekButtonClick = {},
                     onBackPressed = {},
+                    onToggleFavoriteClicked = {},
                     onShareClicked = {},
                     onSetAsRingtoneClicked = {},
                 )
@@ -52,6 +53,7 @@ class RingtoneDetailScreenTest {
                     onPlayPauseButtonClick = {},
                     onSeekButtonClick = {},
                     onBackPressed = {},
+                    onToggleFavoriteClicked = {},
                     onShareClicked = {},
                     onSetAsRingtoneClicked = {},
                 )
@@ -76,6 +78,7 @@ class RingtoneDetailScreenTest {
                     onPlayPauseButtonClick = {},
                     onSeekButtonClick = {},
                     onBackPressed = {},
+                    onToggleFavoriteClicked = {},
                     onShareClicked = {},
                     onSetAsRingtoneClicked = {},
                 )
@@ -97,6 +100,7 @@ class RingtoneDetailScreenTest {
                     onPlayPauseButtonClick = {},
                     onSeekButtonClick = {},
                     onBackPressed = {},
+                    onToggleFavoriteClicked = {},
                     onShareClicked = {},
                     onSetAsRingtoneClicked = {},
                 )

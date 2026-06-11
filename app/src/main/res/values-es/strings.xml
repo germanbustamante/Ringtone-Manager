@@ -59,4 +59,6 @@
     <string name="cd_google_logo">Logo de Google</string>
     <string name="cd_show_password">Mostrar contraseña</string>
     <string name="cd_hide_password">Ocultar contraseña</string>
+    <string name="cd_add_favorite">Añadir a favoritos</string>
+    <string name="cd_remove_favorite">Quitar de favoritos</string>
 </resources>

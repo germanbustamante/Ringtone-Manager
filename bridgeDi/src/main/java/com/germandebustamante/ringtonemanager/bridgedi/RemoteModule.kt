@@ -1,9 +1,11 @@
 package com.germandebustamante.ringtonemanager.bridgedi
 
 import com.germandebustamante.ringtonemanager.data.datasource.AuthenticationRemoteDataSource
+import com.germandebustamante.ringtonemanager.data.datasource.FavoritesRemoteDataSource
 import com.germandebustamante.ringtonemanager.data.datasource.RingtoneItemRemoteDataSource
 import com.germandebustamante.ringtonemanager.data.datasource.RingtoneListRemoteDataSource
 import com.germandebustamante.ringtonemanager.data.remote.firebase.auth.FirebaseAuthenticationRemoteDataSourceImpl
+import com.germandebustamante.ringtonemanager.data.remote.firebase.firestore.FavoritesFirestoreRemoteDataSourceImpl
 import com.germandebustamante.ringtonemanager.data.remote.firebase.firestore.RingtoneItemFirestoreRemoteDataSourceImpl
 import com.germandebustamante.ringtonemanager.data.remote.firebase.firestore.RingtoneListFirestoreRemoteDataSourceImpl
 import com.germandebustamante.ringtonemanager.data.remote.manager.FirebaseAuthManager
@@ -17,6 +19,7 @@ val remoteModule = module {
 
     single { RingtoneItemFirestoreRemoteDataSourceImpl(get(), get()) } bind RingtoneItemRemoteDataSource::class
     single { RingtoneListFirestoreRemoteDataSourceImpl(get()) } bind RingtoneListRemoteDataSource::class
+    single { FavoritesFirestoreRemoteDataSourceImpl(get(), get()) } bind FavoritesRemoteDataSource::class
     single {
         FirebaseAuthenticationRemoteDataSourceImpl(get(), get(), get(), get())
     } bind AuthenticationRemoteDataSource::class

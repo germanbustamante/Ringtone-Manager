@@ -24,6 +24,7 @@ fun HomeScreen(
         onRingtoneClicked = viewModel::navigateToRingtoneDetail,
         onPlayRingtoneClicked = viewModel::onPlayRingtoneClicked,
         onLoadMoreClicked = viewModel::loadMoreRingtones,
+        onToggleFavorite = viewModel::toggleFavorite,
         modifier = modifier,
     )
 
@@ -40,6 +41,7 @@ internal fun HomeContent(
     onRingtoneClicked: (String) -> Unit,
     onPlayRingtoneClicked: (RingtoneBO, Boolean) -> Unit,
     onLoadMoreClicked: () -> Unit,
+    onToggleFavorite: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -48,7 +50,15 @@ internal fun HomeContent(
             .fillMaxSize()
             .padding(8.dp),
     ) {
-        FavoriteRingtonesContainer(state.isLoading)
+        FavoriteRingtonesContainer(
+            isLoading = state.isLoading,
+            isLoggedIn = state.isLoggedIn,
+            favoriteRingtones = state.favoriteRingtones,
+            currentRingtonePlayingId = state.currentRingtonePlayingId,
+            onRingtoneClicked = onRingtoneClicked,
+            onPlayRingtoneClicked = onPlayRingtoneClicked,
+            onToggleFavorite = onToggleFavorite,
+        )
 
         PopularRingtonesContainer(
             state = state,
@@ -63,4 +73,10 @@ internal fun HomeContent(
 @Composable
 private fun HomeScreenPreview(
     @PreviewParameter(HomePreviewParameterProviders::class) state: HomeViewModel.UIState,
-) = HomeContent(state, onRingtoneClicked = {}, onPlayRingtoneClicked = { _, _ -> }, onLoadMoreClicked = {})
+) = HomeContent(
+    state = state,
+    onRingtoneClicked = {},
+    onPlayRingtoneClicked = { _, _ -> },
+    onLoadMoreClicked = {},
+    onToggleFavorite = {},
+)

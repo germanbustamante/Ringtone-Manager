@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHost
@@ -78,6 +79,7 @@ fun RingtoneDetailScreen(
         onPlayPauseButtonClick = viewModel::onPlayPauseRingtone,
         onSeekButtonClick = viewModel::onSeekButtonClick,
         onBackPressed = viewModel::navigateUp,
+        onToggleFavoriteClicked = viewModel::toggleFavorite,
         onShareClicked = {
             uiState.ringtone?.let { ringtone ->
                 val intent = Intent(Intent.ACTION_SEND).apply {
@@ -111,6 +113,7 @@ internal fun RingtoneDetailContent(
     onPlayPauseButtonClick: () -> Unit,
     onSeekButtonClick: (timeInMillis: Int) -> Unit,
     onBackPressed: () -> Unit,
+    onToggleFavoriteClicked: () -> Unit,
     onShareClicked: () -> Unit,
     onSetAsRingtoneClicked: () -> Unit,
     modifier: Modifier = Modifier,
@@ -171,6 +174,22 @@ internal fun RingtoneDetailContent(
                     Text(stringResource(R.string.set_as_ringtone))
                 }
 
+                if (uiState.isLoggedIn) {
+                    IconButton(onClick = onToggleFavoriteClicked) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_favorite),
+                            contentDescription = stringResource(
+                                if (uiState.isFavorite) R.string.cd_remove_favorite else R.string.cd_add_favorite,
+                            ),
+                            tint = if (uiState.isFavorite) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                            },
+                        )
+                    }
+                }
+
                 ShareButtonWithToolTip(
                     onClick = onShareClicked,
                     descriptionText = stringResource(R.string.share_action),
@@ -229,6 +248,7 @@ fun RingtoneDetailScreenPreview(
     onPlayPauseButtonClick = {},
     onSeekButtonClick = {},
     onBackPressed = {},
+    onToggleFavoriteClicked = {},
     onShareClicked = {},
     onSetAsRingtoneClicked = {},
 )

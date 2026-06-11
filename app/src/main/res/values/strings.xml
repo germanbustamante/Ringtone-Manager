@@ -58,5 +58,7 @@
     <string name="cd_clear_input">Clear text</string>
     <string name="cd_google_logo">Google logo</string>
     <string name="cd_show_password">Show password</string>
+    <string name="cd_add_favorite">Add to favorites</string>
+    <string name="cd_remove_favorite">Remove from favorites</string>
     <string name="cd_hide_password">Hide password</string>
 </resources>
