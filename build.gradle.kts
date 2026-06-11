@@ -9,7 +9,21 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
+    alias(libs.plugins.module.graph.assert)
     alias(libs.plugins.paparazzi) apply false
+}
+
+// Enforce the Clean Architecture dependency rules as a CI check instead of a
+// convention: presentation and the pure core must never reach across the graph
+// into the data layer or the composition root. Run with `./gradlew assertModuleGraph`.
+moduleGraphAssert {
+    configurations = setOf("implementation", "api")
+    restricted = arrayOf(
+        ":app -X> .*:data:.*",        // presentation must go through :bridgeDi, not data directly
+        ".*:core:.* -X> .*:data:.*",  // the pure core must not depend on the data layer
+        ".*:core:.* -X> :app",        // the core must not depend on presentation
+        ".*:core:.* -X> :bridgeDi",   // the core must not depend on the composition root
+    )
 }
 
 // Aggregate coverage of the business-logic layers (domain + data) into a single
