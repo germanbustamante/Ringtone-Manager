@@ -1,0 +1,27 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public, read-only ringtone catalog. Content is curated server-side, so
+    // clients can neither create nor delete documents. The only client write
+    // allowed is bumping the `popularity` counter from the detail screen — and
+    // strictly that field, so the rest of the document cannot be tampered with.
+    match /ringtones_v1/{ringtoneId} {
+      allow read: if true;
+      allow create, delete: if false;
+      allow update: if request.resource.data.diff(resource.data)
+                           .affectedKeys().hasOnly(['popularity']);
+    }
+
+    // A user may only read and write their own profile document and the
+    // sub-collections hanging off it (e.g. favorites).
+    match /users_v1/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /favorites/{ringtoneId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}
