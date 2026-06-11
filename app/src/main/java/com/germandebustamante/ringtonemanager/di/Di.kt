@@ -43,6 +43,7 @@ val viewModelModule = module {
             route = route,
             playerAdapter = get(),
             fetchRingtoneDetailUseCase = get(),
+            incrementRingtonePopularityUseCase = get(),
             navigator = get(),
         )
     }

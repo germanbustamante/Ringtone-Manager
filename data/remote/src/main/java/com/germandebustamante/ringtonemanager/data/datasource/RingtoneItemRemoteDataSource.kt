@@ -6,4 +6,6 @@ import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 
 interface RingtoneItemRemoteDataSource {
     suspend fun getRingtoneDetail(ringtoneId: String): Either<ErrorBO, RingtoneBO>
+
+    suspend fun incrementPopularity(ringtoneId: String): Either<ErrorBO, Unit>
 }

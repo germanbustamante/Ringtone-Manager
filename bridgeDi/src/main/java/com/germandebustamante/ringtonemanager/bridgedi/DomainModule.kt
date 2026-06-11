@@ -7,11 +7,13 @@ import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignO
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignUpUserUseCase
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopularRingtonesUseCase
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetRingtoneDetailUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.IncrementRingtonePopularityUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
     factory { GetPopularRingtonesUseCase(get()) }
     factory { GetRingtoneDetailUseCase(get(), get()) }
+    factory { IncrementRingtonePopularityUseCase(get()) }
     factory { GetUserFlowUseCase(get()) }
     factory { SignUpUserUseCase(get()) }
     factory { SignInUserUseCase(get()) }

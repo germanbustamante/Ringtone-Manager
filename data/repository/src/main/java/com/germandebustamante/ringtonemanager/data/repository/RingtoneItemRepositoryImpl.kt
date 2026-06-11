@@ -17,4 +17,9 @@ class RingtoneItemRepositoryImpl(
         withContext(dispatcherProvider.io) {
             remoteDataSource.getRingtoneDetail(ringtoneId)
         }
+
+    override suspend fun incrementPopularity(ringtoneId: String): Either<ErrorBO, Unit> =
+        withContext(dispatcherProvider.io) {
+            remoteDataSource.incrementPopularity(ringtoneId)
+        }
 }

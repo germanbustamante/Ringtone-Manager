@@ -73,6 +73,32 @@ class RingtoneItemRepositoryImplTest {
         coVerify(exactly = 1) { remoteDataSource.getRingtoneDetail(ringtone.id) }
     }
 
+    @Test
+    fun `GIVEN increment success WHEN incrementing popularity THEN delegates to remote data source`() = runTest {
+        // Given
+        coEvery { remoteDataSource.incrementPopularity(RINGTONE_ID) } returns Unit.right()
+
+        // When
+        val result = sut.incrementPopularity(RINGTONE_ID)
+
+        // Then
+        assertTrue(result.isRight())
+        coVerify(exactly = 1) { remoteDataSource.incrementPopularity(RINGTONE_ID) }
+    }
+
+    @Test
+    fun `GIVEN server error WHEN incrementing popularity THEN returns error`() = runTest {
+        // Given
+        coEvery { remoteDataSource.incrementPopularity(RINGTONE_ID) } returns ErrorBOMother.serverError().left()
+
+        // When
+        val result = sut.incrementPopularity(RINGTONE_ID)
+
+        // Then
+        assertTrue(result.isLeft())
+        assertEquals(ErrorBOMother.serverError(), result.leftOrNull())
+    }
+
     //region General Stubs
     private fun givenGetRingtoneDetailSuccess(ringtone: RingtoneBO = RingtoneBOMother.random()) {
         coEvery { remoteDataSource.getRingtoneDetail(ringtone.id) } returns ringtone.right()
