@@ -1,11 +1,11 @@
 package com.germandebustamante.ringtonemanager.domain.ringtone.usecase
 
-import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
+import arrow.core.Either
+import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.domain.ringtone.repository.RingtoneListRepository
-import kotlinx.coroutines.flow.Flow
 
-class GetPopularRingtonesUseCase(
+class SyncPopularRingtonesUseCase(
     private val ringtoneListRepository: RingtoneListRepository,
 ) {
-    operator fun invoke(): Flow<List<RingtoneBO>> = ringtoneListRepository.popularRingtones
+    suspend operator fun invoke(): Either<ErrorBO, Unit> = ringtoneListRepository.syncPopularRingtones()
 }

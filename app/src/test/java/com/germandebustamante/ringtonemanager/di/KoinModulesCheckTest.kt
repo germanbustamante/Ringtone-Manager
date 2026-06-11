@@ -2,6 +2,7 @@ package com.germandebustamante.ringtonemanager.di
 
 import com.germandebustamante.ringtonemanager.bridgedi.analyticsModule
 import com.germandebustamante.ringtonemanager.bridgedi.domainModule
+import com.germandebustamante.ringtonemanager.bridgedi.localModule
 import com.germandebustamante.ringtonemanager.bridgedi.remoteModule
 import com.germandebustamante.ringtonemanager.bridgedi.repositoryModule
 import com.germandebustamante.ringtonemanager.core.model.di.DispatcherProvider
@@ -23,7 +24,7 @@ class KoinModulesCheckTest {
     @Test
     fun `all bridgeDi modules resolve without missing dependencies`() {
         module {
-            includes(analyticsModule, remoteModule, repositoryModule, domainModule)
+            includes(analyticsModule, remoteModule, repositoryModule, domainModule, localModule)
         }.verify(
             extraTypes = listOf(
                 FirebaseFirestore::class,
@@ -31,6 +32,7 @@ class KoinModulesCheckTest {
                 FirebaseAnalytics::class,
                 FirebaseCrashlytics::class,
                 DispatcherProvider::class,
+                android.content.Context::class,
             ),
         )
     }

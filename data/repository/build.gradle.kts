@@ -23,6 +23,7 @@ dependencies {
     implementation(project(Modules.CORE_DOMAIN))
     implementation(project(Modules.CORE_MODEL))
     implementation(project(Modules.DATA_REMOTE))
+    implementation(project(Modules.DATA_LOCAL))
 
     //Koin
     implementation(platform(libs.io.insert.koin.bom))

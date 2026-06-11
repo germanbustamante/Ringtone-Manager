@@ -31,7 +31,15 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(appModule, viewModelModule, domainModule, repositoryModule, remoteModule, analyticsModule, localModule)
+            modules(
+                appModule,
+                viewModelModule,
+                domainModule,
+                repositoryModule,
+                remoteModule,
+                analyticsModule,
+                localModule,
+            )
         }
 
         crashReporter.log("Application initialized")

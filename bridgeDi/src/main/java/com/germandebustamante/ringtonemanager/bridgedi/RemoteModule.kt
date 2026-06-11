@@ -16,7 +16,7 @@ val remoteModule = module {
     single { FirebaseAuthManager() }
 
     single { RingtoneItemFirestoreRemoteDataSourceImpl(get(), get()) } bind RingtoneItemRemoteDataSource::class
-    single { RingtoneListFirestoreRemoteDataSourceImpl(get(), get()) } bind RingtoneListRemoteDataSource::class
+    single { RingtoneListFirestoreRemoteDataSourceImpl(get()) } bind RingtoneListRemoteDataSource::class
     single {
         FirebaseAuthenticationRemoteDataSourceImpl(get(), get(), get(), get())
     } bind AuthenticationRemoteDataSource::class

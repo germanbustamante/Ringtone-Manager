@@ -5,15 +5,16 @@ import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopularRingtonesUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.SyncPopularRingtonesUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
-import com.germandebustamante.ringtonemanager.utils.extensions.collectEither
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class HomeViewModel(
     private val getPopularRingtonesUseCase: GetPopularRingtonesUseCase,
+    private val syncPopularRingtonesUseCase: SyncPopularRingtonesUseCase,
     private val player: MultiplePlayerAdapter,
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
@@ -22,7 +23,8 @@ class HomeViewModel(
     val state: StateFlow<UIState> = _state
 
     init {
-        getFullRingtones()
+        observeRingtones()
+        syncRingtones()
     }
 
     //region Public methods
@@ -50,25 +52,24 @@ class HomeViewModel(
     //endregion
 
     //region Private methods
-    private fun notifyLoading(loading: Boolean) {
-        _state.update { it.copy(isLoading = loading) }
+    private fun observeRingtones() {
+        launchCatching(onError = { notifyError(it) }) {
+            getPopularRingtonesUseCase().collect { ringtones ->
+                player.addMediaItems(ringtones.map { it.fileUrl })
+                _state.update { it.copy(ringtones = ringtones) }
+            }
+        }
     }
 
-    private fun getFullRingtones() {
-        launchCatching(onError = { notifyError(it) }) {
-            notifyLoading(true)
-            getPopularRingtonesUseCase().collectEither(
-                onLeft = { notifyError(it) },
-                onRight = { ringtones ->
-                    player.addMediaItems(ringtones.map { it.fileUrl })
-                    _state.value = _state.value.copy(ringtones = ringtones, isLoading = false)
-                }
-            )
+    private fun syncRingtones() {
+        launchCatching(onError = { error -> _state.update { it.copy(isLoading = false, error = error) } }) {
+            val result = syncPopularRingtonesUseCase()
+            _state.update { it.copy(isLoading = false, error = result.leftOrNull()) }
         }
     }
 
     private fun notifyError(error: ErrorBO) {
-        _state.value = _state.value.copy(error = error, isLoading = false)
+        _state.update { it.copy(error = error, isLoading = false) }
     }
 
     fun navigateToRingtoneDetail(ringtoneId: String) {

@@ -1,19 +1,16 @@
 package com.germandebustamante.ringtonemanager.domain.ringtone.usecase
 
 import app.cash.turbine.test
-import arrow.core.left
-import arrow.core.right
-import com.germandebustamante.ringtonemanager.core.model.error.ErrorBOMother
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBOMother
 import com.germandebustamante.ringtonemanager.domain.ringtone.repository.RingtoneListRepository
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -32,64 +29,33 @@ class GetPopularRingtonesUseCaseTest {
     }
 
     @Test
-    fun `GIVEN popular ringtones success WHEN invoked THEN returns success with ringtones list`() = runTest {
-        // Given
+    fun `GIVEN popular ringtones success WHEN invoked THEN returns ringtones list`() = runTest {
         val expectedRingtones = RingtoneBOMother.randomList()
-        givenRingtoneListRepositorySuccess(expectedRingtones)
+        every { ringtoneListRepository.popularRingtones } returns flowOf(expectedRingtones)
 
-        // When
         val result = sut()
 
-        // Then
         result.test {
-            val item = awaitItem()
-            assert(item.isRight())
-            assertEquals(expectedRingtones, item.getOrNull())
+            assertEquals(expectedRingtones, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `GIVEN empty ringtones list WHEN invoked THEN returns success with empty list`() = runTest {
-        // Given
-        every { ringtoneListRepository.popularRingtones } returns flowOf(emptyList<RingtoneBO>().right())
+    fun `GIVEN empty ringtones list WHEN invoked THEN returns empty list`() = runTest {
+        every { ringtoneListRepository.popularRingtones } returns flowOf(emptyList<RingtoneBO>())
 
-        // When
         val result = sut()
 
-        // Then
         result.test {
-            val item = awaitItem()
-            assert(item.isRight())
-            assert(item.getOrNull()?.isEmpty() == true)
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `GIVEN server error WHEN invoked THEN returns error`() = runTest {
-        // Given
-        givenRingtoneListRepositoryError()
-
-        // When
-        val result = sut()
-
-        // Then
-        result.test {
-            val item = awaitItem()
-            assert(item.isLeft())
-            assertEquals(ErrorBOMother.serverError(), item.leftOrNull())
+            assertTrue(awaitItem().isEmpty())
             awaitComplete()
         }
     }
 
     //region Stubs
     private fun givenRingtoneListRepositorySuccess(ringtones: List<RingtoneBO> = RingtoneBOMother.randomList()) {
-        coEvery { ringtoneListRepository.popularRingtones  } returns flowOf(ringtones.right())
-    }
-
-    private fun givenRingtoneListRepositoryError() {
-        coEvery { ringtoneListRepository.popularRingtones  } returns flowOf(ErrorBOMother.serverError().left())
+        every { ringtoneListRepository.popularRingtones } returns flowOf(ringtones)
     }
     //endregion
 }
