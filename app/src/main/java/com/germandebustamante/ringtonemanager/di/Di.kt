@@ -17,6 +17,7 @@ import com.germandebustamante.ringtonemanager.utils.audio.SingleExoPlayerAdapter
 import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -27,6 +28,7 @@ val appModule = module {
     single { FirebaseAnalytics.getInstance(get()) } bind FirebaseAnalytics::class
     single { FirebaseFirestore.getInstance() } bind FirebaseFirestore::class
     single { FirebaseAuth.getInstance() } bind FirebaseAuth::class
+    single { FirebaseCrashlytics.getInstance() } bind FirebaseCrashlytics::class
 
     single<DispatcherProvider> { DefaultDispatcherProvider() }
 

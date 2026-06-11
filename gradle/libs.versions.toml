@@ -5,6 +5,8 @@ arrowCore = "2.2.1.1"
 constraintlayoutCompose = "1.1.1"
 dependencyGuard = "0.5.0"
 detekt = "1.23.7"
+firebaseCrashlyticsPlugin = "3.0.3"
+firebasePerfPlugin = "1.4.2"
 moduleGraphAssert = "2.7.1"
 kover = "0.9.1"
 paparazzi = "2.0.0-alpha02"
@@ -70,6 +72,8 @@ google-firebase-analytics = { group = "com.google.firebase", name = "firebase-an
 google-firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 google-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
 google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
+google-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+google-firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
 io-insert-koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 io-insert-koin-core = { group = "io.insert-koin", name = "koin-core" }
 io-insert-koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
@@ -112,6 +116,8 @@ gradlePlugin-kover = { group = "org.jetbrains.kotlinx", name = "kover-gradle-plu
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-gms-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerfPlugin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

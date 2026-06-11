@@ -32,5 +32,6 @@ dependencies {
     implementation(libs.google.firebase.analytics)
     implementation(libs.google.firebase.firestore.ktx)
     implementation(libs.google.firebase.storage)
+    implementation(libs.google.firebase.crashlytics)
     implementation(libs.firebase.auth)
 }
