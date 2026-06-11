@@ -5,6 +5,7 @@ import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopularRingtonesUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.LoadMoreRingtonesUseCase
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.SyncPopularRingtonesUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.update
 class HomeViewModel(
     private val getPopularRingtonesUseCase: GetPopularRingtonesUseCase,
     private val syncPopularRingtonesUseCase: SyncPopularRingtonesUseCase,
+    private val loadMoreRingtonesUseCase: LoadMoreRingtonesUseCase,
     private val player: MultiplePlayerAdapter,
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
@@ -49,6 +51,16 @@ class HomeViewModel(
         player.pause()
         _state.update { it.copy(currentRingtonePlayingId = null) }
     }
+
+    fun loadMoreRingtones() {
+        if (_state.value.isLoadingMore || !_state.value.canLoadMore) return
+        launchCatching(onError = { error -> _state.update { it.copy(isLoadingMore = false, error = error) } }) {
+            _state.update { it.copy(isLoadingMore = true) }
+            loadMoreRingtonesUseCase()
+                .onRight { hasMore -> _state.update { it.copy(isLoadingMore = false, canLoadMore = hasMore) } }
+                .onLeft { error -> _state.update { it.copy(isLoadingMore = false, error = error) } }
+        }
+    }
     //endregion
 
     //region Private methods
@@ -81,6 +93,8 @@ class HomeViewModel(
         val ringtones: List<RingtoneBO> = emptyList(),
         val currentRingtonePlayingId: String? = null,
         val isLoading: Boolean = true,
+        val isLoadingMore: Boolean = false,
+        val canLoadMore: Boolean = true,
         val error: ErrorBO? = null,
     ) {
         fun updateCurrentRingtonePlayingId(ringtoneBO: RingtoneBO): UIState =

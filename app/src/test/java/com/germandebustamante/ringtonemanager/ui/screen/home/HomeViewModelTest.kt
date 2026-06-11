@@ -9,6 +9,7 @@ import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBOMoth
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopularRingtonesUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.LoadMoreRingtonesUseCase
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.SyncPopularRingtonesUseCase
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
 import io.mockk.Runs
@@ -46,6 +47,9 @@ class HomeViewModelTest {
 
     @MockK
     private lateinit var syncPopularRingtonesUseCase: SyncPopularRingtonesUseCase
+
+    @MockK
+    private lateinit var loadMoreRingtonesUseCase: LoadMoreRingtonesUseCase
 
     @MockK
     private lateinit var player: MultiplePlayerAdapter
@@ -286,6 +290,7 @@ class HomeViewModelTest {
         sut = HomeViewModel(
             getPopularRingtonesUseCase = getPopularRingtonesUseCase,
             syncPopularRingtonesUseCase = syncPopularRingtonesUseCase,
+            loadMoreRingtonesUseCase = loadMoreRingtonesUseCase,
             player = player,
             navigator = navigator,
         )
