@@ -1,5 +1,6 @@
 package com.germandebustamante.ringtonemanager.ui.screen.ringtone
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,15 +10,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
@@ -36,6 +38,7 @@ fun RingtoneDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: RingtoneDetailViewModel = koinViewModel(parameters = { parametersOf(route) }),
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DisposableEffectLifecycleObserver(
@@ -49,6 +52,16 @@ fun RingtoneDetailScreen(
         onPlayPauseButtonClick = viewModel::onPlayPauseRingtone,
         onSeekButtonClick = viewModel::onSeekButtonClick,
         onBackPressed = viewModel::navigateUp,
+        onShareClicked = {
+            uiState.ringtone?.let { ringtone ->
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_SUBJECT, ringtone.name)
+                    putExtra(Intent.EXTRA_TEXT, ringtone.fileUrl)
+                }
+                context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_action)))
+            }
+        },
         modifier = modifier.fillMaxSize(),
     )
 }
@@ -60,13 +73,13 @@ internal fun RingtoneDetailContent(
     onPlayPauseButtonClick: () -> Unit,
     onSeekButtonClick: (timeInMillis: Int) -> Unit,
     onBackPressed: () -> Unit,
+    onShareClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BaseScaffold(
         topBarTitle = uiState.ringtone?.name,
         navigationIconResource = R.drawable.ic_back,
         navigationIconClick = onBackPressed,
-
     ) { _ ->
         Box(
             modifier = modifier.padding(6.dp),
@@ -100,10 +113,9 @@ internal fun RingtoneDetailContent(
             }
 
             ShareButtonWithToolTip(
-                onClick = {},
+                onClick = onShareClicked,
                 descriptionText = stringResource(R.string.share_action),
-                modifier = Modifier
-                    .align(Alignment.BottomCenter),
+                modifier = Modifier.align(Alignment.BottomCenter),
             )
         }
     }
@@ -120,8 +132,7 @@ private fun RingtoneDetails(
         modifier = modifier,
     ) {
         RandomRingtoneBackground(
-            modifier = Modifier
-                .clip(MaterialTheme.shapes.small)
+            modifier = Modifier.clip(MaterialTheme.shapes.small),
         )
 
         Text(
@@ -158,4 +169,5 @@ fun RingtoneDetailScreenPreview(
     onPlayPauseButtonClick = {},
     onSeekButtonClick = {},
     onBackPressed = {},
+    onShareClicked = {},
 )
