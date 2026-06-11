@@ -5,6 +5,7 @@ arrowCore = "2.2.1.1"
 constraintlayoutCompose = "1.1.1"
 dependencyGuard = "0.5.0"
 detekt = "1.23.7"
+moduleGraphAssert = "2.7.1"
 kover = "0.9.1"
 paparazzi = "2.0.0-alpha02"
 kotlin = "2.3.0"
@@ -118,5 +119,6 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+module-graph-assert = { id = "com.jraska.module.graph.assertion", version.ref = "moduleGraphAssert" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
