@@ -128,6 +128,9 @@ layers.
    in version control).
 3. Enable Authentication (Email/Password and Google), Firestore (collections
    `ringtones_v1`, `users_v1`), Storage and App Check.
+4. Security rules and indexes are versioned in the repo (`firestore.rules`,
+   `firestore.indexes.json`, `storage.rules`, `firebase.json`). Deploy them with
+   `firebase deploy --only firestore:rules,storage`.
 
 ### Build & run
 
