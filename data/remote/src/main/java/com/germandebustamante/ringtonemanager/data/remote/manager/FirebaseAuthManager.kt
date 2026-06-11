@@ -17,11 +17,11 @@ class FirebaseAuthManager {
             exception.toErrorBO().left()
         }
 
-    suspend fun executeVoid(action: () -> Task<Void>): ErrorBO? =
+    suspend fun executeVoid(action: () -> Task<Void>): Either<ErrorBO, Unit> =
         try {
             action().await()
-            null
+            Unit.right()
         } catch (exception: Exception) {
-            exception.toErrorBO()
+            exception.toErrorBO().left()
         }
 }
