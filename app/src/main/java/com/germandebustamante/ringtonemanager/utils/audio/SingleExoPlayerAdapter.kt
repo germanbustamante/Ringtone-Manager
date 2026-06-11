@@ -5,6 +5,8 @@ import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.util.Log
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -12,9 +14,6 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.germandebustamante.ringtonemanager.utils.extensions.isTrue
 import java.lang.ref.WeakReference
 
-/**
- * Adapter to manage a single instance of ExoPlayer for audio playback.
- */
 class SingleExoPlayerAdapter(
     context: Context,
 ) : SinglePlayerAdapter {
@@ -32,24 +31,20 @@ class SingleExoPlayerAdapter(
     }
 
     init {
-        // Initialize the ExoPlayer with a weak reference to context to avoid memory leaks.
         WeakReference(context).get()?.let {
-            exoPlayer = ExoPlayer.Builder(it).build()
+            exoPlayer = ExoPlayer.Builder(it)
+                .setAudioAttributes(RINGTONE_AUDIO_ATTRIBUTES, true)
+                .setHandleAudioBecomingNoisy(true)
+                .build()
             setupPlayerListeners()
         }
     }
 
-    /**
-     * Adds a media item to the player and prepares it for playback.
-     */
     override fun addMediaItem(mediaUri: String) {
         exoPlayer?.setMediaItem(MediaItem.fromUri(mediaUri))
         exoPlayer?.prepare()
     }
 
-    /**
-     * Sets listeners for playback duration, position and playback end events.
-     */
     override fun setListeners(
         onDurationReceived: (Int) -> Unit,
         onPositionChanged: (Long) -> Unit,
@@ -60,10 +55,6 @@ class SingleExoPlayerAdapter(
         this.onPlaybackEnded = onPlaybackEnded
     }
 
-    /**
-     * Plays a media item from the specified URL. If the same media is already playing,
-     * it resumes playback or starts over if the media has ended.
-     */
     override fun play(url: String) {
         val mediaItem = MediaItem.fromUri(Uri.parse(url))
 
@@ -75,9 +66,6 @@ class SingleExoPlayerAdapter(
         }
     }
 
-    /**
-     * Pauses playback and stops position updates.
-     */
     override fun pause() {
         if (exoPlayer?.isPlaying.isTrue()) {
             exoPlayer?.pause()
@@ -85,9 +73,6 @@ class SingleExoPlayerAdapter(
         }
     }
 
-    /**
-     * Releases the player resources and stops all updates.
-     */
     override fun release() {
         exoPlayer?.pause()
         exoPlayer?.stop()
@@ -99,21 +84,15 @@ class SingleExoPlayerAdapter(
         exoPlayer?.seekTo(getCurrentPlaybackPosition() + position)
     }
 
-    /**
-     * Resumes playback and starts position updates.
-     */
     private fun resumePlayback() {
         exoPlayer?.play()
         positionUpdateHandler.post(positionUpdateRunnable)
     }
 
-    /**
-     * Sets up ExoPlayer listeners to handle playback events and errors.
-     */
     private fun setupPlayerListeners() {
         exoPlayer?.addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
-                logError("ExoPlayer error: $error")
+                Log.e(TAG, "ExoPlayer error: $error")
             }
 
             @SuppressLint("SwitchIntDef")
@@ -131,21 +110,16 @@ class SingleExoPlayerAdapter(
         })
     }
 
-    /**
-     * Logs an error message to the console.
-     */
-    private fun logError(message: String) {
-        Log.e(TAG, "SingleExoPlayerAdapter error: $message")
-    }
-
-    /**
-     * Gets the current playback position or a default value if unavailable.
-     */
     private fun getCurrentPlaybackPosition(): Long = exoPlayer?.currentPosition ?: DEFAULT_DURATION
 
     companion object {
         private const val PLAYBACK_POSITION_REFRESH_INTERVAL_MS = 50L
         private const val DEFAULT_DURATION = 0L
         private const val TAG = "SingleExoPlayerAdapter"
+
+        private val RINGTONE_AUDIO_ATTRIBUTES = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+            .build()
     }
 }
