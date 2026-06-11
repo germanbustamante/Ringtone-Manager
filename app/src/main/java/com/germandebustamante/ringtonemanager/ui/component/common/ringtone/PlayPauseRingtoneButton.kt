@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -46,9 +47,11 @@ fun PlayPauseRingtoneButton(
         modifier = modifier.size(buttonSize),
         content = {
             val resourceId = if (isPlaying) R.drawable.ic_pause_ringtone else R.drawable.ic_play_ringtone
+            val description =
+                if (isPlaying) R.string.cd_pause_ringtone else R.string.cd_play_ringtone
             Icon(
                 painter = painterResource(resourceId),
-                contentDescription = null,
+                contentDescription = stringResource(description),
             )
         }
     )

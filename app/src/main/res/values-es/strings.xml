@@ -43,4 +43,16 @@
     <string name="restore_password_description">Por favor, introduce tu correo electronico. Te enviaremos un enlace para restablecer tu contraseña.</string>
     <string name="restore_password_action">Restablecer contraseña</string>
     <string name="input_empty_error">Este campo es obligatorio</string>
+
+    <!-- Descripciones de accesibilidad -->
+    <string name="cd_navigate_up">Volver</string>
+    <string name="cd_play_ringtone">Reproducir tono</string>
+    <string name="cd_pause_ringtone">Pausar tono</string>
+    <string name="cd_seek_forward">Avanzar 10 segundos</string>
+    <string name="cd_seek_backward">Retroceder 10 segundos</string>
+    <string name="cd_share_ringtone">Compartir tono</string>
+    <string name="cd_clear_input">Borrar texto</string>
+    <string name="cd_google_logo">Logo de Google</string>
+    <string name="cd_show_password">Mostrar contraseña</string>
+    <string name="cd_hide_password">Ocultar contraseña</string>
 </resources>
