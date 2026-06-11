@@ -21,3 +21,8 @@ gradlew
 .qodo
 
 google-services.json
+
+# Release signing — never commit keystores or their credentials
+keystore.properties
+*.jks
+*.keystore
