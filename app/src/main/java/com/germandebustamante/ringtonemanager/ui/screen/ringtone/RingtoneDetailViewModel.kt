@@ -5,6 +5,7 @@ import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetRingtoneDetailUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.IncrementRingtonePopularityUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
 import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ class RingtoneDetailViewModel(
     private val route: Destination.RingtoneDetailScreen,
     private val playerAdapter: SinglePlayerAdapter,
     private val fetchRingtoneDetailUseCase: GetRingtoneDetailUseCase,
+    private val incrementRingtonePopularityUseCase: IncrementRingtonePopularityUseCase,
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
@@ -82,6 +84,7 @@ class RingtoneDetailViewModel(
                     playerAdapter.addMediaItem(ringtoneDetails.fileUrl)
                     _uiState.update { it.copy(ringtone = ringtoneDetails) }
                     setLoadingState(false)
+                    incrementRingtonePopularityUseCase(ringtoneDetails.id)
                 }
             )
         }

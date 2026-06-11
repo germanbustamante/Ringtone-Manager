@@ -8,8 +8,11 @@ import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBOMoth
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetRingtoneDetailUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.IncrementRingtonePopularityUseCase
 import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
+import arrow.core.right
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -40,6 +43,9 @@ class RingtoneDetailViewModelTest {
     @MockK
     private lateinit var fetchRingtoneDetailUseCase: GetRingtoneDetailUseCase
 
+    @MockK
+    private lateinit var incrementRingtonePopularityUseCase: IncrementRingtonePopularityUseCase
+
     @MockK(relaxed = true)
     private lateinit var playerAdapter: SinglePlayerAdapter
 
@@ -52,6 +58,7 @@ class RingtoneDetailViewModelTest {
     @BeforeEach
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        coEvery { incrementRingtonePopularityUseCase(any()) } returns Unit.right()
     }
 
     @AfterEach
@@ -75,6 +82,31 @@ class RingtoneDetailViewModelTest {
             assertFalse(state.isLoading)
             assertNull(state.error)
         }
+    }
+
+    @Test
+    fun `GIVEN ringtone exists WHEN fetching detail THEN popularity is incremented`() = runTest {
+        // Given
+        val ringtone = RingtoneBOMother.random()
+        coEvery { fetchRingtoneDetailUseCase(route.ringtoneId) } returns ringtone.right()
+
+        // When
+        buildSut()
+
+        // Then
+        coVerify(exactly = 1) { incrementRingtonePopularityUseCase(ringtone.id) }
+    }
+
+    @Test
+    fun `GIVEN server error WHEN fetching detail THEN popularity is NOT incremented`() = runTest {
+        // Given
+        coEvery { fetchRingtoneDetailUseCase(any()) } returns ErrorBOMother.serverError().left()
+
+        // When
+        buildSut()
+
+        // Then
+        coVerify(exactly = 0) { incrementRingtonePopularityUseCase(any()) }
     }
 
     @Test
@@ -142,6 +174,7 @@ class RingtoneDetailViewModelTest {
             route = route,
             playerAdapter = playerAdapter,
             fetchRingtoneDetailUseCase = fetchRingtoneDetailUseCase,
+            incrementRingtonePopularityUseCase = incrementRingtonePopularityUseCase,
             navigator = navigator,
         )
     }
