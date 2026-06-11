@@ -14,6 +14,8 @@
     <string name="write_settings_rationale">To set a ringtone, grant this app permission to modify system settings.</string>
     <string name="language_preference">Language</string>
     <string name="change_language">Change language</string>
+    <string name="select_language">Select language</string>
+    <string name="cancel">Cancel</string>
     <string name="account">Account</string>
     <string name="my_profile">My profile</string>
     <string name="change_password">Change password</string>

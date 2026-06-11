@@ -24,7 +24,7 @@ class SettingsViewModel(
         launchCatching(onError = { _state.update { s -> s.copy(isLoading = false, error = it) } }) {
             getUserFlowUseCase().collectEither(
                 onLeft = { _state.update { s -> s.copy(isLoading = false, error = it) } },
-                onRight = { _state.update { s -> s.copy(userLogged = it != null, isLoading = false) } }
+                onRight = { _state.update { s -> s.copy(userLogged = it != null, isLoading = false) } },
             )
         }
     }
@@ -47,8 +47,17 @@ class SettingsViewModel(
         _state.update { it.copy(error = null) }
     }
 
+    fun showLanguageDialog() {
+        _state.update { it.copy(showLanguageDialog = true) }
+    }
+
+    fun hideLanguageDialog() {
+        _state.update { it.copy(showLanguageDialog = false) }
+    }
+
     data class UIState(
         val userLogged: Boolean = false,
+        val showLanguageDialog: Boolean = false,
         val error: ErrorBO? = null,
         val isLoading: Boolean = true,
     )
