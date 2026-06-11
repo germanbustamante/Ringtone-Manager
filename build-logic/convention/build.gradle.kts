@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.gradlePlugin.android)
     implementation(libs.gradlePlugin.detekt)
     implementation(libs.gradlePlugin.kover)
+    implementation(libs.gradlePlugin.ksp)
 }
 
 gradlePlugin {
