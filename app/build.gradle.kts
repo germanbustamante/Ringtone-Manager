@@ -24,6 +24,14 @@ plugins {
     id("detekt.convention.plugin")
     id("unit.test.convention.plugin")
     alias(libs.plugins.paparazzi)
+    alias(libs.plugins.dependency.guard)
+}
+
+// Guards the exact transitive dependency tree shipped in the release APK. Any
+// accidental dependency change (added, removed or version-bumped) fails CI until
+// the baseline is regenerated on purpose with `dependencyGuardBaseline`.
+dependencyGuard {
+    configuration("releaseRuntimeClasspath")
 }
 
 android {

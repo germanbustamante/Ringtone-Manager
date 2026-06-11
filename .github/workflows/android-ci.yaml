@@ -72,6 +72,9 @@ jobs:
           name: test-reports
           path: '**/build/reports/tests/'
 
+      - name: Verify Dependency Guard
+        run: ./gradlew dependencyGuard
+
       - name: Run Detekt
         run: ./gradlew detekt
 
