@@ -13,4 +13,5 @@ interface AuthenticationRepository {
     suspend fun signUp(email: String, password: String, name: String): Either<ErrorBO, Unit>
     suspend fun signOut()
     suspend fun forgotPassword(email: String): Either<ErrorBO, Unit>
+    suspend fun updatePassword(newPassword: String): Either<ErrorBO, Unit>
 }

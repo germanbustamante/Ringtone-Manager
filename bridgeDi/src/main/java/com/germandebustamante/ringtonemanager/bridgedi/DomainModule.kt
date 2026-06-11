@@ -1,5 +1,6 @@
 package com.germandebustamante.ringtonemanager.bridgedi
 
+import com.germandebustamante.ringtonemanager.domain.authorization.usecase.ChangePasswordUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.ForgotPasswordUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignInUserUseCase
@@ -26,5 +27,6 @@ val domainModule = module {
     factory { SignUpUserUseCase(get()) }
     factory { SignInUserUseCase(get()) }
     factory { ForgotPasswordUseCase(get()) }
+    factory { ChangePasswordUseCase(get()) }
     factory { SignOutUserUseCase(get()) }
 }

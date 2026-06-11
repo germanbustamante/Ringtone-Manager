@@ -44,6 +44,9 @@ fun SettingsScreen(
         onCleanError = viewModel::cleanError,
         onChangeLanguageClicked = viewModel::showLanguageDialog,
         onLanguageDialogDismissed = viewModel::hideLanguageDialog,
+        onChangePasswordClicked = viewModel::showChangePasswordDialog,
+        onPasswordDialogDismissed = viewModel::hideChangePasswordDialog,
+        onPasswordConfirmed = viewModel::changePassword,
         modifier = modifier,
     )
 }
@@ -57,6 +60,9 @@ internal fun SettingsContent(
     onCleanError: () -> Unit,
     onChangeLanguageClicked: () -> Unit,
     onLanguageDialogDismissed: () -> Unit,
+    onChangePasswordClicked: () -> Unit,
+    onPasswordDialogDismissed: () -> Unit,
+    onPasswordConfirmed: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val userLogged = state.userLogged
@@ -70,6 +76,13 @@ internal fun SettingsContent(
                 onLanguageDialogDismissed()
                 applyLocale(tag)
             },
+        )
+    }
+
+    if (state.showChangePasswordDialog) {
+        ChangePasswordDialog(
+            onDismiss = onPasswordDialogDismissed,
+            onConfirm = onPasswordConfirmed,
         )
     }
 
@@ -113,9 +126,9 @@ internal fun SettingsContent(
 
                 SettingsOptionCard(
                     title = stringResource(id = R.string.change_password),
-                    onClick = { /* TODO: Implement password change logic */ },
+                    onClick = onChangePasswordClicked,
                     iconResId = R.drawable.ic_change_password,
-                    enabled = userLogged
+                    enabled = userLogged,
                 )
             }
 
@@ -169,6 +182,9 @@ private fun SettingsScreenPreviewLoggedIn() {
             onCleanError = {},
             onChangeLanguageClicked = {},
             onLanguageDialogDismissed = {},
+            onChangePasswordClicked = {},
+            onPasswordDialogDismissed = {},
+            onPasswordConfirmed = {},
             modifier = Modifier.fillMaxSize(),
         )
     }
@@ -186,6 +202,9 @@ private fun SettingsScreenPreviewLoggedOut() {
             onCleanError = {},
             onChangeLanguageClicked = {},
             onLanguageDialogDismissed = {},
+            onChangePasswordClicked = {},
+            onPasswordDialogDismissed = {},
+            onPasswordConfirmed = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

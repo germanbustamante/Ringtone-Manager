@@ -3,6 +3,7 @@ package com.germandebustamante.ringtonemanager.ui.screen.settings
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
+import com.germandebustamante.ringtonemanager.domain.authorization.usecase.ChangePasswordUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
 import com.germandebustamante.ringtonemanager.domain.authorization.usecase.SignOutUserUseCase
 import com.germandebustamante.ringtonemanager.ui.base.BaseViewModel
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.update
 class SettingsViewModel(
     private val getUserFlowUseCase: GetUserFlowUseCase,
     private val signOutUserUseCase: SignOutUserUseCase,
+    private val changePasswordUseCase: ChangePasswordUseCase,
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
@@ -55,9 +57,27 @@ class SettingsViewModel(
         _state.update { it.copy(showLanguageDialog = false) }
     }
 
+    fun showChangePasswordDialog() {
+        _state.update { it.copy(showChangePasswordDialog = true) }
+    }
+
+    fun hideChangePasswordDialog() {
+        _state.update { it.copy(showChangePasswordDialog = false, passwordChangedSuccess = false) }
+    }
+
+    fun changePassword(newPassword: String) {
+        launchCatching(onError = { error -> _state.update { it.copy(error = error) } }) {
+            changePasswordUseCase(newPassword)
+                .onRight { _state.update { it.copy(showChangePasswordDialog = false, passwordChangedSuccess = true) } }
+                .onLeft { error -> _state.update { it.copy(error = error) } }
+        }
+    }
+
     data class UIState(
         val userLogged: Boolean = false,
         val showLanguageDialog: Boolean = false,
+        val showChangePasswordDialog: Boolean = false,
+        val passwordChangedSuccess: Boolean = false,
         val error: ErrorBO? = null,
         val isLoading: Boolean = true,
     )

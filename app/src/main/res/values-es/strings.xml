@@ -16,6 +16,11 @@
     <string name="change_language">Cambiar idioma</string>
     <string name="select_language">Seleccionar idioma</string>
     <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
+    <string name="password_changed_success">Contraseña cambiada correctamente</string>
     <string name="account">Cuenta</string>
     <string name="my_profile">Mi perfil</string>
     <string name="change_password">Cambiar contraseña</string>
