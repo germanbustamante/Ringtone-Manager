@@ -43,4 +43,16 @@
     <string name="restore_password_description">Please enter your email address. We will send you a link to reset your password.</string>
     <string name="restore_password_action">Restore password</string>
     <string name="input_empty_error">This field is required</string>
+
+    <!-- Accessibility content descriptions -->
+    <string name="cd_navigate_up">Navigate up</string>
+    <string name="cd_play_ringtone">Play ringtone</string>
+    <string name="cd_pause_ringtone">Pause ringtone</string>
+    <string name="cd_seek_forward">Forward 10 seconds</string>
+    <string name="cd_seek_backward">Rewind 10 seconds</string>
+    <string name="cd_share_ringtone">Share ringtone</string>
+    <string name="cd_clear_input">Clear text</string>
+    <string name="cd_google_logo">Google logo</string>
+    <string name="cd_show_password">Show password</string>
+    <string name="cd_hide_password">Hide password</string>
 </resources>

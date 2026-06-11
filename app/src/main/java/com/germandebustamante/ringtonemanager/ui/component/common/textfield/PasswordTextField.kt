@@ -48,6 +48,8 @@ fun PasswordTextField(
                     onCheckedChange = {
                         showPassword = it
                     },
+                    activeContentDescription = stringResource(R.string.cd_hide_password),
+                    inactiveContentDescription = stringResource(R.string.cd_show_password),
                 )
             },
             visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
