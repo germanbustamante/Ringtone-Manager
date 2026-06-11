@@ -12,16 +12,27 @@
 #   public *;
 #}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
-
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Preserve line numbers for readable crash stack traces, but hide the original
+# source file name in the obfuscated build.
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
 # Credential Manager https://developer.android.com/identity/sign-in/credential-manager
 -if class androidx.credentials.CredentialManager
 -keep class androidx.credentials.playservices.** {
   *;
+}
+
+# kotlinx.serialization — navigation destinations are @Serializable NavKeys.
+# Keep generated serializers and the synthetic serializer() accessors so R8
+# does not strip them under reflection-free serialization.
+-keepattributes *Annotation*, InnerClasses
+-keepclassmembers class com.germandebustamante.ringtonemanager.**$$serializer {
+    *;
+}
+-keepclassmembers class com.germandebustamante.ringtonemanager.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.germandebustamante.ringtonemanager.** {
+    kotlinx.serialization.KSerializer serializer(...);
 }
