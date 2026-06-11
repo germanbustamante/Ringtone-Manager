@@ -1,4 +1,18 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+
+// Release signing credentials are resolved from a gitignored keystore.properties
+// (local) or environment variables (CI). When neither is present the release
+// build falls back to the debug signing config so local `assembleRelease` works.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) keystorePropertiesFile.inputStream().use(::load)
+}
+
+fun signingValue(propertyKey: String, envKey: String): String? =
+    keystoreProperties.getProperty(propertyKey) ?: System.getenv(envKey)
+
+val hasReleaseKeystore: Boolean = signingValue("storeFile", "KEYSTORE_FILE") != null
 
 plugins {
     alias(libs.plugins.android.application)
@@ -31,11 +45,23 @@ android {
         androidResources.localeFilters.addAll(listOf("en", "es"))
     }
 
+    signingConfigs {
+        create("release") {
+            if (hasReleaseKeystore) {
+                storeFile = file(signingValue("storeFile", "KEYSTORE_FILE")!!)
+                storePassword = signingValue("storePassword", "KEYSTORE_PASSWORD")
+                keyAlias = signingValue("keyAlias", "KEY_ALIAS")
+                keyPassword = signingValue("keyPassword", "KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName(if (hasReleaseKeystore) "release" else "debug")
         }
     }
     compileOptions {
