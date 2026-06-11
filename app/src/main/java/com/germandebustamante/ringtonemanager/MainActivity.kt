@@ -24,19 +24,12 @@ import com.germandebustamante.ringtonemanager.ui.screen.register.RegisterScreen
 import com.germandebustamante.ringtonemanager.ui.screen.ringtone.RingtoneDetailScreen
 import com.germandebustamante.ringtonemanager.ui.screen.settings.SettingsScreen
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
-import com.google.firebase.Firebase
-import com.google.firebase.appcheck.appCheck
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
-import com.google.firebase.initialize
 import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Firebase.initialize(this)
-        Firebase.appCheck.installAppCheckProviderFactory(DebugAppCheckProviderFactory.getInstance())
 
         enableEdgeToEdge()
         setContent()
