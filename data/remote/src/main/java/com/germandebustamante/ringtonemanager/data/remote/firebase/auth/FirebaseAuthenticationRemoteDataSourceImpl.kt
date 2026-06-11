@@ -63,10 +63,8 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         firebaseAuth.signOut()
     }
 
-    override suspend fun forgotPassword(email: String): Either<ErrorBO, Unit> {
-        val error = authManager.executeVoid { firebaseAuth.sendPasswordResetEmail(email) }
-        return if (error != null) error.left() else Unit.right()
-    }
+    override suspend fun forgotPassword(email: String): Either<ErrorBO, Unit> =
+        authManager.executeVoid { firebaseAuth.sendPasswordResetEmail(email) }
 
     private suspend fun saveUserData(authResult: AuthResult, loginType: String): Either<ErrorBO, Unit> {
         val userInfoMap = hashMapOf(
