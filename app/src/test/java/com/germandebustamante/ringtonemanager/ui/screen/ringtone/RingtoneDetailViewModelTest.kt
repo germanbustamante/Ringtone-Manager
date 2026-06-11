@@ -52,6 +52,9 @@ class RingtoneDetailViewModelTest {
     @MockK(relaxed = true)
     private lateinit var navigator: Navigator
 
+    @MockK(relaxed = true)
+    private lateinit var ringtoneInstaller: com.germandebustamante.ringtonemanager.utils.ringtone.RingtoneInstaller
+
     private val route = Destination.RingtoneDetailScreen(ringtoneId = "ringtone_1")
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -175,6 +178,7 @@ class RingtoneDetailViewModelTest {
             playerAdapter = playerAdapter,
             fetchRingtoneDetailUseCase = fetchRingtoneDetailUseCase,
             incrementRingtonePopularityUseCase = incrementRingtonePopularityUseCase,
+            ringtoneInstaller = ringtoneInstaller,
             navigator = navigator,
         )
     }

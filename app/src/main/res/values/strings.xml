@@ -9,6 +9,9 @@
     <string name="favorite_ringtones_empty">No favorite ringtones</string>
     <string name="favorite_rigtones_need_sign_in">Sign in to save your favorites!</string>
     <string name="share_action">Share this ringtone!</string>
+    <string name="set_as_ringtone">Set as ringtone</string>
+    <string name="ringtone_set_success">Ringtone set successfully!</string>
+    <string name="write_settings_rationale">To set a ringtone, grant this app permission to modify system settings.</string>
     <string name="language_preference">Language</string>
     <string name="change_language">Change language</string>
     <string name="account">Account</string>

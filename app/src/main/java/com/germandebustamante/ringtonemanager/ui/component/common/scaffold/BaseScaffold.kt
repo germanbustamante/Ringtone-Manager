@@ -28,9 +28,11 @@ fun BaseScaffold(
     modifier: Modifier = Modifier,
     @DrawableRes navigationIconResource: Int? = null,
     navigationIconClick: () -> Unit = {},
+    snackbarHost: @Composable () -> Unit = {},
     content: @Composable (innerPadding: PaddingValues) -> Unit,
 ) {
     Scaffold(
+        snackbarHost = snackbarHost,
         topBar = {
             CenterAlignedTopAppBar(
                 windowInsets = WindowInsets(bottom = 0.dp, left = 0.dp, right = 0.dp, top = 0.dp),

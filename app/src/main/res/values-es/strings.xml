@@ -9,6 +9,9 @@
     <string name="favorite_ringtones_empty">No hay tonos de llamada favoritos</string>
     <string name="favorite_rigtones_need_sign_in">¡Inicia sesion para poder guardar tus favoritos!</string>
     <string name="share_action">¡Comparte este tono de llamada!</string>
+    <string name="set_as_ringtone">Establecer como tono</string>
+    <string name="ringtone_set_success">¡Tono de llamada establecido!</string>
+    <string name="write_settings_rationale">Para establecer el tono, concede permiso a esta app para modificar la configuración del sistema.</string>
     <string name="language_preference">Idioma</string>
     <string name="change_language">Cambiar idioma</string>
     <string name="account">Cuenta</string>
