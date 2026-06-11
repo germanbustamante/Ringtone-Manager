@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.gradlePlugin.kotlin)
     implementation(libs.gradlePlugin.android)
     implementation(libs.gradlePlugin.detekt)
+    implementation(libs.gradlePlugin.kover)
 }
 
 gradlePlugin {
@@ -34,6 +35,10 @@ gradlePlugin {
         register("kotlinLibraryConventionPlugin") {
             id = "kotlin.library.convention.plugin"
             implementationClass = "plugins.KotlinLibraryConventionPlugin"
+        }
+        register("coverageConventionPlugin") {
+            id = "coverage.convention.plugin"
+            implementationClass = "plugins.analysis.CoverageConventionPlugin"
         }
     }
 }

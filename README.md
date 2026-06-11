@@ -107,6 +107,11 @@ Key choices are documented as ADRs in [`docs/adr/`](docs/adr):
 Shared test data lives in `:core:model` `testFixtures` as **Mother objects**
 (`RingtoneBOMother`, `UserBOMother`, `ErrorBOMother`), consumed across modules.
 
+**Coverage** is measured with [Kover](https://github.com/Kotlin/kotlinx-kover):
+`./gradlew koverHtmlReport` produces an aggregated report for the domain and data
+layers, and CI enforces a minimum line-coverage gate (`koverVerify`) on those
+layers.
+
 ## Getting started
 
 ### Prerequisites
