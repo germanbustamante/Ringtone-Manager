@@ -6,6 +6,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.germandebustamante.ringtonemanager.R
 
 @Composable
@@ -19,6 +20,10 @@ fun SeekButton(
         TimeNavigationAction.FORWARD_TEN_SECONDS -> R.drawable.ic_forward_10_seconds
         TimeNavigationAction.BACKWARD_TEN_SECONDS -> R.drawable.ic_backward_10_seconds
     }
+    val descriptionResId = when (action) {
+        TimeNavigationAction.FORWARD_TEN_SECONDS -> R.string.cd_seek_forward
+        TimeNavigationAction.BACKWARD_TEN_SECONDS -> R.string.cd_seek_backward
+    }
 
     IconButton(
         onClick = { onClick(action.timeInMillis) },
@@ -27,7 +32,7 @@ fun SeekButton(
     ) {
         Icon(
             painter = painterResource(iconResourceId),
-            contentDescription = null,
+            contentDescription = stringResource(descriptionResId),
         )
     }
 }

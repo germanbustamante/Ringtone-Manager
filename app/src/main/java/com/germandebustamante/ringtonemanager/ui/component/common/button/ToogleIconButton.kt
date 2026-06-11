@@ -14,6 +14,8 @@ internal fun ToogleIconButton(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    activeContentDescription: String? = null,
+    inactiveContentDescription: String? = null,
 ) {
     IconToggleButton(
         checked = checked,
@@ -22,7 +24,7 @@ internal fun ToogleIconButton(
     ) {
         Icon(
             imageVector = if (checked) activeIcon else inactiveIcon,
-            contentDescription = null,
+            contentDescription = if (checked) activeContentDescription else inactiveContentDescription,
             tint = Color.Unspecified
         )
     }

@@ -9,6 +9,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.germandebustamante.ringtonemanager.R
 import com.germandebustamante.ringtonemanager.ui.theme.RingtoneManagerTheme
@@ -32,7 +33,10 @@ fun EditableClearInput(
                 IconButton(
                     onClick = { onValueChange("") }
                 ) {
-                    Icon(painterResource(R.drawable.ic_close), contentDescription = "Clear input")
+                    Icon(
+                        painterResource(R.drawable.ic_close),
+                        contentDescription = stringResource(R.string.cd_clear_input),
+                    )
                 }
             }
         }
