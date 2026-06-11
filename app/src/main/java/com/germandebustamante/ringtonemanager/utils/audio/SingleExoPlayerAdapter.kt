@@ -3,7 +3,6 @@ package com.germandebustamante.ringtonemanager.utils.audio
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
 import android.util.Log
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -13,6 +12,13 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.germandebustamante.ringtonemanager.utils.extensions.isTrue
 import java.lang.ref.WeakReference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 class SingleExoPlayerAdapter(
     context: Context,
@@ -22,13 +28,10 @@ class SingleExoPlayerAdapter(
     private var onPlaybackPositionChanged: ((Long) -> Unit)? = null
     private var onPlaybackDurationChanged: ((Int) -> Unit)? = null
     private var onPlaybackEnded: (() -> Unit)? = null
-    private val positionUpdateHandler = Handler()
-    private val positionUpdateRunnable = object : Runnable {
-        override fun run() {
-            onPlaybackPositionChanged?.invoke(getCurrentPlaybackPosition())
-            positionUpdateHandler.postDelayed(this, PLAYBACK_POSITION_REFRESH_INTERVAL_MS)
-        }
-    }
+
+    // Dedicated scope so we can cancel the position loop without touching any ViewModel scope.
+    private var positionScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var positionJob: Job? = null
 
     init {
         WeakReference(context).get()?.let {
@@ -69,7 +72,7 @@ class SingleExoPlayerAdapter(
     override fun pause() {
         if (exoPlayer?.isPlaying.isTrue()) {
             exoPlayer?.pause()
-            positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
+            stopPositionUpdates()
         }
     }
 
@@ -77,7 +80,7 @@ class SingleExoPlayerAdapter(
         exoPlayer?.pause()
         exoPlayer?.stop()
         exoPlayer?.release()
-        positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
+        stopPositionUpdates()
     }
 
     override fun seekTo(position: Long) {
@@ -86,7 +89,22 @@ class SingleExoPlayerAdapter(
 
     private fun resumePlayback() {
         exoPlayer?.play()
-        positionUpdateHandler.post(positionUpdateRunnable)
+        startPositionUpdates()
+    }
+
+    private fun startPositionUpdates() {
+        positionJob?.cancel()
+        positionJob = positionScope.launch {
+            while (isActive) {
+                onPlaybackPositionChanged?.invoke(getCurrentPlaybackPosition())
+                delay(PLAYBACK_POSITION_REFRESH_INTERVAL_MS)
+            }
+        }
+    }
+
+    private fun stopPositionUpdates() {
+        positionJob?.cancel()
+        positionJob = null
     }
 
     private fun setupPlayerListeners() {
@@ -99,7 +117,7 @@ class SingleExoPlayerAdapter(
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_ENDED -> {
-                        positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
+                        stopPositionUpdates()
                         onPlaybackPositionChanged?.invoke(DEFAULT_DURATION)
                         onPlaybackEnded?.invoke()
                     }
