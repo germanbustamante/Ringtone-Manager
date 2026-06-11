@@ -2,6 +2,7 @@ plugins {
     id("kotlin.library.convention.plugin")
     id("detekt.convention.plugin")
     id("unit.test.convention.plugin")
+    id("coverage.convention.plugin")
 }
 
 dependencies {

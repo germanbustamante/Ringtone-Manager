@@ -34,6 +34,20 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
 
+      - name: Verify Coverage Gate
+        run: ./gradlew koverVerify
+
+      - name: Generate Coverage Report
+        if: always()
+        run: ./gradlew koverHtmlReport
+
+      - name: Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: 'build/reports/kover/html/'
+
       - name: Record Screenshot Tests
         run: ./gradlew recordPaparazziDebug
 

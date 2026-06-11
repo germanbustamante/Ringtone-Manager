@@ -1,6 +1,7 @@
 plugins {
     `java-test-fixtures`
     id("kotlin.library.convention.plugin")
+    id("coverage.convention.plugin")
 }
 
 dependencies {
