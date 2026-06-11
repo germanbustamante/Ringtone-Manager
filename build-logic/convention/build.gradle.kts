@@ -40,5 +40,9 @@ gradlePlugin {
             id = "coverage.convention.plugin"
             implementationClass = "plugins.analysis.CoverageConventionPlugin"
         }
+        register("composeLibraryConventionPlugin") {
+            id = "compose.library.convention.plugin"
+            implementationClass = "plugins.ComposeLibraryConventionPlugin"
+        }
     }
 }
