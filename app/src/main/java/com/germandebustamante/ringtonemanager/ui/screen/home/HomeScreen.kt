@@ -23,7 +23,9 @@ fun HomeScreen(
         state = viewModel.state.collectAsStateWithLifecycle().value,
         onRingtoneClicked = viewModel::navigateToRingtoneDetail,
         onPlayRingtoneClicked = viewModel::onPlayRingtoneClicked,
-        modifier = modifier
+        onLoadMoreClicked = viewModel::loadMoreRingtones,
+        onToggleFavorite = viewModel::toggleFavorite,
+        modifier = modifier,
     )
 
     DisposableEffectLifecycleObserver(
@@ -38,20 +40,31 @@ internal fun HomeContent(
     state: HomeViewModel.UIState,
     onRingtoneClicked: (String) -> Unit,
     onPlayRingtoneClicked: (RingtoneBO, Boolean) -> Unit,
+    onLoadMoreClicked: () -> Unit,
+    onToggleFavorite: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(8.dp),
     ) {
-        FavoriteRingtonesContainer(state.isLoading)
+        FavoriteRingtonesContainer(
+            isLoading = state.isLoading,
+            isLoggedIn = state.isLoggedIn,
+            favoriteRingtones = state.favoriteRingtones,
+            currentRingtonePlayingId = state.currentRingtonePlayingId,
+            onRingtoneClicked = onRingtoneClicked,
+            onPlayRingtoneClicked = onPlayRingtoneClicked,
+            onToggleFavorite = onToggleFavorite,
+        )
 
         PopularRingtonesContainer(
             state = state,
             onRingtoneClicked = onRingtoneClicked,
             onPlayRingtoneClicked = onPlayRingtoneClicked,
+            onLoadMoreClicked = onLoadMoreClicked,
         )
     }
 }
@@ -60,4 +73,10 @@ internal fun HomeContent(
 @Composable
 private fun HomeScreenPreview(
     @PreviewParameter(HomePreviewParameterProviders::class) state: HomeViewModel.UIState,
-) = HomeContent(state, onRingtoneClicked = {}, onPlayRingtoneClicked = { _, _ -> })
+) = HomeContent(
+    state = state,
+    onRingtoneClicked = {},
+    onPlayRingtoneClicked = { _, _ -> },
+    onLoadMoreClicked = {},
+    onToggleFavorite = {},
+)

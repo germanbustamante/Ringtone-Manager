@@ -23,6 +23,8 @@ class HomeScreenTest {
                     state = HomeViewModel.UIState(isLoading = true),
                     onRingtoneClicked = {},
                     onPlayRingtoneClicked = { _, _ -> },
+                    onLoadMoreClicked = {},
+                    onToggleFavorite = {},
                 )
             }
         }
@@ -39,6 +41,8 @@ class HomeScreenTest {
                     ),
                     onRingtoneClicked = {},
                     onPlayRingtoneClicked = { _, _ -> },
+                    onLoadMoreClicked = {},
+                    onToggleFavorite = {},
                 )
             }
         }
@@ -57,6 +61,8 @@ class HomeScreenTest {
                     ),
                     onRingtoneClicked = {},
                     onPlayRingtoneClicked = { _, _ -> },
+                    onLoadMoreClicked = {},
+                    onToggleFavorite = {},
                 )
             }
         }
@@ -73,6 +79,8 @@ class HomeScreenTest {
                     ),
                     onRingtoneClicked = {},
                     onPlayRingtoneClicked = { _, _ -> },
+                    onLoadMoreClicked = {},
+                    onToggleFavorite = {},
                 )
             }
         }

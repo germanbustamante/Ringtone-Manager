@@ -42,6 +42,11 @@ fun SettingsScreen(
         onSignOutClicked = viewModel::signOut,
         onRegisterClicked = viewModel::navigateToSignUp,
         onCleanError = viewModel::cleanError,
+        onChangeLanguageClicked = viewModel::showLanguageDialog,
+        onLanguageDialogDismissed = viewModel::hideLanguageDialog,
+        onChangePasswordClicked = viewModel::showChangePasswordDialog,
+        onPasswordDialogDismissed = viewModel::hideChangePasswordDialog,
+        onPasswordConfirmed = viewModel::changePassword,
         modifier = modifier,
     )
 }
@@ -53,9 +58,33 @@ internal fun SettingsContent(
     onSignOutClicked: () -> Unit,
     onRegisterClicked: () -> Unit,
     onCleanError: () -> Unit,
+    onChangeLanguageClicked: () -> Unit,
+    onLanguageDialogDismissed: () -> Unit,
+    onChangePasswordClicked: () -> Unit,
+    onPasswordDialogDismissed: () -> Unit,
+    onPasswordConfirmed: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val userLogged = state.userLogged
+    val currentLanguageTag = Locale.getDefault().language
+
+    if (state.showLanguageDialog) {
+        LanguageSelectionDialog(
+            currentLanguageTag = currentLanguageTag,
+            onDismiss = onLanguageDialogDismissed,
+            onLocaleSelected = { tag ->
+                onLanguageDialogDismissed()
+                applyLocale(tag)
+            },
+        )
+    }
+
+    if (state.showChangePasswordDialog) {
+        ChangePasswordDialog(
+            onDismiss = onPasswordDialogDismissed,
+            onConfirm = onPasswordConfirmed,
+        )
+    }
 
     BaseScaffold(
         topBarTitle = stringResource(R.string.account_configuration),
@@ -63,7 +92,7 @@ internal fun SettingsContent(
 
         ErrorDialog(
             error = state.error,
-            onDismissRequest = onCleanError
+            onDismissRequest = onCleanError,
         )
 
         AnimatedVisibility(state.isLoading) {
@@ -81,7 +110,7 @@ internal fun SettingsContent(
             SettingsSection(textId = R.string.language_preference) {
                 SettingsOptionCard(
                     title = stringResource(R.string.change_language),
-                    onClick = { /* TODO: Implement language change logic */ },
+                    onClick = onChangeLanguageClicked,
                     iconResId = R.drawable.ic_language,
                     supportingText = Locale.getDefault().getDisplayLanguageCapitalized(),
                 )
@@ -97,9 +126,9 @@ internal fun SettingsContent(
 
                 SettingsOptionCard(
                     title = stringResource(id = R.string.change_password),
-                    onClick = { /* TODO: Implement password change logic */ },
+                    onClick = onChangePasswordClicked,
                     iconResId = R.drawable.ic_change_password,
-                    enabled = userLogged
+                    enabled = userLogged,
                 )
             }
 
@@ -151,6 +180,11 @@ private fun SettingsScreenPreviewLoggedIn() {
             onSignOutClicked = {},
             onRegisterClicked = {},
             onCleanError = {},
+            onChangeLanguageClicked = {},
+            onLanguageDialogDismissed = {},
+            onChangePasswordClicked = {},
+            onPasswordDialogDismissed = {},
+            onPasswordConfirmed = {},
             modifier = Modifier.fillMaxSize(),
         )
     }
@@ -166,6 +200,11 @@ private fun SettingsScreenPreviewLoggedOut() {
             onSignOutClicked = {},
             onRegisterClicked = {},
             onCleanError = {},
+            onChangeLanguageClicked = {},
+            onLanguageDialogDismissed = {},
+            onChangePasswordClicked = {},
+            onPasswordDialogDismissed = {},
+            onPasswordConfirmed = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

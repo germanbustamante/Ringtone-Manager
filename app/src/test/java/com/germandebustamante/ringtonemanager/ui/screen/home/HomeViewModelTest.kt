@@ -9,6 +9,11 @@ import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBOMoth
 import com.germandebustamante.ringtonemanager.core.navigation.action.Navigator
 import com.germandebustamante.ringtonemanager.core.navigation.destination.Destination
 import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.GetPopularRingtonesUseCase
+import com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.LoadMoreRingtonesUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.ObserveFavoriteIdsUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.ToggleFavoriteUseCase
+import com.germandebustamante.ringtonemanager.domain.ringtone.usecase.SyncPopularRingtonesUseCase
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -44,6 +49,21 @@ class HomeViewModelTest {
     private lateinit var getPopularRingtonesUseCase: GetPopularRingtonesUseCase
 
     @MockK
+    private lateinit var syncPopularRingtonesUseCase: SyncPopularRingtonesUseCase
+
+    @MockK
+    private lateinit var loadMoreRingtonesUseCase: LoadMoreRingtonesUseCase
+
+    @MockK(relaxed = true)
+    private lateinit var getUserFlowUseCase: GetUserFlowUseCase
+
+    @MockK(relaxed = true)
+    private lateinit var observeFavoriteIdsUseCase: ObserveFavoriteIdsUseCase
+
+    @MockK(relaxed = true)
+    private lateinit var toggleFavoriteUseCase: ToggleFavoriteUseCase
+
+    @MockK
     private lateinit var player: MultiplePlayerAdapter
 
     @MockK
@@ -67,13 +87,10 @@ class HomeViewModelTest {
 
         @Test
         fun `GIVEN successful dependencies WHEN init THEN state is updated correctly`() = runTest {
-            // Given
             givenViewModelInitSuccessDependencies()
 
-            // When
             buildSut()
 
-            // Then
             sut.state.test {
                 val state = awaitItem()
                 assertTrue(state.ringtones.isNotEmpty())
@@ -83,25 +100,19 @@ class HomeViewModelTest {
 
         @Test
         fun `GIVEN successful dependencies WHEN init THEN media items are added to the player`() = runTest {
-            // Given
             givenViewModelInitSuccessDependencies()
 
-            // When
             buildSut()
 
-            // Then
             coVerify(exactly = 1) { player.addMediaItems(any()) }
         }
 
         @Test
         fun `GIVEN successful dependencies WHEN init THEN error state is null`() = runTest {
-            // Given
             givenViewModelInitSuccessDependencies()
 
-            // When
             buildSut()
 
-            // Then
             sut.state.test {
                 val state = awaitItem()
                 assertNull(state.error)
@@ -110,14 +121,11 @@ class HomeViewModelTest {
 
         @Test
         fun `GIVEN successful dependencies WHEN init THEN ringtones list is populated`() = runTest {
-            // Given
             val expectedRingtones = RingtoneBOMother.randomList()
             givenViewModelInitSuccessDependencies(expectedRingtones)
 
-            // When
             buildSut()
 
-            // Then
             sut.state.test {
                 val state = awaitItem()
                 assertEquals(expectedRingtones, state.ringtones)
@@ -125,25 +133,23 @@ class HomeViewModelTest {
         }
 
         @Test
-        fun `GIVEN getPopularRingtonesUseCase fails WHEN init THEN error state is updated correctly`() = runTest {
-            // Given
-            givenGetPopularRingtoneFailedUseCase()
+        fun `GIVEN sync fails WHEN init THEN error state is updated correctly`() = runTest {
+            givenSyncFails()
 
-            // When
             buildSut()
 
-            // Then
             sut.state.test {
-                val errorState = awaitItem() // State after error
+                val errorState = awaitItem()
                 assertTrue(errorState.error is ErrorBO.NotFound)
                 assertFalse(errorState.isLoading)
             }
         }
 
         //region Stubs
-        private fun givenGetPopularRingtoneFailedUseCase() {
-            every { getPopularRingtonesUseCase() } returns flowOf(ErrorBO.NotFound.left())
+        private fun givenSyncFails() {
+            every { getPopularRingtonesUseCase() } returns flowOf(emptyList())
             every { player.addMediaItems(any()) } just Runs
+            coEvery { syncPopularRingtonesUseCase() } returns ErrorBO.NotFound.left()
         }
         //endregion
     }
@@ -158,14 +164,11 @@ class HomeViewModelTest {
 
         @Test
         fun `GIVEN user is on home screen WHEN user clicks on ringtone THEN navigates to ringtone detail`() = runTest {
-            // Given
             givenNavigatorActions()
             val ringtoneIdDestination = RingtoneBOMother.random().id
 
-            // When
             sut.navigateToRingtoneDetail(ringtoneIdDestination)
 
-            // Then
             coVerify(exactly = 1) { navigator.navigate(Destination.RingtoneDetailScreen(ringtoneIdDestination)) }
         }
     }
@@ -180,27 +183,21 @@ class HomeViewModelTest {
 
         @Test
         fun `GIVEN ringtone is stopped WHEN user clicks play button THEN ringtone starts playing`() = runTest {
-            // Given
             givenPlayerPlay()
             val ringtone = RingtoneBOMother.random()
 
-            // When
             sut.onPlayRingtoneClicked(ringtone, isPlaying = false)
 
-            // Then
             coVerify(exactly = 1) { player.play(ringtone.fileUrl) }
         }
 
         @Test
         fun `GIVEN ringtone is stopped WHEN user clicks play button THEN state is updated with current ringtone id`() = runTest {
-            // Given
             givenPlayerPlay()
             val ringtone = RingtoneBOMother.random()
 
-            // When
             sut.onPlayRingtoneClicked(ringtone, isPlaying = false)
 
-            // Then
             sut.state.test {
                 val state = awaitItem()
                 assertEquals(ringtone.id, state.currentRingtonePlayingId)
@@ -209,29 +206,23 @@ class HomeViewModelTest {
 
         @Test
         fun `GIVEN ringtone is playing WHEN user clicks pause button THEN ringtone is paused`() = runTest {
-            // Given
             givenPlayerPause()
             val ringtone = RingtoneBOMother.random()
 
-            // When
             sut.onPlayRingtoneClicked(ringtone, isPlaying = true)
 
-            // Then
             coVerify(exactly = 1) { player.pause() }
         }
 
         @Test
         fun `GIVEN ringtone is playing WHEN user clicks pause button THEN current ringtone id is cleared`() = runTest {
-            // Given
             givenPlayerPlay()
             givenPlayerPause()
             val ringtone = RingtoneBOMother.random()
             sut.onPlayRingtoneClicked(ringtone, isPlaying = false)
 
-            // When
             sut.onPlayRingtoneClicked(ringtone, isPlaying = true)
 
-            // Then
             sut.state.test {
                 val state = awaitItem()
                 assertNull(state.currentRingtonePlayingId)
@@ -259,52 +250,40 @@ class HomeViewModelTest {
 
         @Test
         fun `GIVEN app is running WHEN user moves app to background THEN player resources are released`() = runTest {
-            // Given
             every { player.release() } just Runs
 
-            // When
             sut.releasePlayer()
 
-            // Then
             coVerify(exactly = 1) { player.release() }
         }
 
         @Test
         fun `GIVEN app is in background WHEN user returns to app THEN player is restored`() = runTest {
-            // Given
             every { player.restore() } just Runs
 
-            // When
             sut.restorePlayer()
 
-            // Then
             coVerify(exactly = 1) { player.restore() }
         }
 
         @Test
         fun `GIVEN ringtone is playing WHEN user pauses player THEN player is paused`() = runTest {
-            // Given
             every { player.pause() } just Runs
 
-            // When
             sut.pausePlayer()
 
-            // Then
             coVerify(exactly = 1) { player.pause() }
         }
 
         @Test
         fun `GIVEN ringtone is playing WHEN user pauses player THEN current ringtone id is cleared`() = runTest {
-            // Given
             every { player.pause() } just Runs
             every { player.play(any()) } just Runs
             val ringtone = RingtoneBOMother.random()
             sut.onPlayRingtoneClicked(ringtone, isPlaying = false)
 
-            // When
             sut.pausePlayer()
 
-            // Then
             sut.state.test {
                 val state = awaitItem()
                 assertNull(state.currentRingtonePlayingId)
@@ -314,13 +293,19 @@ class HomeViewModelTest {
 
     //region General Stubs
     private fun givenViewModelInitSuccessDependencies(ringtoneList: List<RingtoneBO> = RingtoneBOMother.randomList()) {
-        every { getPopularRingtonesUseCase() } returns flowOf(ringtoneList.right())
+        every { getPopularRingtonesUseCase() } returns flowOf(ringtoneList)
         every { player.addMediaItems(any()) } just Runs
+        coEvery { syncPopularRingtonesUseCase() } returns Unit.right()
     }
 
     private fun buildSut() {
         sut = HomeViewModel(
             getPopularRingtonesUseCase = getPopularRingtonesUseCase,
+            syncPopularRingtonesUseCase = syncPopularRingtonesUseCase,
+            loadMoreRingtonesUseCase = loadMoreRingtonesUseCase,
+            getUserFlowUseCase = getUserFlowUseCase,
+            observeFavoriteIdsUseCase = observeFavoriteIdsUseCase,
+            toggleFavoriteUseCase = toggleFavoriteUseCase,
             player = player,
             navigator = navigator,
         )

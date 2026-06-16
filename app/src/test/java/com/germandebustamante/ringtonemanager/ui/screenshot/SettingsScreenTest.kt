@@ -23,6 +23,11 @@ class SettingsScreenTest {
                     onSignOutClicked = {},
                     onRegisterClicked = {},
                     onCleanError = {},
+                    onChangeLanguageClicked = {},
+                    onLanguageDialogDismissed = {},
+                    onChangePasswordClicked = {},
+                    onPasswordDialogDismissed = {},
+                    onPasswordConfirmed = {},
                 )
             }
         }
@@ -38,6 +43,11 @@ class SettingsScreenTest {
                     onSignOutClicked = {},
                     onRegisterClicked = {},
                     onCleanError = {},
+                    onChangeLanguageClicked = {},
+                    onLanguageDialogDismissed = {},
+                    onChangePasswordClicked = {},
+                    onPasswordDialogDismissed = {},
+                    onPasswordConfirmed = {},
                 )
             }
         }

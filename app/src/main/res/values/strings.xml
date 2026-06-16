@@ -4,12 +4,23 @@
     <string name="bottom_bar_home">Ringtone</string>
     <string name="bottom_bar_settings">Settings</string>
     <string name="popular_ringtones">Popular ringtones</string>
+    <string name="load_more_ringtones">Load more</string>
     <string name="favorite_ringtones">My favorites ringtones</string>
     <string name="favorite_ringtones_empty">No favorite ringtones</string>
     <string name="favorite_rigtones_need_sign_in">Sign in to save your favorites!</string>
     <string name="share_action">Share this ringtone!</string>
+    <string name="set_as_ringtone">Set as ringtone</string>
+    <string name="ringtone_set_success">Ringtone set successfully!</string>
+    <string name="write_settings_rationale">To set a ringtone, grant this app permission to modify system settings.</string>
     <string name="language_preference">Language</string>
     <string name="change_language">Change language</string>
+    <string name="select_language">Select language</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="password_changed_success">Password changed successfully</string>
     <string name="account">Account</string>
     <string name="my_profile">My profile</string>
     <string name="change_password">Change password</string>
@@ -54,5 +65,7 @@
     <string name="cd_clear_input">Clear text</string>
     <string name="cd_google_logo">Google logo</string>
     <string name="cd_show_password">Show password</string>
+    <string name="cd_add_favorite">Add to favorites</string>
+    <string name="cd_remove_favorite">Remove from favorites</string>
     <string name="cd_hide_password">Hide password</string>
 </resources>

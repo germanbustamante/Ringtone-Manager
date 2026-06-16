@@ -3,9 +3,9 @@ package com.germandebustamante.ringtonemanager.utils.audio
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
 import android.util.Log
 import androidx.annotation.OptIn
+import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
@@ -22,12 +22,6 @@ class MultipleExoPlayerAdapter(
     private var player: ExoPlayer? = null
     private var playerIndex: Int = NO_MEDIA_ITEM_SELECTED
     private var mediaItems = emptyList<MediaItem>()
-    private val positionUpdateHandler = Handler()
-    private val positionUpdateRunnable = object : Runnable {
-        override fun run() {
-            positionUpdateHandler.postDelayed(this, PLAYBACK_POSITION_REFRESH_INTERVAL_MS)
-        }
-    }
 
     init {
         initializeExoPlayer()
@@ -48,13 +42,11 @@ class MultipleExoPlayerAdapter(
     override fun pause() {
         if (player?.isPlaying.isTrue()) {
             player?.pause()
-            positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
         }
     }
 
     override fun release() {
         player?.release()
-        positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
     }
 
     @OptIn(UnstableApi::class)
@@ -76,43 +68,36 @@ class MultipleExoPlayerAdapter(
     @OptIn(UnstableApi::class)
     private fun initializeExoPlayer() {
         WeakReference(context).get()?.let {
-            player = ExoPlayer.Builder(it).build()
+            player = ExoPlayer.Builder(it)
+                .setAudioAttributes(RINGTONE_AUDIO_ATTRIBUTES, true)
+                .setHandleAudioBecomingNoisy(true)
+                .build()
             player?.pauseAtEndOfMediaItems = true
             player?.addListener(
-                (
-                    object : Player.Listener {
-                        override fun onPlayerError(error: PlaybackException) {
-                            logError("ExoPlayer error: $error")
-                        }
+                object : Player.Listener {
+                    override fun onPlayerError(error: PlaybackException) {
+                        Log.e(TAG, "ExoPlayer error: $error")
+                    }
 
-                        @SuppressLint("SwitchIntDef")
-                        override fun onPlaybackStateChanged(playbackState: Int) {
-                            super.onPlaybackStateChanged(playbackState)
-
-                            when (playbackState) {
-                                Player.STATE_ENDED -> {
-                                    player?.pause()
-                                    positionUpdateHandler.removeCallbacks(positionUpdateRunnable)
-                                }
-
-                                Player.STATE_READY -> {
-                                    player?.seekTo(playerIndex, C.TIME_UNSET)
-                                }
-                            }
+                    @SuppressLint("SwitchIntDef")
+                    override fun onPlaybackStateChanged(playbackState: Int) {
+                        super.onPlaybackStateChanged(playbackState)
+                        if (playbackState == Player.STATE_READY) {
+                            player?.seekTo(playerIndex, C.TIME_UNSET)
                         }
                     }
-                    )
+                },
             )
         }
     }
 
-    private fun logError(error: String?) {
-        Log.e(TAG, "MediaPlayerHolder error: $error")
-    }
-
     companion object {
-        private const val PLAYBACK_POSITION_REFRESH_INTERVAL_MS = 1000L
         private const val NO_MEDIA_ITEM_SELECTED = -1
         private const val TAG = "ExoPlayerAdapter"
+
+        private val RINGTONE_AUDIO_ATTRIBUTES = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+            .build()
     }
 }

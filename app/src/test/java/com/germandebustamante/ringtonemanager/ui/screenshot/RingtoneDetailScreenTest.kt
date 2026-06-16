@@ -1,5 +1,6 @@
 package com.germandebustamante.ringtonemanager.ui.screenshot
 
+import androidx.compose.material3.SnackbarHostState
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
@@ -15,16 +16,22 @@ class RingtoneDetailScreenTest {
     @get:Rule
     val paparazzi = Paparazzi(deviceConfig = DeviceConfig.PIXEL_5)
 
+    private val snackbarHostState = SnackbarHostState()
+
     @Test
     fun loading() {
         paparazzi.snapshot {
             RingtoneManagerTheme(darkTheme = false, dynamicColor = false) {
                 RingtoneDetailContent(
                     uiState = RingtoneDetailViewModel.RingtoneDetailUIState(isLoading = true),
+                    snackbarHostState = snackbarHostState,
                     onPlaybackPositionChange = {},
                     onPlayPauseButtonClick = {},
                     onSeekButtonClick = {},
                     onBackPressed = {},
+                    onToggleFavoriteClicked = {},
+                    onShareClicked = {},
+                    onSetAsRingtoneClicked = {},
                 )
             }
         }
@@ -41,10 +48,14 @@ class RingtoneDetailScreenTest {
                         ringtoneDuration = 180_000,
                         isPlaying = false,
                     ),
+                    snackbarHostState = snackbarHostState,
                     onPlaybackPositionChange = {},
                     onPlayPauseButtonClick = {},
                     onSeekButtonClick = {},
                     onBackPressed = {},
+                    onToggleFavoriteClicked = {},
+                    onShareClicked = {},
+                    onSetAsRingtoneClicked = {},
                 )
             }
         }
@@ -62,10 +73,14 @@ class RingtoneDetailScreenTest {
                         currentPlaybackPosition = 60_000,
                         isPlaying = true,
                     ),
+                    snackbarHostState = snackbarHostState,
                     onPlaybackPositionChange = {},
                     onPlayPauseButtonClick = {},
                     onSeekButtonClick = {},
                     onBackPressed = {},
+                    onToggleFavoriteClicked = {},
+                    onShareClicked = {},
+                    onSetAsRingtoneClicked = {},
                 )
             }
         }
@@ -80,10 +95,14 @@ class RingtoneDetailScreenTest {
                         isLoading = false,
                         error = ErrorBO.NotFound,
                     ),
+                    snackbarHostState = snackbarHostState,
                     onPlaybackPositionChange = {},
                     onPlayPauseButtonClick = {},
                     onSeekButtonClick = {},
                     onBackPressed = {},
+                    onToggleFavoriteClicked = {},
+                    onShareClicked = {},
+                    onSetAsRingtoneClicked = {},
                 )
             }
         }

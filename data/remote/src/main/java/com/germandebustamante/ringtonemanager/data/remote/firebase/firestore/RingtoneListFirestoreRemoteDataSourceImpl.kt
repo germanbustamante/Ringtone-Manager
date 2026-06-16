@@ -1,45 +1,54 @@
 package com.germandebustamante.ringtonemanager.data.remote.firebase.firestore
 
 import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import com.germandebustamante.ringtonemanager.core.model.error.ErrorBO
-import com.germandebustamante.ringtonemanager.core.model.ringtone.RingtoneBO
+import com.germandebustamante.ringtonemanager.data.datasource.RingtoneListPage
 import com.germandebustamante.ringtonemanager.data.datasource.RingtoneListRemoteDataSource
-import com.germandebustamante.ringtonemanager.data.remote.manager.FirestoreManager
+import com.germandebustamante.ringtonemanager.data.datasource.RingtonePageCursor
+import com.germandebustamante.ringtonemanager.data.remote.manager.toErrorBO
 import com.germandebustamante.ringtonemanager.data.remote.model.ringtone.RingtoneDTO
 import com.germandebustamante.ringtonemanager.data.remote.model.ringtone.toDomain
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.tasks.await
 
 class RingtoneListFirestoreRemoteDataSourceImpl(
     private val firestore: FirebaseFirestore,
-    private val firestoreManager: FirestoreManager,
 ) : RingtoneListRemoteDataSource {
 
-    /**
-     * Implementacion antigua (se mantiene por si se necesita revisar)
-     * ```
-     * override fun getPopularRingtones(): Flow<Either<CustomError, List<RingtoneBO>>> =
-     *         callbackFlow {
-     *             firestore.collection(COLLECTION_NAME).addSnapshotListener { value, error ->
-     *                 error?.let {
-     *                     trySend(it.toError().left())
-     *                 }
-     *
-     *                 value?.let {
-     *                     val data = it.toObjects<RingtoneDTO>().map { it.toDomain() }
-     *                     trySend(data.right())
-     *                 }
-     *             }
-     *             awaitClose { close() }
-     *         }
-     * ```
-     */
-    override fun getPopularRingtones(): Flow<Either<ErrorBO, List<RingtoneBO>>> =
-        firestoreManager.getDocumentsFlow<RingtoneDTO, RingtoneBO>(
-            action = { firestore.collection(COLLECTION_NAME).orderBy(POPULARITY_FIELD, Query.Direction.DESCENDING) },
-            mapper = RingtoneDTO::toDomain,
-        )
+    override suspend fun fetchPopularRingtones(
+        pageSize: Int,
+        cursor: RingtonePageCursor?,
+    ): Either<ErrorBO, RingtoneListPage> =
+        try {
+            var query = firestore.collection(COLLECTION_NAME)
+                .orderBy(POPULARITY_FIELD, Query.Direction.DESCENDING)
+                .orderBy(FieldPath.documentId(), Query.Direction.DESCENDING)
+                .limit(pageSize.toLong())
+
+            if (cursor != null) {
+                query = query.startAfter(cursor.popularity, cursor.documentId)
+            }
+
+            val snapshot = query.get().await()
+            val ringtones = snapshot.toObjects(RingtoneDTO::class.java).map { it.toDomain() }
+            val lastDoc = snapshot.documents.lastOrNull()
+            val hasMore = snapshot.size() >= pageSize
+
+            val nextCursor = if (lastDoc != null && hasMore) {
+                val popularity = lastDoc.getLong(POPULARITY_FIELD)?.toInt() ?: 0
+                RingtonePageCursor(popularity, lastDoc.id)
+            } else {
+                null
+            }
+
+            RingtoneListPage(ringtones, nextCursor, hasMore).right()
+        } catch (exception: Exception) {
+            exception.toErrorBO().left()
+        }
 
     companion object {
         private const val COLLECTION_NAME = "ringtones_v1"

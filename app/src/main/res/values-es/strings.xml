@@ -4,12 +4,23 @@
     <string name="bottom_bar_home">Tonos de llamada</string>
     <string name="bottom_bar_settings">Ajustes</string>
     <string name="popular_ringtones">Tonos de llamada populares</string>
+    <string name="load_more_ringtones">Cargar más</string>
     <string name="favorite_ringtones">Mis tonos de llamada favoritos</string>
     <string name="favorite_ringtones_empty">No hay tonos de llamada favoritos</string>
     <string name="favorite_rigtones_need_sign_in">¡Inicia sesion para poder guardar tus favoritos!</string>
     <string name="share_action">¡Comparte este tono de llamada!</string>
+    <string name="set_as_ringtone">Establecer como tono</string>
+    <string name="ringtone_set_success">¡Tono de llamada establecido!</string>
+    <string name="write_settings_rationale">Para establecer el tono, concede permiso a esta app para modificar la configuración del sistema.</string>
     <string name="language_preference">Idioma</string>
     <string name="change_language">Cambiar idioma</string>
+    <string name="select_language">Seleccionar idioma</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
+    <string name="password_changed_success">Contraseña cambiada correctamente</string>
     <string name="account">Cuenta</string>
     <string name="my_profile">Mi perfil</string>
     <string name="change_password">Cambiar contraseña</string>
@@ -55,4 +66,6 @@
     <string name="cd_google_logo">Logo de Google</string>
     <string name="cd_show_password">Mostrar contraseña</string>
     <string name="cd_hide_password">Ocultar contraseña</string>
+    <string name="cd_add_favorite">Añadir a favoritos</string>
+    <string name="cd_remove_favorite">Quitar de favoritos</string>
 </resources>

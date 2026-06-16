@@ -47,6 +47,9 @@ class SettingsViewModelTest {
     @MockK(relaxed = true)
     private lateinit var navigator: Navigator
 
+    @MockK(relaxed = true)
+    private lateinit var changePasswordUseCase: com.germandebustamante.ringtonemanager.domain.authorization.usecase.ChangePasswordUseCase
+
     private val testDispatcher = UnconfinedTestDispatcher()
 
     @BeforeEach
@@ -164,6 +167,6 @@ class SettingsViewModelTest {
     }
 
     private fun buildSut() {
-        sut = SettingsViewModel(getUserFlowUseCase, signOutUserUseCase, navigator)
+        sut = SettingsViewModel(getUserFlowUseCase, signOutUserUseCase, changePasswordUseCase, navigator)
     }
 }

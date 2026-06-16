@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.pm.ApplicationInfo
 import com.germandebustamante.ringtonemanager.bridgedi.analyticsModule
 import com.germandebustamante.ringtonemanager.bridgedi.domainModule
+import com.germandebustamante.ringtonemanager.bridgedi.localModule
 import com.germandebustamante.ringtonemanager.bridgedi.remoteModule
 import com.germandebustamante.ringtonemanager.bridgedi.repositoryModule
 import com.germandebustamante.ringtonemanager.di.appModule
@@ -30,7 +31,15 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(appModule, viewModelModule, domainModule, repositoryModule, remoteModule, analyticsModule)
+            modules(
+                appModule,
+                viewModelModule,
+                domainModule,
+                repositoryModule,
+                remoteModule,
+                analyticsModule,
+                localModule,
+            )
         }
 
         crashReporter.log("Application initialized")

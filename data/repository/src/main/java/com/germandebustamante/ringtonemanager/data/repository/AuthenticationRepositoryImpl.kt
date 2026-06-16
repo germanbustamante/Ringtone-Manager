@@ -38,4 +38,9 @@ class AuthenticationRepositoryImpl(
     override suspend fun forgotPassword(email: String): Either<ErrorBO, Unit> = withContext(dispatcherProvider.io) {
         authenticationRemoteDataSource.forgotPassword(email)
     }
+
+    override suspend fun updatePassword(newPassword: String): Either<ErrorBO, Unit> =
+        withContext(dispatcherProvider.io) {
+            authenticationRemoteDataSource.updatePassword(newPassword)
+        }
 }

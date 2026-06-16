@@ -52,6 +52,18 @@ class RingtoneDetailViewModelTest {
     @MockK(relaxed = true)
     private lateinit var navigator: Navigator
 
+    @MockK(relaxed = true)
+    private lateinit var ringtoneInstaller: com.germandebustamante.ringtonemanager.utils.ringtone.RingtoneInstaller
+
+    @MockK(relaxed = true)
+    private lateinit var getUserFlowUseCase: com.germandebustamante.ringtonemanager.domain.authorization.usecase.GetUserFlowUseCase
+
+    @MockK(relaxed = true)
+    private lateinit var observeFavoriteIdsUseCase: com.germandebustamante.ringtonemanager.domain.ringtone.usecase.ObserveFavoriteIdsUseCase
+
+    @MockK(relaxed = true)
+    private lateinit var toggleFavoriteUseCase: com.germandebustamante.ringtonemanager.domain.ringtone.usecase.ToggleFavoriteUseCase
+
     private val route = Destination.RingtoneDetailScreen(ringtoneId = "ringtone_1")
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -175,6 +187,10 @@ class RingtoneDetailViewModelTest {
             playerAdapter = playerAdapter,
             fetchRingtoneDetailUseCase = fetchRingtoneDetailUseCase,
             incrementRingtonePopularityUseCase = incrementRingtonePopularityUseCase,
+            ringtoneInstaller = ringtoneInstaller,
+            getUserFlowUseCase = getUserFlowUseCase,
+            observeFavoriteIdsUseCase = observeFavoriteIdsUseCase,
+            toggleFavoriteUseCase = toggleFavoriteUseCase,
             navigator = navigator,
         )
     }

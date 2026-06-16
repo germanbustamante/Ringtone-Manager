@@ -80,6 +80,15 @@ class FirebaseAuthenticationRemoteDataSourceImpl(
         return if (error != null) error.left() else Unit.right()
     }
 
+    override suspend fun updatePassword(newPassword: String): Either<ErrorBO, Unit> =
+        try {
+            val user = firebaseAuth.currentUser ?: return ErrorBO.Unknown("No user signed in").left()
+            user.updatePassword(newPassword).await()
+            Unit.right()
+        } catch (exception: Exception) {
+            exception.toErrorBO().left()
+        }
+
     companion object {
         private const val USERS_COLLECTION_NAME = "users_v1"
         private const val USERS_COLLECTION_EMAIL_FIELD = "email"

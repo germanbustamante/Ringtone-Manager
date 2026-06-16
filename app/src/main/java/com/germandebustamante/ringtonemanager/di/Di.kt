@@ -15,10 +15,12 @@ import com.germandebustamante.ringtonemanager.utils.audio.MultipleExoPlayerAdapt
 import com.germandebustamante.ringtonemanager.utils.audio.MultiplePlayerAdapter
 import com.germandebustamante.ringtonemanager.utils.audio.SingleExoPlayerAdapter
 import com.germandebustamante.ringtonemanager.utils.audio.SinglePlayerAdapter
+import com.germandebustamante.ringtonemanager.utils.ringtone.RingtoneInstaller
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -34,6 +36,7 @@ val appModule = module {
 
     factory { MultipleExoPlayerAdapter(get()) } bind MultiplePlayerAdapter::class
     factory { SingleExoPlayerAdapter(get()) } bind SinglePlayerAdapter::class
+    single { RingtoneInstaller(androidApplication()) }
 
     single<Navigator> { DefaultNavigator() }
 }
@@ -46,6 +49,10 @@ val viewModelModule = module {
             playerAdapter = get(),
             fetchRingtoneDetailUseCase = get(),
             incrementRingtonePopularityUseCase = get(),
+            ringtoneInstaller = get(),
+            getUserFlowUseCase = get(),
+            observeFavoriteIdsUseCase = get(),
+            toggleFavoriteUseCase = get(),
             navigator = get(),
         )
     }
