@@ -97,6 +97,17 @@ All ViewModels extend `BaseViewModel` (`app/.../ui/base/BaseViewModel.kt`), whic
 - `navigateTo(destination)`, `navigateUp()`, `navigateAndClearBackStack()`
 - `launchCatching(onError, block)` — coroutine launcher with automatic Firebase exception → `ErrorBO` mapping
 
+### ViewModel Initial State and Startup Requests
+
+- Every ViewModel takes `initialState: UiState = UiState()` as its first constructor parameter and seeds `MutableStateFlow(initialState)` with it, instead of hardcoding `MutableStateFlow(UiState())` inline. This lets tests seed a specific state directly through the constructor rather than reconstructing it via setters/events.
+- Because of this, ViewModels can no longer be registered in Koin (`app/.../di/Di.kt`) with `viewModelOf(::X)` — it resolves every constructor parameter via `get()` and does not honor Kotlin default values. Use an explicit `viewModel { X(dep = get(), ...) }` lambda instead (omit `initialState` to keep the default).
+- Data-loading use case calls that used to run in `init {}` go in an explicit `fun start()` instead, called once from the screen via `LaunchedEffect(Unit) { viewModel.start() }`. This keeps ViewModel construction side-effect-free and avoids non-deterministic concurrent coroutine launches from `init` in tests — tests call `sut.start()` explicitly after building the ViewModel.
+- This project does not implement `SavedStateHandle`-based process-death restoration or a startup-intent queue (`isStateRestored`) — that's out of scope until the app actually needs to preserve in-flight UI state across process death. Don't build that infrastructure speculatively.
+
+### Startup Task Pattern (not adopted)
+
+The app does not use a `StartupTask`/multibinding pattern for app initialization, and shouldn't until there's evidence of need. `App.onCreate()` only installs App Check and calls `startKoin(...)`; there is no `MainActivityViewModel`. Revisit this only if `App.onCreate()` accumulates more than a handful of ad hoc initialization calls, or a future `MainActivityViewModel` grows beyond ~5-6 dependencies used purely for startup/preload work.
+
 ### Navigation (Navigation 3 + Multi-Stack)
 
 Destinations implement `NavKey` (Navigation 3):
