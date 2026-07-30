@@ -167,6 +167,12 @@ class SettingsViewModelTest {
     }
 
     private fun buildSut() {
-        sut = SettingsViewModel(getUserFlowUseCase, signOutUserUseCase, changePasswordUseCase, navigator)
+        sut = SettingsViewModel(
+            getUserFlowUseCase = getUserFlowUseCase,
+            signOutUserUseCase = signOutUserUseCase,
+            changePasswordUseCase = changePasswordUseCase,
+            navigator = navigator,
+        )
+        sut.start()
     }
 }

@@ -13,11 +13,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
 class ForgotPasswordViewModel(
+    initialState: UIState = UIState(),
     navigator: Navigator,
     private val forgotPasswordUseCase: ForgotPasswordUseCase,
 ) : BaseViewModel(navigator) {
 
-    private val _state = MutableStateFlow(UIState())
+    private val _state = MutableStateFlow(initialState)
     val state: StateFlow<UIState> = _state
 
     private val _emailSentEvent = Channel<Unit>(Channel.BUFFERED)

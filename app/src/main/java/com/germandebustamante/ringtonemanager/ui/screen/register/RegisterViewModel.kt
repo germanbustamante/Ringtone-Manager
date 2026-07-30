@@ -17,16 +17,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class RegisterViewModel(
+    initialState: UIState = UIState(),
     private val signUpUserUseCase: SignUpUserUseCase,
     private val currentUserFlowUseCase: GetUserFlowUseCase,
     private val signInUserUseCase: SignInUserUseCase,
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    private val _state = MutableStateFlow(UIState())
+    private val _state = MutableStateFlow(initialState)
     val state: StateFlow<UIState> = _state
 
-    init {
+    fun start() {
         launchCatching(onError = { notifyError(it) }) {
             currentUserFlowUseCase().collectEither(
                 onLeft = { notifyError(it) },

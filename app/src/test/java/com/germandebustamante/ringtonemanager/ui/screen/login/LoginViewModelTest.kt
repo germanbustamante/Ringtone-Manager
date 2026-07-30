@@ -251,6 +251,11 @@ class LoginViewModelTest {
     }
 
     private fun buildSut() {
-        sut = LoginViewModel(signInUserUseCase, currentUserFlowUseCase, navigator)
+        sut = LoginViewModel(
+            signInUserUseCase = signInUserUseCase,
+            currentUserFlowUseCase = currentUserFlowUseCase,
+            navigator = navigator,
+        )
+        sut.start()
     }
 }

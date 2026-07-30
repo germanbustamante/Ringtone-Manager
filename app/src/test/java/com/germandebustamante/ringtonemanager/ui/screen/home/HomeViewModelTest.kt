@@ -309,6 +309,7 @@ class HomeViewModelTest {
             player = player,
             navigator = navigator,
         )
+        sut.start()
     }
 
     private fun givenNavigatorActions() {

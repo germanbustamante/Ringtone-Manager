@@ -50,6 +50,7 @@ fun LoginScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        viewModel.start()
         accountManager.getCredentials(onCredentialSignInSuccess = viewModel::updateCredentials)
     }
 

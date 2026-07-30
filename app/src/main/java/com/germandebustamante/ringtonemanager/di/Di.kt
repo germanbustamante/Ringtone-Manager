@@ -22,7 +22,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -42,7 +41,18 @@ val appModule = module {
 }
 
 val viewModelModule = module {
-    viewModelOf(::HomeViewModel)
+    viewModel {
+        HomeViewModel(
+            getPopularRingtonesUseCase = get(),
+            syncPopularRingtonesUseCase = get(),
+            loadMoreRingtonesUseCase = get(),
+            getUserFlowUseCase = get(),
+            observeFavoriteIdsUseCase = get(),
+            toggleFavoriteUseCase = get(),
+            player = get(),
+            navigator = get(),
+        )
+    }
     viewModel { (route: Destination.RingtoneDetailScreen) ->
         RingtoneDetailViewModel(
             route = route,
@@ -56,8 +66,33 @@ val viewModelModule = module {
             navigator = get(),
         )
     }
-    viewModelOf(::RegisterViewModel)
-    viewModelOf(::LoginViewModel)
-    viewModelOf(::SettingsViewModel)
-    viewModelOf(::ForgotPasswordViewModel)
+    viewModel {
+        RegisterViewModel(
+            signUpUserUseCase = get(),
+            currentUserFlowUseCase = get(),
+            signInUserUseCase = get(),
+            navigator = get(),
+        )
+    }
+    viewModel {
+        LoginViewModel(
+            signInUserUseCase = get(),
+            currentUserFlowUseCase = get(),
+            navigator = get(),
+        )
+    }
+    viewModel {
+        SettingsViewModel(
+            getUserFlowUseCase = get(),
+            signOutUserUseCase = get(),
+            changePasswordUseCase = get(),
+            navigator = get(),
+        )
+    }
+    viewModel {
+        ForgotPasswordViewModel(
+            navigator = get(),
+            forgotPasswordUseCase = get(),
+        )
+    }
 }

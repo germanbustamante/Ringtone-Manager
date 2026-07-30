@@ -63,6 +63,10 @@ fun RingtoneDetailScreen(
         if (Settings.System.canWrite(context)) viewModel.setAsRingtone()
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.start()
+    }
+
     LaunchedEffect(uiState.isRingtoneSet) {
         if (uiState.isRingtoneSet) snackbarHostState.showSnackbar(ringtoneSetSuccessMessage)
     }

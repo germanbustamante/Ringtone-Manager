@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 
 @Suppress("LongParameterList")
 class RingtoneDetailViewModel(
+    initialState: RingtoneDetailUIState = RingtoneDetailUIState(),
     private val route: Destination.RingtoneDetailScreen,
     private val playerAdapter: SinglePlayerAdapter,
     private val fetchRingtoneDetailUseCase: GetRingtoneDetailUseCase,
@@ -29,10 +30,10 @@ class RingtoneDetailViewModel(
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    private val _uiState = MutableStateFlow(RingtoneDetailUIState())
+    private val _uiState = MutableStateFlow(initialState)
     val uiState: StateFlow<RingtoneDetailUIState> = _uiState
 
-    init {
+    fun start() {
         setupPlayerListeners()
         fetchRingtoneDetails()
         observeUser()

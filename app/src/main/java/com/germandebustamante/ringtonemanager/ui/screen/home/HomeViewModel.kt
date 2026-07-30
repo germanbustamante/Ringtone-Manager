@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 
 @Suppress("LongParameterList")
 class HomeViewModel(
+    initialState: UIState = UIState(),
     private val getPopularRingtonesUseCase: GetPopularRingtonesUseCase,
     private val syncPopularRingtonesUseCase: SyncPopularRingtonesUseCase,
     private val loadMoreRingtonesUseCase: LoadMoreRingtonesUseCase,
@@ -28,10 +29,10 @@ class HomeViewModel(
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    private val _state: MutableStateFlow<UIState> = MutableStateFlow(UIState())
+    private val _state: MutableStateFlow<UIState> = MutableStateFlow(initialState)
     val state: StateFlow<UIState> = _state
 
-    init {
+    fun start() {
         observeRingtones()
         syncRingtones()
         observeUser()

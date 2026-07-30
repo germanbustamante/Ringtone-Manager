@@ -193,5 +193,6 @@ class RingtoneDetailViewModelTest {
             toggleFavoriteUseCase = toggleFavoriteUseCase,
             navigator = navigator,
         )
+        sut.start()
     }
 }

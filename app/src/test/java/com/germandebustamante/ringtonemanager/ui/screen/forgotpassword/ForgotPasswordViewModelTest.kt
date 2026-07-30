@@ -43,7 +43,7 @@ class ForgotPasswordViewModelTest {
     @BeforeEach
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        sut = ForgotPasswordViewModel(navigator, forgotPasswordUseCase)
+        sut = ForgotPasswordViewModel(navigator = navigator, forgotPasswordUseCase = forgotPasswordUseCase)
     }
 
     @AfterEach

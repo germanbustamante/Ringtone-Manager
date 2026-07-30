@@ -13,16 +13,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class SettingsViewModel(
+    initialState: UIState = UIState(),
     private val getUserFlowUseCase: GetUserFlowUseCase,
     private val signOutUserUseCase: SignOutUserUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase,
     navigator: Navigator,
 ) : BaseViewModel(navigator) {
 
-    private val _state = MutableStateFlow(UIState())
+    private val _state = MutableStateFlow(initialState)
     val state: StateFlow<UIState> = _state
 
-    init {
+    fun start() {
         launchCatching(onError = { _state.update { s -> s.copy(isLoading = false, error = it) } }) {
             getUserFlowUseCase().collectEither(
                 onLeft = { _state.update { s -> s.copy(isLoading = false, error = it) } },

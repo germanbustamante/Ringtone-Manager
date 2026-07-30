@@ -168,6 +168,12 @@ class RegisterViewModelTest {
     }
 
     private fun buildSut() {
-        sut = RegisterViewModel(signUpUserUseCase, currentUserFlowUseCase, signInUserUseCase, navigator)
+        sut = RegisterViewModel(
+            signUpUserUseCase = signUpUserUseCase,
+            currentUserFlowUseCase = currentUserFlowUseCase,
+            signInUserUseCase = signInUserUseCase,
+            navigator = navigator,
+        )
+        sut.start()
     }
 }
